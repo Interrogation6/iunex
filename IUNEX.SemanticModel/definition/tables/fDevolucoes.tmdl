@@ -1,0 +1,76 @@
+table fDevolucoes
+	lineageTag: a517d2b6-2d66-4956-90ed-df37e8a6a5ce
+
+	column id_devolucao
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d1c24cc-8ab8-45e9-a071-25ee742fc29d
+		summarizeBy: sum
+		sourceColumn: id_devolucao
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_pedido_origem
+		dataType: int64
+		formatString: 0
+		lineageTag: a13b966d-5fe6-48d9-8cdc-53a89c7f72bd
+		summarizeBy: sum
+		sourceColumn: id_pedido_origem
+
+		annotation SummarizationSetBy = Automatic
+
+	column item
+		dataType: int64
+		formatString: 0
+		lineageTag: 3283c4ba-8d71-4a24-9f14-ea0081a82e2c
+		summarizeBy: sum
+		sourceColumn: item
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_devolucao
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c85882cc-d508-4f80-99eb-bf88b8113faf
+		summarizeBy: none
+		sourceColumn: data_devolucao
+
+		variation Variation
+			isDefault
+			relationship: d476bec1-9fd0-4c96-8e08-ca1a530581c8
+			defaultHierarchy: LocalDateTable_448c963b-079a-458a-9768-33c8edafc7ca.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column quantidade_devolvida
+		dataType: int64
+		formatString: 0
+		lineageTag: e2fced68-267f-492c-99e7-80ff5bf56d3b
+		summarizeBy: sum
+		sourceColumn: quantidade_devolvida
+
+		annotation SummarizationSetBy = Automatic
+
+	column motivo
+		dataType: string
+		lineageTag: 2aed245c-9c65-4ed4-b356-db0706267068
+		summarizeBy: none
+		sourceColumn: motivo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fDevolucoes = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = stg_devolucoes
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

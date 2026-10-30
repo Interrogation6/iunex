@@ -63,7 +63,7 @@ table fVendas
 		annotation SummarizationSetBy = Automatic
 
 	column quantidade
-		dataType: int64
+		dataType: double
 		formatString: 0
 		lineageTag: df8e88ee-1980-4def-ba01-df8da8d7bc9f
 		summarizeBy: sum

@@ -501,7 +501,8 @@ expression stg_vendas_2024 =
 		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
 		}),
 		    AddedStatusPedido = Table.AddColumn(ValidateNull, "status_pedido", each if [quantidade] >= 0 then "Faturado" else "Cancelado", type text),
-		    AddedFreteRateado = Table.AddColumn(AddedStatusPedido, "frete_rateado", each 0.0, Currency.Type),
+		    AdjustQuantidade = Table.TransformColumns(AddedStatusPedido, {{"quantidade", each Number.Abs(_), type number}}),
+		    AddedFreteRateado = Table.AddColumn(AdjustQuantidade, "frete_rateado", each 0.0, Currency.Type),
 		    #"Changed Type" = Table.TransformColumns(
 		    AddedFreteRateado,
 		    {
