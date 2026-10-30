@@ -1,0 +1,14 @@
+# Cache e configurações locais do usuário no Power BI Desktop
+**/.pbi/
+
+# Arquivos de backup automático do Power BI (opcional, mas recomendado)
+*.pbix.backup
+
+# Arquivos de dados locais (remova caso você queira versionar suas planilhas de origem)
+*.csv
+*.xlsx
+*.parquet
+
+# Arquivos de sistema (Windows/Mac)
+Thumbs.db
+.DS_Store
