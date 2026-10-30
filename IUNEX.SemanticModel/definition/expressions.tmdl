@@ -1,0 +1,643 @@
+expression Parameter1 = #"Sample File" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 5f2ae376-ea0e-4d0b-adb4-3ed9eea2e9f5
+	queryGroup: 'Parametros & Funcoes\Transform File from vendas\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression carteira_historica =
+		let
+		    Source = Csv.Document(File.Contents(Path & "carteira_historica.csv"),[Delimiter=";", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_cliente", type text}, {"id_vendedor", type text}, {"vigencia_inicio", type date}, {"vigencia_fim", type date}})
+		in
+		    #"Changed Type"
+	lineageTag: 014e3464-e1d3-436d-9371-5f8df9983465
+	queryGroup: Origem
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression clientes =
+		let
+		    Source = Csv.Document(File.Contents(Path & "clientes.csv"),[Delimiter=";", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_cliente", type text}, {"razao_social", type text}, {"cnpj", type text}, {"segmento", type text}, {"regiao", type text}, {"uf", type text}, {"cidade", type text}, {"data_cadastro", type text}, {"id_matriz", type text}, {"situacao", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 9275f856-acc0-472b-b30e-36731d57566e
+	queryGroup: Origem
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression devolucoes =
+		let
+		    Source = Csv.Document(File.Contents(Path & "devolucoes.csv"),[Delimiter=";", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_devolucao", type text}, {"id_pedido_origem", type text}, {"item", Int64.Type}, {"data_devolucao", type date}, {"quantidade_devolvida", Int64.Type}, {"motivo", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 2ce5b494-b82d-4a92-bd51-3d126d3ed034
+	queryGroup: Origem
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression feriados =
+		let
+		    Source = Csv.Document(File.Contents(Path & "feriados.csv"),[Delimiter=";", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"data", type date}, {"descricao", type text}, {"abrangencia", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 80a56ac7-f40d-4119-b14c-601fa015b9a3
+	queryGroup: Origem
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression produtos =
+		let
+		    Source = Csv.Document(File.Contents(Path & "produtos.csv"),[Delimiter=";", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_produto", type text}, {"descricao", type text}, {"categoria", type text}, {"subcategoria", type text}, {"linha", type text}, {"unidade", type text}, {"custo_padrao", type number}, {"preco_lista", type number}, {"flag_descontinuado", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 0bb88a21-22c4-4654-8dc8-e75554581b85
+	queryGroup: Origem
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression seguranca_acessos =
+		let
+		    Source = Csv.Document(File.Contents(Path & "seguranca_acessos.csv"),[Delimiter=";", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"email", type text}, {"nome", type text}, {"perfil", type text}, {"regiao_permitida", type text}, {"segmento_permitido", type text}, {"ativo", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: a08616a6-89da-4224-ac25-136ba083db6b
+	queryGroup: Origem
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Sample File' =
+		let
+		    Source = Folder.Files("C:\Users\Kelvyn\Downloads\AnalistaBI\dados"),
+		    #"Filtered Rows" = Table.SelectRows(Source, each Text.StartsWith([Name], "vendas_")),
+		    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Extension] = ".csv"),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows1",{"Content", "Name"}),
+		    Navigation1 = #"Removed Other Columns"{0}[Content]
+		in
+		    Navigation1
+	lineageTag: 83012447-9910-4e92-bd24-08dff3e78399
+	queryGroup: 'Parametros & Funcoes\Transform File from vendas\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform Sample File' =
+		let
+		    Source = Csv.Document(Parameter1,[Delimiter=";", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: fd217085-7e58-4e0f-8beb-c080f7da0954
+	queryGroup: 'Parametros & Funcoes\Transform File from vendas'
+
+	annotation PBI_ResultType = Table
+
+expression 'Transform File' =
+		let
+		    Source = (Parameter1) => let
+		        Source = Csv.Document(Parameter1,[Delimiter=";", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		        #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		    in
+		        #"Promoted Headers"
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File""}" ]
+	lineageTag: bf28fa72-39dd-49d5-a757-a25573625536
+	queryGroup: 'Parametros & Funcoes\Transform File from vendas\Helper Queries'
+
+	annotation PBI_ResultType = Function
+
+expression vendedores =
+		let
+		    Source = Csv.Document(File.Contents(Path & "vendedores.csv"),[Delimiter=";", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_vendedor", type text}, {"nome", type text}, {"email_corporativo", type text}, {"cargo", type text}, {"regiao", type text}, {"id_gestor", type text}, {"data_admissao", type date}, {"data_desligamento", type date}})
+		in
+		    #"Changed Type"
+	lineageTag: 83690442-e5fa-4690-ae6b-cf4422ea01dd
+	queryGroup: Origem
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+/// Tabela de Câmbio USD <-> BRL
+expression cambio_usd =
+		let
+		    Source = Csv.Document(File.Contents(Path & "cambio_usd.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"data_cotacao", type date}, {"moeda", type text}, {"taxa_ptax_venda", type number}})
+		in
+		    #"Changed Type"
+	lineageTag: 54a2fab0-d5ac-4c54-9093-665b811cee74
+	queryGroup: Origem
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+/// Caminho da pasta que contem os dados utlilizados
+expression Path = "C:\Users\Kelvyn\Downloads\AnalistaBI\dados\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 299d6a66-1764-4d35-af36-675560f42bc9
+	queryGroup: 'Parametros & Funcoes'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression auxSegmento =
+		let
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8sxL0VPSAVGlxSVFmYlKsTrRSo4lickgURCdmJIPFnPPLwMJAanUojygUCwA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Name = _t, Alias = _t]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Name", type text}, {"Alias", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 324f1e01-ef7c-48ec-aac8-36ca54541359
+	queryGroup: 'Tabelas Auxiliares'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression auxRegiao =
+		let
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("bY9LDoMwDETvkjUcIoSPWjXEstkhds2uKhKl9ycCAbGT5Ty9zDjjqLRRhernZfVqKkJ8HfHtfycBLlgWKy1900hSt4EY/12XuXQXbShQ+t9a53KaTQbskPUoSzsxApqdD5VsB9xffI6Q/AUekuBTTGCfKBR1omMXILJIJlIJRDUl9wxR27QB", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [UF = _t, Regiao = _t]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"UF", type text}, {"Regiao", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: ba0caff7-bed5-4f31-bfb3-eae7e3958846
+	queryGroup: 'Tabelas Auxiliares'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression fxValidarCNPJ = ```
+		let
+		    ValidaCNPJ = (cnpj as any) =>
+		    let
+		        // 1. Extrai apenas os números (retorna null se o valor original for null)
+		        cnpjLimpo = if cnpj = null then null else Text.Select(Text.From(cnpj), {"0".."9"}),
+		        
+		        // 2. Validações e Retornos
+		        Resultado = 
+		            if cnpjLimpo = null then 
+		                null 
+		            else if Text.Length(cnpjLimpo) <> 14 then 
+		                error [Reason="Erro de Validação", Message="Tamanho inválido. O CNPJ deve conter exatamente 14 números.", Detail=cnpj]
+		            else
+		                let
+		                    // Converte a string em uma lista de números
+		                    ListaNumeros = List.Transform(Text.ToList(cnpjLimpo), each Number.From(_)),
+		                    
+		                    // Lista de CNPJs inválidos conhecidos
+		                    InvalidosConhecidos = {"00000000000000","11111111111111","22222222222222","33333333333333","44444444444444","55555555555555","66666666666666","77777777777777","88888888888888","99999999999999"},
+		                    
+		                    // Cálculo do 1º Dígito
+		                    Pesos1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2},
+		                    Soma1 = List.Sum(List.Transform({0..11}, each ListaNumeros{_} * Pesos1{_})),
+		                    Resto1 = Number.Mod(Soma1, 11),
+		                    Digito1 = if Resto1 < 2 then 0 else 11 - Resto1,
+		                    
+		                    // Cálculo do 2º Dígito
+		                    Pesos2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2},
+		                    Soma2 = List.Sum(List.Transform({0..12}, each ListaNumeros{_} * Pesos2{_})),
+		                    Resto2 = Number.Mod(Soma2, 11),
+		                    Digito2 = if Resto2 < 2 then 0 else 11 - Resto2,
+		                    
+		                    // Validação final
+		                    EhValido = (Digito1 = ListaNumeros{12}) and (Digito2 = ListaNumeros{13}) and not List.Contains(InvalidosConhecidos, cnpjLimpo),
+		                    
+		                    // Aplicação da máscara de pontuação
+		                    CnpjFormatado = Text.Range(cnpjLimpo, 0, 2) & "." & 
+		                                    Text.Range(cnpjLimpo, 2, 3) & "." & 
+		                                    Text.Range(cnpjLimpo, 5, 3) & "/" & 
+		                                    Text.Range(cnpjLimpo, 8, 4) & "-" & 
+		                                    Text.Range(cnpjLimpo, 12, 2)
+		                in
+		                    if EhValido then CnpjFormatado else error [Reason="Erro de Validação", Message="CNPJ inválido de acordo com o cálculo da Receita Federal.", Detail=cnpj]
+		    in
+		        Resultado
+		in
+		    ValidaCNPJ
+		```
+	lineageTag: a95d7531-3579-402d-80e4-79824c4bd851
+	queryGroup: 'Parametros & Funcoes'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression stg_Carteira_Historica =
+		let
+		    Source = carteira_historica,
+		    AdjustIDs = Table.TransformColumns(Source, {
+		        {"id_cliente", each fxExtrairID(_), Int64.Type},
+		        {"id_vendedor", each fxExtrairID(_), Int64.Type}
+		    })
+		in
+		    AdjustIDs
+	lineageTag: 35812855-11c2-4be9-86af-cdb9ebe31ec8
+	queryGroup: Stage
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression fxExtrairID = ```
+		let
+		    ExtrairID = (valor as any, optional qtdRemover as number) =>
+		        let
+		            // Se qtdRemover não for informado (null), assume o valor padrão de 1
+		            Qtd = qtdRemover ?? 1,
+		            
+		            // Converte para texto de forma segura, tratando null
+		            TextoValor = if valor = null then "" else Text.From(valor),
+		            
+		            // Tenta pular a quantidade de caracteres definida e converter para inteiro
+		            Tentativa = try Int64.From(Text.Middle(TextoValor, Qtd))
+		        in
+		            if Tentativa[HasError] or valor = null then 
+		                error [
+		                    Reason="Erro de Conversão de ID", 
+		                    Message="Não foi possível converter o ID. O valor esperado não pôde ser transformado em número após remover " & Text.From(Qtd) & " caractere(s).", 
+		                    Detail="Valor Atual: " & (if valor = null then "null" else Text.From(valor))
+		                ]
+		            else 
+		                Tentativa[Value]
+		in
+		    ExtrairID
+		```
+	lineageTag: 03cd1241-bdac-485f-932b-7304dff6adc7
+	queryGroup: 'Parametros & Funcoes'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression stg_devolucoes =
+		let
+		    Source = devolucoes,
+		    AdjustIDs = Table.TransformColumns(Source, {
+		        {"id_devolucao", each fxExtrairID(_, 2), Int64.Type},
+		        {"id_pedido_origem", each fxExtrairID(_, 2), Int64.Type}
+		    })
+		in
+		    AdjustIDs
+	lineageTag: 1cbcdc57-ac47-4110-acb0-ac6b66f230b1
+	queryGroup: Stage
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_produtos =
+		let
+		    Source = produtos,
+		    AdjustIDs = Table.TransformColumns(Source, {
+		        {"id_produto", each fxExtrairID(_, 4), Int64.Type}
+		    }),
+		    ValidateNulls = Table.TransformColumns(AdjustIDs, {
+		    {"categoria", each fxRejeitarNulo(_), type text},
+		    {"subcategoria", each fxRejeitarNulo(_), type text},
+		    {"linha", each fxRejeitarNulo(_), type text}
+		}),
+		    #"Changed Type" = Table.TransformColumnTypes(ValidateNulls,{{"flag_descontinuado", type logical}})
+		in
+		    #"Changed Type"
+	lineageTag: a473de1d-3fb4-4cd1-914e-afe66ce59d0f
+	queryGroup: Stage
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression fxRejeitarNulo = ```
+		let
+		    RejeitarNulo = (valor as any, optional nomeColuna as text) =>
+		        let
+		            EhInvalido = (valor = null) or (try Text.Trim(valor) = "" otherwise false)
+		        in
+		            if EhInvalido then 
+		                error [
+		                    Reason="Erro de Valor Nulo ou Vazio", 
+		                    Message="Esta informação é obrigatória e não pode estar nula/vazia.", 
+		                    Detail="Coluna afetada: " & (nomeColuna ?? "Não especificada")
+		                ]
+		            else 
+		                valor
+		in
+		    RejeitarNulo
+		```
+	lineageTag: 933fa386-6db7-4e97-8069-29df7caf7b54
+	queryGroup: 'Parametros & Funcoes'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression stg_seguranca_acessos =
+		let
+		    Source = seguranca_acessos
+		in
+		    Source
+	lineageTag: bf50d2c7-964d-48aa-b2bb-58fe3d8e3e0e
+	queryGroup: Stage
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_vendedores =
+		let
+		    Source = vendedores,
+		    AdjustIDs = Table.TransformColumns(Source, {
+		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type},
+		    {"id_gestor", each fxExtrairID(_, 1), Int64.Type}
+		})
+		in
+		    AdjustIDs
+	lineageTag: b5eb01c4-c554-47f4-a573-daf3af0137c0
+	queryGroup: Stage
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression vendas_2024 =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\vendas_2024.csv"),[Delimiter=";", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ID_PEDIDO", type text}, {"ITEM", Int64.Type}, {"DT_EMISSAO", type date}, {"COD_CLIENTE", type text}, {"COD_PRODUTO", type text}, {"COD_VENDEDOR", type text}, {"QTDE", Int64.Type}, {"VLR_UNITARIO", Currency.Type}, {"DESCONTO", type number}, {"MOEDA", type text}, {"CANAL", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 2f6d6462-343f-497b-b9de-38bb84fe54ee
+	queryGroup: Origem\Vendas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression vendas_2025 =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\vendas_2025.csv"),[Delimiter=",", Columns=12, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type date}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}}, "en-us")
+		in
+		    #"Changed Type"
+	lineageTag: f666f99a-966a-42cf-b6f0-1a238a107d31
+	queryGroup: Origem\Vendas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression vendas_2026 =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\vendas_2026.csv"),[Delimiter="|", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type text}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}, {"id_filial", type text}, {"frete_rateado", Currency.Type}}, "en-us"),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"data_emissao", type date}})
+		in
+		    #"Changed Type1"
+	lineageTag: 81fe98b6-70e3-4746-9128-c30d44dee66c
+	queryGroup: Origem\Vendas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_Clientes =
+		let
+		    Source = clientes,
+		    AdjustIDs = Table.TransformColumns(Source, {
+		        {"id_cliente", each fxExtrairID(_), Int64.Type},
+		        {"id_matriz", each fxExtrairID(_), Int64.Type}
+		    }),
+		    DuplicateRazao = Table.DuplicateColumn(AdjustIDs, "razao_social", "grupo"),
+		    ExtractGrupo = Table.SplitColumn(DuplicateRazao, "grupo", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv, false), {"grupo"}),
+		    CleanTexts = Table.TransformColumns(ExtractGrupo,{
+		        {"segmento", each Text.Trim(Text.Proper(_)), type text},
+		        {"grupo", Text.Proper, type text},
+		        {"situacao", Text.Proper, type text},
+		        {"cidade", Text.Trim, type text}
+		    }),
+		    JoinSegmento = Table.NestedJoin(CleanTexts, {"segmento"}, auxSegmento, {"Name"}, "auxSegmento", JoinKind.LeftOuter),
+		    ExpandSegmento = Table.ExpandTableColumn(JoinSegmento, "auxSegmento", {"Alias"}, {"Alias"}),
+		    ApplyAliasSegmento = Table.TransformColumnTypes(
+		        Table.ReplaceValue(ExpandSegmento, each [segmento], each if [Alias] <> null then [Alias] else [segmento], Replacer.ReplaceValue, {"segmento"}),
+		        {{"segmento", type text}}
+		    ),
+		    RemoveOldColumns = Table.RemoveColumns(ApplyAliasSegmento, {"Alias", "regiao"}),
+		    JoinRegiao = Table.NestedJoin(RemoveOldColumns, {"uf"}, auxRegiao, {"UF"}, "auxRegiao", JoinKind.LeftOuter),
+		    ExpandRegiao = Table.ExpandTableColumn(JoinRegiao, "auxRegiao", {"Regiao"}, {"regiao"}),
+		    AdjustDatas = Table.TransformColumns(ExpandRegiao, {
+		        {"data_cadastro", each try Date.From(_) otherwise try Date.AddDays(#date(1899, 12, 30), Number.From(_)) otherwise null, type date}
+		    }),
+		    ValidateSituacao = Table.TransformColumns(AdjustDatas, {
+		        {"situacao", each if _ = "Ativo" or _ = "Inativo" then _ else error [Reason="Erro de Validação", Message="Situação inválida. O valor deve ser 'Ativo' ou 'Inativo'.", Detail="Valor atual: " & Text.From(_)], type text}
+		    }),
+		    ValidateCNPJ = Table.TransformColumns(ValidateSituacao, {
+		        {"cnpj", each fxValidarCNPJ(_), type text}
+		    }),
+		    ReorderColumns = Table.ReorderColumns(ValidateCNPJ, {"id_cliente", "id_matriz", "razao_social", "cnpj", "segmento", "regiao", "uf", "cidade", "data_cadastro", "situacao", "grupo"})
+		in
+		    ReorderColumns
+	lineageTag: 2c09e581-fb3f-40b4-9941-f7c363c84e90
+	queryGroup: Stage
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_vendas_2024 =
+		let
+		    Source = vendas_2024,
+		
+		    RenameColumns = Table.RenameColumns(Source, {
+		        {"ID_PEDIDO", "id_pedido"},
+		        {"ITEM", "item"},
+		        {"DT_EMISSAO", "data_emissao"},
+		        {"COD_CLIENTE", "id_cliente"},
+		        {"COD_PRODUTO", "id_produto"},
+		        {"COD_VENDEDOR", "id_vendedor"},
+		        {"QTDE", "quantidade"},
+		        {"VLR_UNITARIO", "valor_unitario"},
+		        {"DESCONTO", "desconto_pct"},
+		        {"MOEDA", "moeda"},
+		        {"CANAL", "canal"}
+		    }),
+		
+		    AdjustIDs = Table.TransformColumns(RenameColumns, {
+		    {"id_pedido", each fxExtrairID(_, 2), Int64.Type},
+		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
+		    {"id_produto", each fxExtrairID(_, 4), Int64.Type},
+		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type}
+		}),
+		    ValidateNull = Table.TransformColumns(AdjustIDs, {
+		    {"quantidade", each fxRejeitarNulo(_), Int64.Type},
+		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
+		}),
+		    AddedStatusPedido = Table.AddColumn(ValidateNull, "status_pedido", each if [quantidade] >= 0 then "Faturado" else "Cancelado", type text),
+		    AddedFreteRateado = Table.AddColumn(AddedStatusPedido, "frete_rateado", each 0.0, Currency.Type),
+		    #"Changed Type" = Table.TransformColumns(
+		    AddedFreteRateado,
+		    {
+		        {"desconto_pct", each _ / 100, Percentage.Type}
+		    }
+		)
+		in
+		    #"Changed Type"
+	lineageTag: 0e95066d-3d9d-4a12-aa81-011c1be73115
+	queryGroup: Stage\Vendas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_vendas_2025 =
+		let
+		    Source = vendas_2025,
+		    AdjustIDs = Table.TransformColumns(Source, {
+		    {"id_pedido", each fxExtrairID(_, 2), Int64.Type},
+		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
+		    {"id_produto", each fxExtrairID(_, 4), Int64.Type},
+		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type}
+		}),
+		    ValidateNulls = Table.TransformColumns(AdjustIDs, {
+		    {"quantidade", each fxRejeitarNulo(_), Int64.Type},
+		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
+		}),
+		    AddedFreteRateado = Table.AddColumn(ValidateNulls, "frete_rateado", each 0.0, Currency.Type),
+		    #"Changed Type" = Table.TransformColumnTypes(AddedFreteRateado,{{"desconto_pct", Percentage.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 78c0c388-b32b-4c68-acbc-d3ce49d9f39e
+	queryGroup: Stage\Vendas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_vendas_2026 =
+		let
+		    Source = vendas_2026,
+		    AdjustIDs = Table.TransformColumns(Source, {
+		    {"id_pedido", each fxExtrairID(_, 2), Int64.Type},
+		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
+		    {"id_produto", each fxExtrairID(_, 4), Int64.Type},
+		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type},
+		    {"id_filial", each fxExtrairID(_, 6), Int64.Type}
+		}),
+		    ValidateNulls = Table.TransformColumns(AdjustIDs, {
+		    {"quantidade", each fxRejeitarNulo(_), Int64.Type},
+		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
+		}),
+		    #"Changed Type" = Table.TransformColumns(
+		    ValidateNulls,
+		    {
+		        {"desconto_pct", each _ / 100, Percentage.Type}
+		    }
+		),
+		    #"Kept Errors" = Table.SelectRowsWithErrors(#"Changed Type", {"data_emissao"})
+		in
+		    #"Kept Errors"
+	lineageTag: 5de9f9c9-2646-48e1-8f21-345e0bcc69cc
+	queryGroup: Stage\Vendas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_vendas =
+		let
+		    Source = Table.Combine({stg_vendas_2026, stg_vendas_2025, stg_vendas_2024}),
+		    AddedValorBRL = Table.AddColumn(
+		    Source,
+		    "valor_unitario_brl",
+		    each fxAplicarCambio(
+		        [valor_unitario],
+		        [data_emissao],
+		        [moeda]
+		    ),
+		    Currency.Type
+		)
+		in
+		    AddedValorBRL
+	lineageTag: ddf20dd2-287c-4d0a-b897-90f0d850848e
+	queryGroup: Stage
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression fxAplicarCambio =
+		(
+		    valorUnitario as number,
+		    dataEmissao as date,
+		    moeda as text
+		) as number =>
+		
+		let
+		    MoedaNormalizada = Text.Upper(Text.Trim(moeda)),
+		
+		    ValorConvertido =
+		        if MoedaNormalizada = "BRL" then
+		            valorUnitario
+		
+		        else if MoedaNormalizada = "USD" then
+		            let
+		                CotacoesDisponiveis = Table.SelectRows(
+		                    cambio_usd,
+		                    each [data_cotacao] <= dataEmissao
+		                        and [moeda] = MoedaNormalizada
+		                ),
+		
+		                OrdenarCotacoes = Table.Sort(
+		                    CotacoesDisponiveis,
+		                    {{"data_cotacao", Order.Descending}}
+		                ),
+		
+		                Taxa =
+		                    if Table.IsEmpty(OrdenarCotacoes) then
+		                        error "Nenhuma cotação PTAX disponível anterior à data de emissão: "
+		                            & Date.ToText(dataEmissao, "dd/MM/yyyy")
+		                    else
+		                        OrdenarCotacoes{0}[taxa_ptax_venda]
+		            in
+		                valorUnitario * Taxa
+		
+		        else
+		            error "Moeda não suportada: " & MoedaNormalizada
+		
+		in
+		    ValorConvertido
+	lineageTag: b2129ce5-093d-4aa9-8e85-5f23fd0a8e23
+	queryGroup: 'Parametros & Funcoes'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+

@@ -1,0 +1,197 @@
+table fVendas
+	lineageTag: 3808c56e-bde3-43fe-ba07-8a19367da048
+
+	column id_pedido
+		dataType: int64
+		formatString: 0
+		lineageTag: b84f8395-8f7a-4c0e-b363-6e3cc46e5c3a
+		summarizeBy: sum
+		sourceColumn: id_pedido
+
+		annotation SummarizationSetBy = Automatic
+
+	column item
+		dataType: int64
+		formatString: 0
+		lineageTag: 0c7cdb05-25dd-4a34-bb81-13a91f079284
+		summarizeBy: sum
+		sourceColumn: item
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_emissao
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8dd64b6f-a7e8-4552-99e2-1c53f157db60
+		summarizeBy: none
+		sourceColumn: data_emissao
+
+		variation Variation
+			isDefault
+			relationship: 9f6eee55-1958-4cd5-ab44-c4a0700fbb19
+			defaultHierarchy: LocalDateTable_dbc58cfe-77c1-439a-b8dd-357cb5f2af0f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id_cliente
+		dataType: int64
+		formatString: 0
+		lineageTag: d7104c9b-bcf2-4b9d-ba2e-87f2fd157345
+		summarizeBy: sum
+		sourceColumn: id_cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_produto
+		dataType: int64
+		formatString: 0
+		lineageTag: 95fd6da8-4d16-46c5-a38b-6a6952d03c28
+		summarizeBy: sum
+		sourceColumn: id_produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_vendedor
+		dataType: int64
+		formatString: 0
+		lineageTag: 1cd99028-2720-456e-ae80-90c5628ab584
+		summarizeBy: sum
+		sourceColumn: id_vendedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantidade
+		dataType: int64
+		formatString: 0
+		lineageTag: df8e88ee-1980-4def-ba01-df8da8d7bc9f
+		summarizeBy: sum
+		sourceColumn: quantidade
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor_unitario
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 87742be7-78e7-4390-9adc-259afd001503
+		summarizeBy: sum
+		sourceColumn: valor_unitario
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column desconto_pct
+		dataType: double
+		lineageTag: fa411867-6d07-4b21-ac45-63a6b2237149
+		summarizeBy: sum
+		sourceColumn: desconto_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column moeda
+		dataType: string
+		lineageTag: fd787523-1eef-4c9d-bc65-d559f03f0713
+		summarizeBy: none
+		sourceColumn: moeda
+
+		annotation SummarizationSetBy = Automatic
+
+	column canal
+		dataType: string
+		lineageTag: 56d6d7dc-ce7d-4de0-a857-e9f46c57c463
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column status_pedido
+		dataType: string
+		lineageTag: c909dd13-fad0-4433-bef9-65b13ae5131e
+		summarizeBy: none
+		sourceColumn: status_pedido
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_filial
+		dataType: int64
+		formatString: 0
+		lineageTag: 5860d44a-5669-4ac1-a4f7-040390769d9b
+		summarizeBy: sum
+		sourceColumn: id_filial
+
+		annotation SummarizationSetBy = Automatic
+
+	column frete_rateado
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: a4354cfd-9526-4b72-8d8d-7e290dd41b98
+		summarizeBy: sum
+		sourceColumn: frete_rateado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column valor_unitario_brl
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 2db54651-76f9-4969-b597-b42c7a59742e
+		summarizeBy: sum
+		sourceColumn: valor_unitario_brl
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column receita_bruta
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 0c0ca9d5-9a5e-43b6-95f7-53386ea55ba6
+		summarizeBy: sum
+		sourceColumn: receita_bruta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column receita_liquida
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 564ae664-6ab4-4b80-876a-46272726915d
+		summarizeBy: sum
+		sourceColumn: receita_liquida
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	partition fVendas = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = stg_vendas,
+				    AddedReceitaBruta = Table.AddColumn(
+				    Source,
+				    "receita_bruta",
+				    each [quantidade] * [valor_unitario_brl],
+				    Currency.Type
+				),
+				    AddedReceitaLiquida = Table.AddColumn(
+				    AddedReceitaBruta,
+				    "receita_liquida",
+				    each [receita_bruta] * (1 - [desconto_pct]),
+				    Currency.Type
+				),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(AddedReceitaLiquida)
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
