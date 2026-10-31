@@ -46,7 +46,7 @@ queryGroup Stage\Metas
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["cambio_usd","carteira_historica","clientes","devolucoes","feriados","produtos","seguranca_acessos","stg_metas","stg_Carteira_Historica","stg_Clientes","auxSegmento","Path","auxRegiao","fxValidarCNPJ","fxExtrairID","stg_devolucoes","stg_produtos","fxRejeitarNulo","stg_seguranca_acessos","stg_vendas","stg_vendedores","vendas_2024","vendas_2025","vendas_2026","vendedores","stg_vendas_2024","stg_vendas_2025","stg_vendas_2026","fVendas","fDevolucoes","metas_2024","metas_2025","metas_2026","stg_metas_2024","stg_metas_2025","stg_metas_2026","fMetas","dCartHist","dClientes","dProdutos","dAcessos","dVendedores","metas_workbook","auxCambioDiario","fxQuarentena","fErros"]
+annotation PBI_QueryOrder = ["cambio_usd","carteira_historica","clientes","devolucoes","feriados","produtos","seguranca_acessos","stg_metas","stg_Carteira_Historica","stg_Clientes","auxSegmento","Path","auxRegiao","fxValidarCNPJ","fxExtrairID","stg_devolucoes","stg_produtos","fxRejeitarNulo","stg_seguranca_acessos","stg_vendas","stg_vendedores","vendas_2024","vendas_2025","vendas_2026","vendedores","stg_vendas_2024","stg_vendas_2025","stg_vendas_2026","fVendas","fDevolucoes","metas_2024","metas_2025","metas_2026","stg_metas_2024","stg_metas_2025","stg_metas_2026","fMetas","dCalendario","dCartHist","dClientes","dProdutos","dAcessos","dVendedores","metas_workbook","auxCambioDiario","fxQuarentena","fErros"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
@@ -59,7 +59,6 @@ ref table fMetas
 ref table dCartHist
 ref table LocalDateTable_6168895a-1390-40a9-837b-c989de292328
 ref table dClientes
-ref table LocalDateTable_a38abcfb-fee7-4e11-89e2-c102322698bd
 ref table dProdutos
 ref table dAcessos
 ref table dVendedores
@@ -67,6 +66,9 @@ ref table LocalDateTable_91993098-e94e-442e-a857-2fcfe451a655
 ref table LocalDateTable_c93b7386-9d32-4a66-b34b-5c3adbd0a993
 ref table LocalDateTable_0007c9f5-8560-4ff8-be71-79d27aced495
 ref table fErros
+ref table dCalendario
+ref table LocalDateTable_6da4bc51-81f4-450b-b554-41a1f3d390f1
+ref table LocalDateTable_400e2587-34a8-405a-9f94-a8900d876cf8
 
 ref cultureInfo en-US
 

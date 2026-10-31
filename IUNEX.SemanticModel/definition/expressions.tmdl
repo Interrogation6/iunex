@@ -283,33 +283,78 @@ expression fxExtrairID = ```
 expression stg_devolucoes =
 		let
 		    Source = devolucoes,
-		    AdjustIDs = Table.TransformColumns(Source, {
-		        {"id_devolucao", each fxExtrairID(_, 2), Int64.Type},
-		        {"id_pedido_origem", each fxExtrairID(_, 2), Int64.Type}
-		    }),
 		
-		    ChavesVendas = Table.Distinct(
-		        Table.SelectColumns(
-		            stg_vendas,
-		            {"id_pedido", "item"}
-		        )
+		    AdjustIDs = Table.TransformColumns(
+		        Source,
+		        {
+		            {"id_devolucao", each fxExtrairID(_, 2), Int64.Type},
+		            {"id_pedido_origem", each fxExtrairID(_, 2), Int64.Type}
+		        }
 		    ),
 		
-		    #"Merged Queries" = Table.NestedJoin(
+		    SelectVendas = Table.SelectColumns(
+		        fVendas,
+		        {
+		            "id_pedido",
+		            "item",
+		            "valor_unitario_brl",
+		            "desconto_pct"
+		        }
+		    ),
+		
+		    MergeVendas = Table.NestedJoin(
 		        AdjustIDs,
 		        {"id_pedido_origem", "item"},
-		        ChavesVendas,
+		        SelectVendas,
 		        {"id_pedido", "item"},
-		        "venda_encontrada",
+		        "VendaOriginal",
 		        JoinKind.LeftOuter
 		    ),
-		    #"Expanded stg_vendas" = Table.ExpandTableColumn(#"Merged Queries", "venda_encontrada", {"id_pedido"}, {"id_pedido"}),
-		    ValidatePedido = Table.TransformColumns(#"Expanded stg_vendas", {{"id_pedido", each if _ = null then error [Reason="Erro de Relacionamento", Message="Não foi possível relacionar esta devolução com seu pedido."] else true, type logical}}),
-		    #"Merged Queries1" = Table.NestedJoin(ValidatePedido, {"id_pedido_origem"}, fVendas, {"id_pedido"}, "fVendas", JoinKind.LeftOuter),
-		    #"Expanded fVendas" = Table.ExpandTableColumn(#"Merged Queries1", "fVendas", {"desconto_pct", "valor_unitario_brl"}, {"desconto_pct", "valor_unitario_brl"}),
-		    #"Added Custom" = Table.AddColumn(#"Expanded fVendas", "valor_liquido", each [valor_unitario_brl] * ( 1 - [desconto_pct] ) * [quantidade_devolvida], Currency.Type)
+		
+		    ExpandVendas = Table.ExpandTableColumn(
+		        MergeVendas,
+		        "VendaOriginal",
+		        {
+		            "id_pedido",
+		            "valor_unitario_brl",
+		            "desconto_pct"
+		        },
+		        {
+		            "id_pedido",
+		            "valor_unitario_brl",
+		            "desconto_pct"
+		        }
+		    ),
+		
+		    ValidatePedido = Table.TransformColumns(
+		        ExpandVendas,
+		        {
+		            {
+		                "id_pedido",
+		                each
+		                    if _ = null then
+		                        error [
+		                            Reason = "Erro de Relacionamento",
+		                            Message = "Não foi possível localizar o item da venda original."
+		                        ]
+		                    else
+		                        _,
+		                Int64.Type
+		            }
+		        }
+		    ),
+		
+		    AddedValorLiquido = Table.AddColumn(
+		        ValidatePedido,
+		        "valor_liquido",
+		        each
+		            [valor_unitario_brl]
+		            * (1 - [desconto_pct])
+		            * [quantidade_devolvida],
+		        Currency.Type
+		    )
 		in
-		    #"Added Custom"
+		    AddedValorLiquido
 	lineageTag: 1cbcdc57-ac47-4110-acb0-ac6b66f230b1
 	queryGroup: Stage
 
@@ -600,47 +645,65 @@ expression stg_vendas_2025 =
 expression stg_vendas_2026 =
 		let
 		    Source = vendas_2026,
-		    AdjustIDs = Table.TransformColumns(Source, {
-		    {"id_pedido", each fxExtrairID(_, 2), Int64.Type},
-		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
-		    {"id_produto", each fxExtrairID(_, 4), Int64.Type},
-		    {"id_filial", each fxExtrairID(_, 6), Int64.Type}
-		}),
-		    ValidateVendedor = Table.AddColumn(
-		    AdjustIDs,
-		    "id_vendedor_validado",
-		    each
-		        if [canal] = "E-commerce"
-		            and (
-		                [id_vendedor] = null
-		                or Text.Trim([id_vendedor]) = ""
-		            )
-		        then null
-		        else fxExtrairID([id_vendedor], 1),
-		        Int64.Type
-		),
-		    RemoveVendedorOriginal = Table.RemoveColumns(
-		    ValidateVendedor,
-		    {"id_vendedor"}
-		),
 		
-		RenameVendedor = Table.RenameColumns(
-		    RemoveVendedorOriginal,
-		    {{"id_vendedor_validado", "id_vendedor"}}
-		),
-		    ValidateNulls = Table.TransformColumns(RenameVendedor, {
-		    {"quantidade", each fxRejeitarNulo(_), Int64.Type},
-		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
-		}),
+		    AdjustIDs = Table.TransformColumns(
+		        Source,
+		        {
+		            {"id_pedido", each fxExtrairID(_, 2), Int64.Type},
+		            {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
+		            {"id_produto", each fxExtrairID(_, 4), Int64.Type},
+		            {"id_filial", each fxExtrairID(_, 6), Int64.Type}
+		        }
+		    ),
+		
+		    ValidateVendedor = Table.AddColumn(
+		        AdjustIDs,
+		        "id_vendedor_validado",
+		        each
+		            if [canal] = "E-commerce"
+		                and (
+		                    [id_vendedor] = null
+		                    or Text.Trim([id_vendedor]) = ""
+		                )
+		            then
+		                null
+		            else
+		                fxExtrairID([id_vendedor], 1),
+		        Int64.Type
+		    ),
+		
+		    RemoveVendedorOriginal = Table.RemoveColumns(
+		        ValidateVendedor,
+		        {"id_vendedor"}
+		    ),
+		
+		    RenameVendedor = Table.RenameColumns(
+		        RemoveVendedorOriginal,
+		        {{"id_vendedor_validado", "id_vendedor"}}
+		    ),
+		
+		    ValidateNulls = Table.TransformColumns(
+		        RenameVendedor,
+		        {
+		            {"quantidade", each fxRejeitarNulo(_), Int64.Type},
+		            {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
+		        }
+		    ),
+		
 		    #"Changed Type" = Table.TransformColumns(
-		    ValidateNulls,
-		    {
-		        {"desconto_pct", each _ / 100, Percentage.Type}
-		    }
-		),
-		    Custom1 = Table.AddColumn(#"Changed Type", "origem", each "vendas_2026")
+		        ValidateNulls,
+		        {
+		            {"desconto_pct", each _ / 100, Percentage.Type}
+		        }
+		    ),
+		
+		    AddedOrigem = Table.AddColumn(
+		        #"Changed Type",
+		        "origem",
+		        each "vendas_2026"
+		    )
 		in
-		    Custom1
+		    AddedOrigem
 	lineageTag: 5de9f9c9-2646-48e1-8f21-345e0bcc69cc
 	queryGroup: Stage\Vendas
 
@@ -857,7 +920,7 @@ expression metas_workbook =
 
 expression auxCambioDiario =
 		let
-		    CotacoesUSD = Table.SelectColumns(
+		    SelectCotacoesUSD = Table.SelectColumns(
 		        Table.SelectRows(
 		            cambio_usd,
 		            each [moeda] = "USD" and [data_cotacao] <> null
@@ -865,45 +928,47 @@ expression auxCambioDiario =
 		        {"data_cotacao", "taxa_ptax_venda"}
 		    ),
 		
-		    DatasVendas = Table.Combine({
+		    CombineDatasVendas = Table.Combine({
 		        Table.SelectColumns(stg_vendas_2024, {"data_emissao"}),
 		        Table.SelectColumns(stg_vendas_2025, {"data_emissao"}),
 		        Table.SelectColumns(stg_vendas_2026, {"data_emissao"})
 		    }),
 		
-		    DatasValidas = Table.RemoveRowsWithErrors(
-		        DatasVendas,
+		    FilterDatasValidas = Table.RemoveRowsWithErrors(
+		        CombineDatasVendas,
 		        {"data_emissao"}
 		    ),
 		
-		    DataInicio = List.Min(CotacoesUSD[data_cotacao]),
+		    GetDataInicio = List.Min(
+		        SelectCotacoesUSD[data_cotacao]
+		    ),
 		
-		    DataFim = List.Max(
+		    GetDataFim = List.Max(
 		        List.Combine({
-		            {DataInicio},
-		            List.RemoveNulls(DatasValidas[data_emissao])
+		            {GetDataInicio},
+		            List.RemoveNulls(FilterDatasValidas[data_emissao])
 		        })
 		    ),
 		
-		    Calendario = Table.FromList(
+		    GenerateCalendario = Table.FromList(
 		        List.Dates(
-		            DataInicio,
-		            Duration.Days(DataFim - DataInicio) + 1,
+		            GetDataInicio,
+		            Duration.Days(GetDataFim - GetDataInicio) + 1,
 		            #duration(1, 0, 0, 0)
 		        ),
 		        Splitter.SplitByNothing(),
 		        {"data_emissao"}
 		    ),
 		
-		    CalendarioTipado = Table.TransformColumnTypes(
-		        Calendario,
+		    ChangeCalendarType = Table.TransformColumnTypes(
+		        GenerateCalendario,
 		        {{"data_emissao", type date}}
 		    ),
 		
 		    MergeCotacoes = Table.NestedJoin(
-		        CalendarioTipado,
+		        ChangeCalendarType,
 		        {"data_emissao"},
-		        CotacoesUSD,
+		        SelectCotacoesUSD,
 		        {"data_cotacao"},
 		        "Cotacao",
 		        JoinKind.LeftOuter
@@ -916,13 +981,13 @@ expression auxCambioDiario =
 		        {"taxa_ptax_venda"}
 		    ),
 		
-		    OrderDatas = Table.Sort(
+		    SortDatas = Table.Sort(
 		        ExpandCotacoes,
 		        {{"data_emissao", Order.Ascending}}
 		    ),
 		
 		    FillCotacoes = Table.FillDown(
-		        OrderDatas,
+		        SortDatas,
 		        {"taxa_ptax_venda"}
 		    )
 		in
@@ -942,14 +1007,14 @@ expression fxQuarentena =
 		        optional ColunasChave as nullable list
 		    ) as table =>
 		    let
-		        Chaves = ColunasChave ?? {},
+		        GetChaves = ColunasChave ?? {},
 		
-		        PossuiOrigem = Table.HasColumns(
+		        HasOrigem = Table.HasColumns(
 		            Tabela,
 		            "origem"
 		        ),
 		
-		        ComIndice = Table.AddIndexColumn(
+		        AddIndice = Table.AddIndexColumn(
 		            Tabela,
 		            "__Linha",
 		            1,
@@ -957,25 +1022,25 @@ expression fxQuarentena =
 		            Int64.Type
 		        ),
 		
-		        Rejeitados = Table.SelectRowsWithErrors(
-		            ComIndice
+		        FilterErros = Table.SelectRowsWithErrors(
+		            AddIndice
 		        ),
 		
-		        Colunas = List.RemoveItems(
-		            Table.ColumnNames(Rejeitados),
+		        GetColunas = List.RemoveItems(
+		            Table.ColumnNames(FilterErros),
 		            {"__Linha"}
 		        ),
 		
-		        ComIdentificador = Table.AddColumn(
-		            Rejeitados,
+		        AddIdentificador = Table.AddColumn(
+		            FilterErros,
 		            "__Identificador",
 		            (Linha as record) =>
-		                if List.IsEmpty(Chaves) then
+		                if List.IsEmpty(GetChaves) then
 		                    Text.From(Linha[__Linha])
 		                else
 		                    Text.Combine(
 		                        List.Transform(
-		                            Chaves,
+		                            GetChaves,
 		                            (Chave) =>
 		                                let
 		                                    Valor = try Record.Field(
@@ -998,11 +1063,11 @@ expression fxQuarentena =
 		            type text
 		        ),
 		
-		        ComOrigem = Table.AddColumn(
-		            ComIdentificador,
+		        AddOrigem = Table.AddColumn(
+		            AddIdentificador,
 		            "__OrigemQuarentena",
 		            (Linha as record) =>
-		                if PossuiOrigem then
+		                if HasOrigem then
 		                    let
 		                        Tentativa = try Record.Field(
 		                            Linha,
@@ -1030,13 +1095,13 @@ expression fxQuarentena =
 		            type text
 		        ),
 		
-		        ComOcorrencias = Table.AddColumn(
-		            ComOrigem,
+		        AddOcorrencias = Table.AddColumn(
+		            AddOrigem,
 		            "__Ocorrencias",
 		            (Linha as record) =>
 		                List.RemoveNulls(
 		                    List.Transform(
-		                        Colunas,
+		                        GetColunas,
 		                        (Coluna) =>
 		                            let
 		                                Tentativa = try Record.Field(
@@ -1056,8 +1121,8 @@ expression fxQuarentena =
 		            type list
 		        ),
 		
-		        Selecionar = Table.SelectColumns(
-		            ComOcorrencias,
+		        SelectColunas = Table.SelectColumns(
+		            AddOcorrencias,
 		            {
 		                "__Linha",
 		                "__Identificador",
@@ -1066,19 +1131,19 @@ expression fxQuarentena =
 		            }
 		        ),
 		
-		        ExpandirLista = Table.ExpandListColumn(
-		            Selecionar,
+		        ExpandLista = Table.ExpandListColumn(
+		            SelectColunas,
 		            "__Ocorrencias"
 		        ),
 		
-		        ExpandirMotivos = Table.ExpandRecordColumn(
-		            ExpandirLista,
+		        ExpandMotivos = Table.ExpandRecordColumn(
+		            ExpandLista,
 		            "__Ocorrencias",
 		            {"Coluna", "Motivo"}
 		        ),
 		
-		        Renomear = Table.RenameColumns(
-		            ExpandirMotivos,
+		        RenameColunas = Table.RenameColumns(
+		            ExpandMotivos,
 		            {
 		                {"__Linha", "Linha"},
 		                {"__Identificador", "Identificador"},
@@ -1086,8 +1151,8 @@ expression fxQuarentena =
 		            }
 		        ),
 		
-		        Resultado = Table.SelectColumns(
-		            Renomear,
+		        SelectResultado = Table.SelectColumns(
+		            RenameColunas,
 		            {
 		                "Origem",
 		                "Linha",
@@ -1097,7 +1162,7 @@ expression fxQuarentena =
 		            }
 		        )
 		    in
-		        Resultado
+		        SelectResultado
 		in
 		    fxQuarentena
 	lineageTag: 24d22878-9811-4d12-aa1a-8193bdff5604

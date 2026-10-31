@@ -2,8 +2,7 @@ table dClientes
 	lineageTag: fd14a9d4-ad58-42d4-bc25-11a66338d14e
 
 	column id_cliente
-		dataType: int64
-		formatString: 0
+		dataType: string
 		lineageTag: 4335e5c8-e9fb-4b39-ab8d-a6ce072083b1
 		summarizeBy: none
 		sourceColumn: id_cliente
@@ -11,10 +10,9 @@ table dClientes
 		annotation SummarizationSetBy = Automatic
 
 	column id_matriz
-		dataType: int64
-		formatString: 0
+		dataType: string
 		lineageTag: 5397e1bc-e518-4c96-bf76-668fe6365373
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_matriz
 
 		annotation SummarizationSetBy = Automatic
@@ -68,20 +66,12 @@ table dClientes
 		annotation SummarizationSetBy = Automatic
 
 	column data_cadastro
-		dataType: dateTime
-		formatString: Long Date
+		dataType: string
 		lineageTag: 93b5e589-995a-4782-a503-c7839c2a1bf4
 		summarizeBy: none
 		sourceColumn: data_cadastro
 
-		variation Variation
-			isDefault
-			relationship: 5edef07f-fe8f-4954-8af5-bd5480d85fec
-			defaultHierarchy: LocalDateTable_a38abcfb-fee7-4e11-89e2-c102322698bd.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
 
 	column situacao
 		dataType: string
@@ -105,9 +95,34 @@ table dClientes
 		source =
 				let
 				    Source = stg_Clientes,
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				    ClientesValidos = Table.RemoveRowsWithErrors(Source),
+				
+				    Colunas = Table.ColumnNames(ClientesValidos),
+				
+				    RegistroDesconhecido = Record.FromList(
+				        List.Transform(
+				            Colunas,
+				            (Coluna) =>
+				                if Coluna = "id_cliente" then -1
+				                else if List.Contains(
+				                    {"razao_social", "regiao", "segmento"},
+				                    Coluna
+				                ) then "Não Identificado"
+				                else null
+				        ),
+				        Colunas
+				    ),
+				
+				    Desconhecido = Table.FromRecords(
+				        {RegistroDesconhecido}
+				    ),
+				
+				    Resultado = Table.Combine({
+				        ClientesValidos,
+				        Desconhecido
+				    })
 				in
-				    #"Removed Errors"
+				    Resultado
 
 	annotation PBI_NavigationStepName = Navigation
 

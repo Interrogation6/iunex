@@ -13,11 +13,6 @@ relationship feb35f49-aaaa-4d17-a0c4-4b86543be301
 	fromColumn: dCartHist.vigencia_inicio
 	toColumn: LocalDateTable_6168895a-1390-40a9-837b-c989de292328.Date
 
-relationship 5edef07f-fe8f-4954-8af5-bd5480d85fec
-	joinOnDateBehavior: datePartOnly
-	fromColumn: dClientes.data_cadastro
-	toColumn: LocalDateTable_a38abcfb-fee7-4e11-89e2-c102322698bd.Date
-
 relationship 57034c4f-a610-4b5b-93f4-24e94e3082ac
 	joinOnDateBehavior: datePartOnly
 	fromColumn: dVendedores.data_admissao
@@ -49,4 +44,14 @@ relationship 0170cd67-15f4-8d8f-54cb-ea7a2a7c10ea
 	toCardinality: many
 	fromColumn: fVendas.id_pedido
 	toColumn: fDevolucoes.id_pedido_origem
+
+relationship fae0b47d-fc8f-46ef-bbe1-045bbae8ba5b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dCalendario.Data
+	toColumn: LocalDateTable_6da4bc51-81f4-450b-b554-41a1f3d390f1.Date
+
+relationship dfd46706-124b-489e-bbe5-1a045fad95e7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dCalendario.InicioMes
+	toColumn: LocalDateTable_400e2587-34a8-405a-9f94-a8900d876cf8.Date
 

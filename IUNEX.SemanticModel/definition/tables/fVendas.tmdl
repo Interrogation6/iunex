@@ -147,33 +147,20 @@ table fVendas
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
-	column receita_bruta
-		dataType: decimal
-		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
-		lineageTag: 0c0ca9d5-9a5e-43b6-95f7-53386ea55ba6
-		summarizeBy: sum
-		sourceColumn: receita_bruta
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
-
-	column receita_liquida
-		dataType: decimal
-		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
-		lineageTag: 564ae664-6ab4-4b80-876a-46272726915d
-		summarizeBy: sum
-		sourceColumn: receita_liquida
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
-
 	column origem
 		dataType: string
 		lineageTag: 8eae4210-3988-47c8-bdd9-0a85e4a5d16a
 		summarizeBy: none
 		sourceColumn: origem
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cliente_modelo
+		dataType: int64
+		formatString: 0
+		lineageTag: d4cc3677-f0c7-4034-8e53-9c8433249cde
+		summarizeBy: sum
+		sourceColumn: id_cliente_modelo
 
 		annotation SummarizationSetBy = Automatic
 
@@ -196,9 +183,44 @@ table fVendas
 				    each [receita_bruta] * (1 - [desconto_pct]),
 				    Currency.Type
 				),
-				    FilterFaturado = Table.SelectRows(AddedReceitaLiquida, each ([status_pedido] = "Faturado"))
+				    FilterFaturado = Table.SelectRows(AddedReceitaLiquida, each ([status_pedido] = "Faturado")),
+				    IdsClientes = Table.SelectColumns(
+				    dClientes,
+				    {"id_cliente"}
+				),
+				
+				MergeClientes = Table.NestedJoin(
+				    #"Removed Errors",
+				    {"id_cliente"},
+				    IdsClientes,
+				    {"id_cliente"},
+				    "ClienteEncontrado",
+				    JoinKind.LeftOuter
+				),
+				
+				ExpandClientes = Table.ExpandTableColumn(
+				    MergeClientes,
+				    "ClienteEncontrado",
+				    {"id_cliente"},
+				    {"id_cliente_encontrado"}
+				),
+				
+				MapearOrfaos = Table.AddColumn(
+				    ExpandClientes,
+				    "id_cliente_modelo",
+				    each
+				        if [id_cliente_encontrado] = null
+				        then -1
+				        else [id_cliente],
+				    Int64.Type
+				),
+				
+				RemoverAuxiliar = Table.RemoveColumns(
+				    MapearOrfaos,
+				    {"id_cliente_encontrado"}
+				)
 				in
-				    FilterFaturado
+				    RemoverAuxiliar
 
 	annotation PBI_NavigationStepName = Navigation
 
