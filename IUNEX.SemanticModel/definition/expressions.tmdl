@@ -644,73 +644,71 @@ expression stg_vendas_2026 =
 
 expression stg_vendas =
 		let
-		    Source = Table.Combine({stg_vendas_2026, stg_vendas_2025, stg_vendas_2024}),
-		    AddedValorBRL = Table.AddColumn(
-		    Source,
-		    "valor_unitario_brl",
-		    each fxAplicarCambio(
-		        [valor_unitario],
-		        [data_emissao],
-		        [moeda]
+		    Source = Table.Combine({
+		        stg_vendas_2026,
+		        stg_vendas_2025,
+		        stg_vendas_2024
+		    }),
+		
+		    MergeCambio = Table.NestedJoin(
+		        Source,
+		        {"data_emissao"},
+		        auxCambioDiario,
+		        {"data_emissao"},
+		        "Cambio",
+		        JoinKind.LeftOuter
 		    ),
-		    Currency.Type
-		)
+		
+		    ExpandCambio = Table.ExpandTableColumn(
+		        MergeCambio,
+		        "Cambio",
+		        {"taxa_ptax_venda"},
+		        {"taxa_ptax_venda"}
+		    ),
+		
+		    AddedValorBRL = Table.AddColumn(
+		        ExpandCambio,
+		        "valor_unitario_brl",
+		        each
+		            let
+		                Moeda = Text.Upper(Text.Trim([moeda] ?? ""))
+		            in
+		                if Moeda = "BRL" then
+		                    Currency.From([valor_unitario])
+		
+		                else if Moeda = "USD" then
+		                    if [taxa_ptax_venda] = null then
+		                        error [
+		                            Reason = "Cotação não encontrada",
+		                            Message = "Não existe cotação USD anterior ou igual à data da venda.",
+		                            Detail = [data_emissao]
+		                        ]
+		                    else
+		                        Currency.From(
+		                            [valor_unitario] * [taxa_ptax_venda]
+		                        )
+		
+		                else
+		                    error [
+		                        Reason = "Moeda inválida",
+		                        Message = "Moeda não suportada.",
+		                        Detail = [moeda]
+		                    ],
+		        Currency.Type
+		    ),
+		
+		    RemoveTaxa = Table.RemoveColumns(
+		        AddedValorBRL,
+		        {"taxa_ptax_venda"}
+		    )
 		in
-		    AddedValorBRL
+		    RemoveTaxa
 	lineageTag: ddf20dd2-287c-4d0a-b897-90f0d850848e
 	queryGroup: Stage
 
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-
-expression fxAplicarCambio =
-		(
-		    valorUnitario as number,
-		    dataEmissao as date,
-		    moeda as text
-		) as number =>
-		
-		let
-		    MoedaNormalizada = Text.Upper(Text.Trim(moeda)),
-		
-		    ValorConvertido =
-		        if MoedaNormalizada = "BRL" then
-		            valorUnitario
-		
-		        else if MoedaNormalizada = "USD" then
-		            let
-		                CotacoesDisponiveis = Table.SelectRows(
-		                    cambio_usd,
-		                    each [data_cotacao] <= dataEmissao
-		                        and [moeda] = MoedaNormalizada
-		                ),
-		
-		                OrdenarCotacoes = Table.Sort(
-		                    CotacoesDisponiveis,
-		                    {{"data_cotacao", Order.Descending}}
-		                ),
-		
-		                Taxa =
-		                    if Table.IsEmpty(OrdenarCotacoes) then
-		                        error "Nenhuma cotação PTAX disponível anterior à data de emissão: "
-		                            & Date.ToText(dataEmissao, "dd/MM/yyyy")
-		                    else
-		                        OrdenarCotacoes{0}[taxa_ptax_venda]
-		            in
-		                valorUnitario * Taxa
-		
-		        else
-		            error "Moeda não suportada: " & MoedaNormalizada
-		
-		in
-		    ValorConvertido
-	lineageTag: b2129ce5-093d-4aa9-8e85-5f23fd0a8e23
-	queryGroup: 'Parametros & Funcoes'
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Function
 
 expression metas_2024 =
 		let
@@ -839,6 +837,85 @@ expression metas_workbook =
 		in
 		    Source
 	lineageTag: 18dca79d-463c-4ae2-9852-2a591fcf128e
+	queryGroup: 'Tabelas Auxiliares'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression auxCambioDiario =
+		let
+		    CotacoesUSD = Table.SelectColumns(
+		        Table.SelectRows(
+		            cambio_usd,
+		            each [moeda] = "USD" and [data_cotacao] <> null
+		        ),
+		        {"data_cotacao", "taxa_ptax_venda"}
+		    ),
+		
+		    DatasVendas = Table.Combine({
+		        Table.SelectColumns(stg_vendas_2024, {"data_emissao"}),
+		        Table.SelectColumns(stg_vendas_2025, {"data_emissao"}),
+		        Table.SelectColumns(stg_vendas_2026, {"data_emissao"})
+		    }),
+		
+		    DatasValidas = Table.RemoveRowsWithErrors(
+		        DatasVendas,
+		        {"data_emissao"}
+		    ),
+		
+		    DataInicio = List.Min(CotacoesUSD[data_cotacao]),
+		
+		    DataFim = List.Max(
+		        List.Combine({
+		            {DataInicio},
+		            List.RemoveNulls(DatasValidas[data_emissao])
+		        })
+		    ),
+		
+		    Calendario = Table.FromList(
+		        List.Dates(
+		            DataInicio,
+		            Duration.Days(DataFim - DataInicio) + 1,
+		            #duration(1, 0, 0, 0)
+		        ),
+		        Splitter.SplitByNothing(),
+		        {"data_emissao"}
+		    ),
+		
+		    CalendarioTipado = Table.TransformColumnTypes(
+		        Calendario,
+		        {{"data_emissao", type date}}
+		    ),
+		
+		    MergeCotacoes = Table.NestedJoin(
+		        CalendarioTipado,
+		        {"data_emissao"},
+		        CotacoesUSD,
+		        {"data_cotacao"},
+		        "Cotacao",
+		        JoinKind.LeftOuter
+		    ),
+		
+		    ExpandCotacoes = Table.ExpandTableColumn(
+		        MergeCotacoes,
+		        "Cotacao",
+		        {"taxa_ptax_venda"},
+		        {"taxa_ptax_venda"}
+		    ),
+		
+		    OrderDatas = Table.Sort(
+		        ExpandCotacoes,
+		        {{"data_emissao", Order.Ascending}}
+		    ),
+		
+		    FillCotacoes = Table.FillDown(
+		        OrderDatas,
+		        {"taxa_ptax_venda"}
+		    )
+		in
+		    FillCotacoes
+	lineageTag: 4b970936-4b5c-4125-8d84-cfae574c8d7a
 	queryGroup: 'Tabelas Auxiliares'
 
 	annotation PBI_NavigationStepName = Navigation
