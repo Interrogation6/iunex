@@ -1,9 +1,3 @@
-expression Parameter1 = #"Sample File" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File", Type="Binary", IsParameterQueryRequired=true]
-	lineageTag: 5f2ae376-ea0e-4d0b-adb4-3ed9eea2e9f5
-	queryGroup: 'Parametros & Funcoes\Transform File from vendas\Helper Queries'
-
-	annotation PBI_ResultType = Binary
-
 expression carteira_historica =
 		let
 		    Source = Csv.Document(File.Contents(Path & "carteira_historica.csv"),[Delimiter=";", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
@@ -87,48 +81,6 @@ expression seguranca_acessos =
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-
-expression 'Sample File' =
-		let
-		    Source = Folder.Files("C:\Users\Kelvyn\Downloads\AnalistaBI\dados"),
-		    #"Filtered Rows" = Table.SelectRows(Source, each Text.StartsWith([Name], "vendas_")),
-		    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Extension] = ".csv"),
-		    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows1",{"Content", "Name"}),
-		    Navigation1 = #"Removed Other Columns"{0}[Content]
-		in
-		    Navigation1
-	lineageTag: 83012447-9910-4e92-bd24-08dff3e78399
-	queryGroup: 'Parametros & Funcoes\Transform File from vendas\Helper Queries'
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Binary
-
-expression 'Transform Sample File' =
-		let
-		    Source = Csv.Document(Parameter1,[Delimiter=";", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
-		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
-		in
-		    #"Promoted Headers"
-	lineageTag: fd217085-7e58-4e0f-8beb-c080f7da0954
-	queryGroup: 'Parametros & Funcoes\Transform File from vendas'
-
-	annotation PBI_ResultType = Table
-
-expression 'Transform File' =
-		let
-		    Source = (Parameter1 as binary) => let
-		    Source = Csv.Document(Parameter1,[Delimiter=";", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
-		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
-		in
-		    #"Promoted Headers"
-		in
-		    Source
-	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File""}" ]
-	lineageTag: bf28fa72-39dd-49d5-a757-a25573625536
-	queryGroup: 'Parametros & Funcoes\Transform File from vendas\Helper Queries'
-
-	annotation PBI_ResultType = Function
 
 expression vendedores =
 		let
@@ -250,15 +202,46 @@ expression fxValidarCNPJ = ```
 
 	annotation PBI_ResultType = Function
 
-expression stg_Carteira_Historica =
+expression stg_Carteira_Historica = ```
 		let
 		    Source = carteira_historica,
 		    AdjustIDs = Table.TransformColumns(Source, {
 		        {"id_cliente", each fxExtrairID(_), Int64.Type},
 		        {"id_vendedor", each fxExtrairID(_), Int64.Type}
-		    })
+		    }),
+		    
+		    ValidateVigencia = Table.AddColumn(
+		        AdjustIDs,
+		        "vigencia_fim_validada",
+		        each
+		            if [vigencia_inicio] <> null
+		                and [vigencia_fim] <> null
+		                and [vigencia_inicio] > [vigencia_fim]
+		            then
+		                error [
+		                    Reason = "Vigência Inválida",
+		                    Message = "A data de início é posterior à data de fim.",
+		                    Detail =
+		                        "Início: " & Text.From([vigencia_inicio])
+		                        & " | Fim: " & Text.From([vigencia_fim])
+		                ]
+		            else [vigencia_fim],
+		        type nullable date
+		    ),
+		
+		    RemoveColunaOriginal = Table.RemoveColumns(
+		        ValidateVigencia,
+		        {"vigencia_fim"}
+		    ),
+		
+		    RenameColuna = Table.RenameColumns(
+		        RemoveColunaOriginal,
+		        {{"vigencia_fim_validada", "vigencia_fim"}}
+		    )
+		
 		in
-		    AdjustIDs
+		    RenameColuna
+		```
 	lineageTag: 35812855-11c2-4be9-86af-cdb9ebe31ec8
 	queryGroup: Stage
 
@@ -279,7 +262,7 @@ expression fxExtrairID = ```
 		            // Tenta pular a quantidade de caracteres definida e converter para inteiro
 		            Tentativa = try Int64.From(Text.Middle(TextoValor, Qtd))
 		        in
-		            if Tentativa[HasError] or valor = null then 
+		            if Tentativa[HasError] or Tentativa[Value] = null then 
 		                error [
 		                    Reason="Erro de Conversão de ID", 
 		                    Message="Não foi possível converter o ID. O valor esperado não pôde ser transformado em número após remover " & Text.From(Qtd) & " caractere(s).", 
@@ -391,7 +374,7 @@ expression stg_vendedores =
 
 expression vendas_2024 =
 		let
-		    Source = Csv.Document(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\vendas_2024.csv"),[Delimiter=";", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents(Path & "\vendas_2024.csv"),[Delimiter=";", Columns=11, Encoding=28591, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ID_PEDIDO", type text}, {"ITEM", Int64.Type}, {"DT_EMISSAO", type date}, {"COD_CLIENTE", type text}, {"COD_PRODUTO", type text}, {"COD_VENDEDOR", type text}, {"QTDE", Int64.Type}, {"VLR_UNITARIO", Currency.Type}, {"DESCONTO", type number}, {"MOEDA", type text}, {"CANAL", type text}})
 		in
@@ -405,7 +388,7 @@ expression vendas_2024 =
 
 expression vendas_2025 =
 		let
-		    Source = Csv.Document(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\vendas_2025.csv"),[Delimiter=",", Columns=12, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents(Path & "\vendas_2025.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type date}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}}, "en-us")
 		in
@@ -419,7 +402,7 @@ expression vendas_2025 =
 
 expression vendas_2026 =
 		let
-		    Source = Csv.Document(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\vendas_2026.csv"),[Delimiter="|", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents(Path & "\vendas_2026.csv"),[Delimiter="|", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type text}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}, {"id_filial", type text}, {"frete_rateado", Currency.Type}}, "en-us"),
 		    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"data_emissao", type date}})
@@ -432,12 +415,12 @@ expression vendas_2026 =
 
 	annotation PBI_ResultType = Table
 
-expression stg_Clientes =
+expression stg_Clientes = ```
 		let
 		    Source = clientes,
 		    AdjustIDs = Table.TransformColumns(Source, {
 		        {"id_cliente", each fxExtrairID(_), Int64.Type},
-		        {"id_matriz", each fxExtrairID(_), Int64.Type}
+		        {"id_matriz", each if _ = "" then null else fxExtrairID(_), Int64.Type}
 		    }),
 		    DuplicateRazao = Table.DuplicateColumn(AdjustIDs, "razao_social", "grupo"),
 		    ExtractGrupo = Table.SplitColumn(DuplicateRazao, "grupo", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv, false), {"grupo"}),
@@ -457,7 +440,12 @@ expression stg_Clientes =
 		    JoinRegiao = Table.NestedJoin(RemoveOldColumns, {"uf"}, auxRegiao, {"UF"}, "auxRegiao", JoinKind.LeftOuter),
 		    ExpandRegiao = Table.ExpandTableColumn(JoinRegiao, "auxRegiao", {"Regiao"}, {"regiao"}),
 		    AdjustDatas = Table.TransformColumns(ExpandRegiao, {
-		        {"data_cadastro", each try Date.From(_) otherwise try Date.AddDays(#date(1899, 12, 30), Number.From(_)) otherwise null, type date}
+		        {"data_cadastro", each try Date.From(_) otherwise try Date.AddDays(#date(1899, 12, 30), Number.From(_)) otherwise 
+		    error [
+		            Reason = "Data Inválida",
+		            Message = "Não foi possível converter data_cadastro.",
+		            Detail = Text.From(_)
+		        ], type date}
 		    }),
 		    ValidateSituacao = Table.TransformColumns(AdjustDatas, {
 		        {"situacao", each if _ = "Ativo" or _ = "Inativo" then _ else error [Reason="Erro de Validação", Message="Situação inválida. O valor deve ser 'Ativo' ou 'Inativo'.", Detail="Valor atual: " & Text.From(_)], type text}
@@ -468,6 +456,7 @@ expression stg_Clientes =
 		    ReorderColumns = Table.ReorderColumns(ValidateCNPJ, {"id_cliente", "id_matriz", "razao_social", "cnpj", "segmento", "regiao", "uf", "cidade", "data_cadastro", "situacao", "grupo"})
 		in
 		    ReorderColumns
+		```
 	lineageTag: 2c09e581-fb3f-40b4-9941-f7c363c84e90
 	queryGroup: Stage
 
@@ -496,16 +485,37 @@ expression stg_vendas_2024 =
 		    AdjustIDs = Table.TransformColumns(RenameColumns, {
 		    {"id_pedido", each fxExtrairID(_, 2), Int64.Type},
 		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
-		    {"id_produto", each fxExtrairID(_, 4), Int64.Type},
-		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type}
+		    {"id_produto", each fxExtrairID(_, 4), Int64.Type}
 		}),
-		    ValidateNull = Table.TransformColumns(AdjustIDs, {
+		    ValidateVendedor = Table.AddColumn(
+		    AdjustIDs,
+		    "id_vendedor_validado",
+		    each
+		        if [canal] = "E-commerce"
+		            and (
+		                [id_vendedor] = null
+		                or Text.Trim([id_vendedor]) = ""
+		            )
+		        then null
+		        else fxExtrairID([id_vendedor], 1),
+		        Int64.Type
+		),
+		    RemoveVendedorOriginal = Table.RemoveColumns(
+		    ValidateVendedor,
+		    {"id_vendedor"}
+		),
+		
+		RenameVendedor = Table.RenameColumns(
+		    RemoveVendedorOriginal,
+		    {{"id_vendedor_validado", "id_vendedor"}}
+		),
+		    ValidateNulls = Table.TransformColumns(RenameVendedor, {
 		    {"quantidade", each fxRejeitarNulo(_), Int64.Type},
 		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
 		}),
-		    AddedStatusPedido = Table.AddColumn(ValidateNull, "status_pedido", each if [quantidade] >= 0 then "Faturado" else "Cancelado", type text),
+		    AddedStatusPedido = Table.AddColumn(ValidateNulls, "status_pedido", each if [quantidade] >= 0 then "Faturado" else "Cancelado", type text),
 		    AdjustQuantidade = Table.TransformColumns(AddedStatusPedido, {{"quantidade", each Number.Abs(_), type number}}),
-		    AddedFreteRateado = Table.AddColumn(AdjustQuantidade, "frete_rateado", each 0.0, Currency.Type),
+		    AddedFreteRateado = Table.AddColumn(AdjustQuantidade, "frete_rateado", each null, Currency.Type),
 		    #"Changed Type" = Table.TransformColumns(
 		    AddedFreteRateado,
 		    {
@@ -527,15 +537,37 @@ expression stg_vendas_2025 =
 		    AdjustIDs = Table.TransformColumns(Source, {
 		    {"id_pedido", each fxExtrairID(_, 2), Int64.Type},
 		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
-		    {"id_produto", each fxExtrairID(_, 4), Int64.Type},
-		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type}
+		    {"id_produto", each fxExtrairID(_, 4), Int64.Type}
 		}),
-		    ValidateNulls = Table.TransformColumns(AdjustIDs, {
+		    ValidateVendedor = Table.AddColumn(
+		    AdjustIDs,
+		    "id_vendedor_validado",
+		    each
+		        if [canal] = "E-commerce"
+		            and (
+		                [id_vendedor] = null
+		                or Text.Trim([id_vendedor]) = ""
+		            )
+		        then null
+		        else fxExtrairID([id_vendedor], 1),
+		        Int64.Type
+		),
+		    RemoveVendedorOriginal = Table.RemoveColumns(
+		    ValidateVendedor,
+		    {"id_vendedor"}
+		),
+		
+		RenameVendedor = Table.RenameColumns(
+		    RemoveVendedorOriginal,
+		    {{"id_vendedor_validado", "id_vendedor"}}
+		),
+		    ValidateNulls = Table.TransformColumns(RenameVendedor, {
 		    {"quantidade", each fxRejeitarNulo(_), Int64.Type},
 		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
 		}),
-		    AddedFreteRateado = Table.AddColumn(ValidateNulls, "frete_rateado", each 0.0, Currency.Type),
-		    #"Changed Type" = Table.TransformColumnTypes(AddedFreteRateado,{{"desconto_pct", Percentage.Type}})
+		    AddedFreteRateado = Table.AddColumn(ValidateNulls, "frete_rateado", each null, Currency.Type),
+		    DistinctIdItem = Table.Distinct(AddedFreteRateado, {"id_pedido", "item"}),
+		    #"Changed Type" = Table.TransformColumnTypes(DistinctIdItem,{{"desconto_pct", Percentage.Type}})
 		in
 		    #"Changed Type"
 	lineageTag: 78c0c388-b32b-4c68-acbc-d3ce49d9f39e
@@ -552,10 +584,31 @@ expression stg_vendas_2026 =
 		    {"id_pedido", each fxExtrairID(_, 2), Int64.Type},
 		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
 		    {"id_produto", each fxExtrairID(_, 4), Int64.Type},
-		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type},
 		    {"id_filial", each fxExtrairID(_, 6), Int64.Type}
 		}),
-		    ValidateNulls = Table.TransformColumns(AdjustIDs, {
+		    ValidateVendedor = Table.AddColumn(
+		    AdjustIDs,
+		    "id_vendedor_validado",
+		    each
+		        if [canal] = "E-commerce"
+		            and (
+		                [id_vendedor] = null
+		                or Text.Trim([id_vendedor]) = ""
+		            )
+		        then null
+		        else fxExtrairID([id_vendedor], 1),
+		        Int64.Type
+		),
+		    RemoveVendedorOriginal = Table.RemoveColumns(
+		    ValidateVendedor,
+		    {"id_vendedor"}
+		),
+		
+		RenameVendedor = Table.RenameColumns(
+		    RemoveVendedorOriginal,
+		    {{"id_vendedor_validado", "id_vendedor"}}
+		),
+		    ValidateNulls = Table.TransformColumns(RenameVendedor, {
 		    {"quantidade", each fxRejeitarNulo(_), Int64.Type},
 		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
 		}),
@@ -564,10 +617,9 @@ expression stg_vendas_2026 =
 		    {
 		        {"desconto_pct", each _ / 100, Percentage.Type}
 		    }
-		),
-		    #"Kept Errors" = Table.SelectRowsWithErrors(#"Changed Type", {"data_emissao"})
+		)
 		in
-		    #"Kept Errors"
+		    #"Changed Type"
 	lineageTag: 5de9f9c9-2646-48e1-8f21-345e0bcc69cc
 	queryGroup: Stage\Vendas
 
@@ -647,7 +699,7 @@ expression fxAplicarCambio =
 
 expression metas_2024 =
 		let
-		    Source = Excel.Workbook(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\metas_comerciais.xlsx"), null, false),
+		    Source = metas_workbook,
 		    #"Metas 2024_sheet" = Source{[Item="Metas 2024",Kind="Sheet"]}[Data],
 		    FilterNullAndWhitespace = each List.Select(_, each _ <> null and (not (_ is text) or Text.Trim(_) <> "")),
 		    #"Removed Bottom Rows" = Table.RemoveLastN(#"Metas 2024_sheet", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
@@ -665,7 +717,7 @@ expression metas_2024 =
 
 expression metas_2025 =
 		let
-		    Source = Excel.Workbook(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\metas_comerciais.xlsx"), null, false),
+		    Source = metas_workbook,
 		    #"Metas 2025_sheet" = Source{[Item="Metas 2025",Kind="Sheet"]}[Data],
 		    FilterNullAndWhitespace = each List.Select(_, each _ <> null and (not (_ is text) or Text.Trim(_) <> "")),
 		    #"Removed Bottom Rows" = Table.RemoveLastN(#"Metas 2025_sheet", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
@@ -683,7 +735,7 @@ expression metas_2025 =
 
 expression metas_2026 =
 		let
-		    Source = Excel.Workbook(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\metas_comerciais.xlsx"), null, false),
+		    Source = metas_workbook,
 		    #"Metas 2026_sheet" = Source{[Item="Metas 2026",Kind="Sheet"]}[Data],
 		    FilterNullAndWhitespace = each List.Select(_, each _ <> null and (not (_ is text) or Text.Trim(_) <> "")),
 		    #"Removed Bottom Rows" = Table.RemoveLastN(#"Metas 2026_sheet", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
@@ -761,6 +813,18 @@ expression stg_metas_2026 =
 		    AddedAno
 	lineageTag: 11a700ee-14a5-4182-94ad-efa6747a132e
 	queryGroup: Stage\Metas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression metas_workbook =
+		let
+		    Source = Excel.Workbook(File.Contents(Path & "\metas_comerciais.xlsx"), null, false)
+		in
+		    Source
+	lineageTag: 18dca79d-463c-4ae2-9852-2a591fcf128e
+	queryGroup: 'Tabelas Auxiliares'
 
 	annotation PBI_NavigationStepName = Navigation
 

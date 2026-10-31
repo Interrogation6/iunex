@@ -38,14 +38,14 @@ table dCartHist
 	column vigencia_fim
 		dataType: dateTime
 		formatString: Long Date
-		lineageTag: 8f31269f-9474-4eb7-bcd2-3571a8ff5aa9
+		lineageTag: a4c472fe-3abf-4efb-ae7d-f01146e60118
 		summarizeBy: none
 		sourceColumn: vigencia_fim
 
 		variation Variation
 			isDefault
-			relationship: b8498f0c-465d-4920-a8d6-480455c3674f
-			defaultHierarchy: LocalDateTable_4be6bbdb-9f7e-442a-a2db-6a2f3854f834.'Date Hierarchy'
+			relationship: fc6f7740-3bc6-4c6f-a90e-57fd12ccc88d
+			defaultHierarchy: LocalDateTable_0007c9f5-8560-4ff8-be71-79d27aced495.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
