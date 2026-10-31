@@ -304,9 +304,12 @@ expression stg_devolucoes =
 		        JoinKind.LeftOuter
 		    ),
 		    #"Expanded stg_vendas" = Table.ExpandTableColumn(#"Merged Queries", "venda_encontrada", {"id_pedido"}, {"id_pedido"}),
-		    ValidatePedido = Table.TransformColumns(#"Expanded stg_vendas", {{"id_pedido", each if _ = null then error [Reason="Erro de Relacionamento", Message="Não foi possível relacionar esta devolução com seu pedido."] else true, type logical}})
+		    ValidatePedido = Table.TransformColumns(#"Expanded stg_vendas", {{"id_pedido", each if _ = null then error [Reason="Erro de Relacionamento", Message="Não foi possível relacionar esta devolução com seu pedido."] else true, type logical}}),
+		    #"Merged Queries1" = Table.NestedJoin(ValidatePedido, {"id_pedido_origem"}, fVendas, {"id_pedido"}, "fVendas", JoinKind.LeftOuter),
+		    #"Expanded fVendas" = Table.ExpandTableColumn(#"Merged Queries1", "fVendas", {"desconto_pct", "valor_unitario_brl"}, {"desconto_pct", "valor_unitario_brl"}),
+		    #"Added Custom" = Table.AddColumn(#"Expanded fVendas", "valor_liquido", each [valor_unitario_brl] * ( 1 - [desconto_pct] ) * [quantidade_devolvida], Currency.Type)
 		in
-		    ValidatePedido
+		    #"Added Custom"
 	lineageTag: 1cbcdc57-ac47-4110-acb0-ac6b66f230b1
 	queryGroup: Stage
 
@@ -536,9 +539,10 @@ expression stg_vendas_2024 =
 		    {
 		        {"desconto_pct", each _ / 100, Percentage.Type}
 		    }
-		)
+		),
+		    AddedOrigem = Table.AddColumn(#"Changed Type", "origem", each "vendas_2024")
 		in
-		    #"Changed Type"
+		    AddedOrigem
 	lineageTag: 0e95066d-3d9d-4a12-aa81-011c1be73115
 	queryGroup: Stage\Vendas
 
@@ -582,9 +586,10 @@ expression stg_vendas_2025 =
 		}),
 		    AddedFreteRateado = Table.AddColumn(ValidateNulls, "frete_rateado", each null, Currency.Type),
 		    DistinctIdItem = Table.Distinct(AddedFreteRateado, {"id_pedido", "item"}),
-		    #"Changed Type" = Table.TransformColumnTypes(DistinctIdItem,{{"desconto_pct", Percentage.Type}})
+		    #"Changed Type" = Table.TransformColumnTypes(DistinctIdItem,{{"desconto_pct", Percentage.Type}}),
+		    AddedOrigem = Table.AddColumn(#"Changed Type", "origem", each "vendas_2025")
 		in
-		    #"Changed Type"
+		    AddedOrigem
 	lineageTag: 78c0c388-b32b-4c68-acbc-d3ce49d9f39e
 	queryGroup: Stage\Vendas
 
@@ -632,9 +637,10 @@ expression stg_vendas_2026 =
 		    {
 		        {"desconto_pct", each _ / 100, Percentage.Type}
 		    }
-		)
+		),
+		    Custom1 = Table.AddColumn(#"Changed Type", "origem", each "vendas_2026")
 		in
-		    #"Changed Type"
+		    Custom1
 	lineageTag: 5de9f9c9-2646-48e1-8f21-345e0bcc69cc
 	queryGroup: Stage\Vendas
 
@@ -938,6 +944,11 @@ expression fxQuarentena =
 		    let
 		        Chaves = ColunasChave ?? {},
 		
+		        PossuiOrigem = Table.HasColumns(
+		            Tabela,
+		            "origem"
+		        ),
+		
 		        ComIndice = Table.AddIndexColumn(
 		            Tabela,
 		            "__Linha",
@@ -946,7 +957,9 @@ expression fxQuarentena =
 		            Int64.Type
 		        ),
 		
-		        Rejeitados = Table.SelectRowsWithErrors(ComIndice),
+		        Rejeitados = Table.SelectRowsWithErrors(
+		            ComIndice
+		        ),
 		
 		        Colunas = List.RemoveItems(
 		            Table.ColumnNames(Rejeitados),
@@ -965,22 +978,60 @@ expression fxQuarentena =
 		                            Chaves,
 		                            (Chave) =>
 		                                let
-		                                    Valor = try Record.Field(Linha, Chave)
+		                                    Valor = try Record.Field(
+		                                        Linha,
+		                                        Chave
+		                                    )
 		                                in
 		                                    if Valor[HasError] then
 		                                        "[ERRO]"
 		                                    else if Valor[Value] = null then
 		                                        "(nulo)"
 		                                    else
-		                                        Text.From(Valor[Value], "pt-BR")
+		                                        Text.From(
+		                                            Valor[Value],
+		                                            "pt-BR"
+		                                        )
 		                        ),
 		                        " / "
 		                    ),
 		            type text
 		        ),
 		
-		        ComOcorrencias = Table.AddColumn(
+		        ComOrigem = Table.AddColumn(
 		            ComIdentificador,
+		            "__OrigemQuarentena",
+		            (Linha as record) =>
+		                if PossuiOrigem then
+		                    let
+		                        Tentativa = try Record.Field(
+		                            Linha,
+		                            "origem"
+		                        ),
+		
+		                        ValorOrigem =
+		                            if Tentativa[HasError] then
+		                                null
+		                            else if Tentativa[Value] = null then
+		                                null
+		                            else
+		                                Text.Trim(
+		                                    Text.From(Tentativa[Value])
+		                                )
+		                    in
+		                        if ValorOrigem = null
+		                            or ValorOrigem = ""
+		                        then
+		                            Origem
+		                        else
+		                            ValorOrigem
+		                else
+		                    Origem,
+		            type text
+		        ),
+		
+		        ComOcorrencias = Table.AddColumn(
+		            ComOrigem,
 		            "__Ocorrencias",
 		            (Linha as record) =>
 		                List.RemoveNulls(
@@ -988,7 +1039,10 @@ expression fxQuarentena =
 		                        Colunas,
 		                        (Coluna) =>
 		                            let
-		                                Tentativa = try Record.Field(Linha, Coluna)
+		                                Tentativa = try Record.Field(
+		                                    Linha,
+		                                    Coluna
+		                                )
 		                            in
 		                                if Tentativa[HasError] then
 		                                    [
@@ -1004,7 +1058,12 @@ expression fxQuarentena =
 		
 		        Selecionar = Table.SelectColumns(
 		            ComOcorrencias,
-		            {"__Linha", "__Identificador", "__Ocorrencias"}
+		            {
+		                "__Linha",
+		                "__Identificador",
+		                "__OrigemQuarentena",
+		                "__Ocorrencias"
+		            }
 		        ),
 		
 		        ExpandirLista = Table.ExpandListColumn(
@@ -1022,20 +1081,20 @@ expression fxQuarentena =
 		            ExpandirMotivos,
 		            {
 		                {"__Linha", "Linha"},
-		                {"__Identificador", "Identificador"}
+		                {"__Identificador", "Identificador"},
+		                {"__OrigemQuarentena", "Origem"}
 		            }
 		        ),
 		
-		        AdicionarOrigem = Table.AddColumn(
-		            Renomear,
-		            "Origem",
-		            each Origem,
-		            type text
-		        ),
-		
 		        Resultado = Table.SelectColumns(
-		            AdicionarOrigem,
-		            {"Origem", "Linha", "Identificador", "Coluna", "Motivo"}
+		            Renomear,
+		            {
+		                "Origem",
+		                "Linha",
+		                "Identificador",
+		                "Coluna",
+		                "Motivo"
+		            }
 		        )
 		    in
 		        Resultado

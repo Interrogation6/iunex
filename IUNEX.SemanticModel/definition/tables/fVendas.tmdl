@@ -169,14 +169,23 @@ table fVendas
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
+	column origem
+		dataType: string
+		lineageTag: 8eae4210-3988-47c8-bdd9-0a85e4a5d16a
+		summarizeBy: none
+		sourceColumn: origem
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fVendas = m
 		mode: import
 		queryGroup: Modelo
 		source =
 				let
 				    Source = stg_vendas,
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
 				    AddedReceitaBruta = Table.AddColumn(
-				    Source,
+				    #"Removed Errors",
 				    "receita_bruta",
 				    each [quantidade] * [valor_unitario_brl],
 				    Currency.Type
@@ -187,9 +196,9 @@ table fVendas
 				    each [receita_bruta] * (1 - [desconto_pct]),
 				    Currency.Type
 				),
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(AddedReceitaLiquida)
+				    FilterFaturado = Table.SelectRows(AddedReceitaLiquida, each ([status_pedido] = "Faturado"))
 				in
-				    #"Removed Errors"
+				    FilterFaturado
 
 	annotation PBI_NavigationStepName = Navigation
 

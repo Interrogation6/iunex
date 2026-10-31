@@ -4,14 +4,14 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 0,
+        "x": 402,
         "y": 0
       },
       "nodes": [
         {
           "location": {
-            "x": 0,
-            "y": 275
+            "x": 1654,
+            "y": 342.75
           },
           "nodeIndex": "fVendas",
           "nodeLineageTag": "3808c56e-bde3-43fe-ba07-8a19367da048",
@@ -23,13 +23,104 @@
         },
         {
           "location": {
-            "x": 284,
-            "y": 38
+            "x": 2035,
+            "y": 698.75
           },
           "nodeIndex": "fDevolucoes",
           "nodeLineageTag": "a517d2b6-2d66-4956-90ed-df37e8a6a5ce",
           "size": {
             "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 247.25
+          },
+          "nodeIndex": "dAcessos",
+          "nodeLineageTag": "a15614a3-90e6-454d-a3dc-997740840835",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334,
+            "y": 197.25
+          },
+          "nodeIndex": "dCartHist",
+          "nodeLineageTag": "20c2410d-4cf6-416e-b053-a0d515b7f66a",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 135.25
+          },
+          "nodeIndex": "dClientes",
+          "nodeLineageTag": "fd14a9d4-ad58-42d4-bc25-11a66338d14e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 852,
+            "y": 187.25
+          },
+          "nodeIndex": "dProdutos",
+          "nodeLineageTag": "5a99484e-f40d-485b-ac25-4b5a26ca7ef4",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1136,
+            "y": 199.25
+          },
+          "nodeIndex": "dVendedores",
+          "nodeLineageTag": "972391ac-4dcf-4e38-8c8c-c2e82656ceda",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1420,
+            "y": 235.25
+          },
+          "nodeIndex": "fMetas",
+          "nodeLineageTag": "f3905375-9248-4087-aa2f-f4161f515ffa",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2172,
+            "y": 153.75
+          },
+          "nodeIndex": "fErros",
+          "nodeLineageTag": "87061127-c64f-4263-ae64-5e9c4223e4a5",
+          "size": {
+            "height": 300,
             "width": 234
           },
           "zIndex": 0

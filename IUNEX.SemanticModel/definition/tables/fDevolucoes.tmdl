@@ -61,6 +61,38 @@ table fDevolucoes
 
 		annotation SummarizationSetBy = Automatic
 
+	column desconto_pct
+		dataType: double
+		lineageTag: b397d076-b641-44ba-b0e5-a9dcc31b596f
+		summarizeBy: sum
+		sourceColumn: desconto_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_unitario_brl
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 59568095-1e7b-4d77-856c-7459f8090aaf
+		summarizeBy: sum
+		sourceColumn: valor_unitario_brl
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column valor_liquido
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 6522b4ac-3f70-4db3-a916-7e3b3b5b89b2
+		summarizeBy: sum
+		sourceColumn: valor_liquido
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
 	partition fDevolucoes = m
 		mode: import
 		queryGroup: Modelo
