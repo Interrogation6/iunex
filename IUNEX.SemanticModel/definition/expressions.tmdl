@@ -303,8 +303,8 @@ expression stg_devolucoes =
 		        "venda_encontrada",
 		        JoinKind.LeftOuter
 		    ),
-		    #"Expanded stg_vendas" = Table.ExpandTableColumn(#"Merged Queries", "venda_encontrada", {"id_pedido"}, {"flag_ok"}),
-		    ValidatePedido = Table.TransformColumns(#"Expanded stg_vendas", {{"flag_ok", each if _ = null then error [Reason="Erro de Relacionamento", Message="Não foi possível relacionar esta devolução com seu pedido."] else true, type logical}})
+		    #"Expanded stg_vendas" = Table.ExpandTableColumn(#"Merged Queries", "venda_encontrada", {"id_pedido"}, {"id_pedido"}),
+		    ValidatePedido = Table.TransformColumns(#"Expanded stg_vendas", {{"id_pedido", each if _ = null then error [Reason="Erro de Relacionamento", Message="Não foi possível relacionar esta devolução com seu pedido."] else true, type logical}})
 		in
 		    ValidatePedido
 	lineageTag: 1cbcdc57-ac47-4110-acb0-ac6b66f230b1
@@ -667,35 +667,41 @@ expression stg_vendas =
 		    ),
 		
 		    AddedValorBRL = Table.AddColumn(
-		        ExpandCambio,
-		        "valor_unitario_brl",
-		        each
-		            let
-		                Moeda = Text.Upper(Text.Trim([moeda] ?? ""))
-		            in
-		                if Moeda = "BRL" then
-		                    Currency.From([valor_unitario])
+		    ExpandCambio,
+		    "valor_unitario_brl",
+		    each
+		        let
+		            Valor = try [valor_unitario]
+		        in
+		            if Valor[HasError] then
+		                null
+		            else
+		                let
+		                    Moeda = Text.Upper(Text.Trim([moeda] ?? ""))
+		                in
+		                    if Moeda = "BRL" then
+		                        Currency.From(Valor[Value])
 		
-		                else if Moeda = "USD" then
-		                    if [taxa_ptax_venda] = null then
-		                        error [
-		                            Reason = "Cotação não encontrada",
-		                            Message = "Não existe cotação USD anterior ou igual à data da venda.",
-		                            Detail = [data_emissao]
-		                        ]
+		                    else if Moeda = "USD" then
+		                        if [taxa_ptax_venda] = null then
+		                            error [
+		                                Reason = "Cotação não encontrada",
+		                                Message = "Não existe cotação USD anterior ou igual à data da venda.",
+		                                Detail = [data_emissao]
+		                            ]
+		                        else
+		                            Currency.From(
+		                                Valor[Value] * [taxa_ptax_venda]
+		                            )
+		
 		                    else
-		                        Currency.From(
-		                            [valor_unitario] * [taxa_ptax_venda]
-		                        )
-		
-		                else
-		                    error [
-		                        Reason = "Moeda inválida",
-		                        Message = "Moeda não suportada.",
-		                        Detail = [moeda]
-		                    ],
-		        Currency.Type
-		    ),
+		                        error [
+		                            Reason = "Moeda inválida",
+		                            Message = "Moeda não suportada.",
+		                            Detail = [moeda]
+		                        ],
+		    Currency.Type
+		),
 		
 		    RemoveTaxa = Table.RemoveColumns(
 		        AddedValorBRL,
@@ -921,4 +927,124 @@ expression auxCambioDiario =
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
+
+expression fxQuarentena =
+		let
+		    fxQuarentena = (
+		        Tabela as table,
+		        Origem as text,
+		        optional ColunasChave as nullable list
+		    ) as table =>
+		    let
+		        Chaves = ColunasChave ?? {},
+		
+		        ComIndice = Table.AddIndexColumn(
+		            Tabela,
+		            "__Linha",
+		            1,
+		            1,
+		            Int64.Type
+		        ),
+		
+		        Rejeitados = Table.SelectRowsWithErrors(ComIndice),
+		
+		        Colunas = List.RemoveItems(
+		            Table.ColumnNames(Rejeitados),
+		            {"__Linha"}
+		        ),
+		
+		        ComIdentificador = Table.AddColumn(
+		            Rejeitados,
+		            "__Identificador",
+		            (Linha as record) =>
+		                if List.IsEmpty(Chaves) then
+		                    Text.From(Linha[__Linha])
+		                else
+		                    Text.Combine(
+		                        List.Transform(
+		                            Chaves,
+		                            (Chave) =>
+		                                let
+		                                    Valor = try Record.Field(Linha, Chave)
+		                                in
+		                                    if Valor[HasError] then
+		                                        "[ERRO]"
+		                                    else if Valor[Value] = null then
+		                                        "(nulo)"
+		                                    else
+		                                        Text.From(Valor[Value], "pt-BR")
+		                        ),
+		                        " / "
+		                    ),
+		            type text
+		        ),
+		
+		        ComOcorrencias = Table.AddColumn(
+		            ComIdentificador,
+		            "__Ocorrencias",
+		            (Linha as record) =>
+		                List.RemoveNulls(
+		                    List.Transform(
+		                        Colunas,
+		                        (Coluna) =>
+		                            let
+		                                Tentativa = try Record.Field(Linha, Coluna)
+		                            in
+		                                if Tentativa[HasError] then
+		                                    [
+		                                        Coluna = Coluna,
+		                                        Motivo = Tentativa[Error][Message]
+		                                    ]
+		                                else
+		                                    null
+		                    )
+		                ),
+		            type list
+		        ),
+		
+		        Selecionar = Table.SelectColumns(
+		            ComOcorrencias,
+		            {"__Linha", "__Identificador", "__Ocorrencias"}
+		        ),
+		
+		        ExpandirLista = Table.ExpandListColumn(
+		            Selecionar,
+		            "__Ocorrencias"
+		        ),
+		
+		        ExpandirMotivos = Table.ExpandRecordColumn(
+		            ExpandirLista,
+		            "__Ocorrencias",
+		            {"Coluna", "Motivo"}
+		        ),
+		
+		        Renomear = Table.RenameColumns(
+		            ExpandirMotivos,
+		            {
+		                {"__Linha", "Linha"},
+		                {"__Identificador", "Identificador"}
+		            }
+		        ),
+		
+		        AdicionarOrigem = Table.AddColumn(
+		            Renomear,
+		            "Origem",
+		            each Origem,
+		            type text
+		        ),
+		
+		        Resultado = Table.SelectColumns(
+		            AdicionarOrigem,
+		            {"Origem", "Linha", "Identificador", "Coluna", "Motivo"}
+		        )
+		    in
+		        Resultado
+		in
+		    fxQuarentena
+	lineageTag: 24d22878-9811-4d12-aa1a-8193bdff5604
+	queryGroup: 'Parametros & Funcoes'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
 

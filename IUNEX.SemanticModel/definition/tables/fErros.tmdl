@@ -1,0 +1,101 @@
+table fErros
+	lineageTag: cd7ae818-442a-4ca4-ba12-b8a11580ac58
+
+	column Origem
+		dataType: string
+		lineageTag: 86839465-db8b-4415-ae24-ff227e4a2469
+		summarizeBy: none
+		sourceColumn: Origem
+
+		annotation SummarizationSetBy = Automatic
+
+	column Linha
+		dataType: int64
+		formatString: 0
+		lineageTag: 9003b4dc-5ab9-4c02-b08c-b59013b26220
+		summarizeBy: none
+		sourceColumn: Linha
+
+		annotation SummarizationSetBy = User
+
+	column Identificador
+		dataType: string
+		lineageTag: a006f6d7-1499-48e0-9a93-739bfdecf9a4
+		summarizeBy: none
+		sourceColumn: Identificador
+
+		annotation SummarizationSetBy = Automatic
+
+	column Coluna
+		dataType: string
+		lineageTag: 62257dcd-2534-458c-80f6-e73eb335b3ae
+		summarizeBy: none
+		sourceColumn: Coluna
+
+		annotation SummarizationSetBy = Automatic
+
+	column Motivo
+		dataType: string
+		lineageTag: 126aacb6-394f-46f7-9595-50e6e4023a1f
+		summarizeBy: none
+		sourceColumn: Motivo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fErros = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Fontes = {
+				        fxQuarentena(
+				            stg_vendas,
+				            "Vendas",
+				            {"id_pedido", "item"}
+				        ),
+				
+				        fxQuarentena(
+				            stg_Clientes,
+				            "Clientes",
+				            {"id_cliente"}
+				        ),
+				
+				        fxQuarentena(
+				            stg_produtos,
+				            "Produtos",
+				            {"id_produto"}
+				        ),
+				
+				        fxQuarentena(
+				            stg_vendedores,
+				            "Vendedores",
+				            {"id_vendedor"}
+				        ),
+				
+				        fxQuarentena(
+				            stg_devolucoes,
+				            "Devoluções",
+				            {"id_devolucao", "item"}
+				        ),
+				
+				        fxQuarentena(
+				            stg_Carteira_Historica,
+				            "Carteira Histórica",
+				            {"id_cliente", "id_vendedor"}
+				        ),
+				
+				        fxQuarentena(
+				            stg_metas,
+				            "Metas",
+				            {"Regiao", "Segmento", "Ano", "Mes"}
+				        )
+				    },
+				
+				    Resultado = Table.Combine(Fontes)
+				in
+				    Resultado
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

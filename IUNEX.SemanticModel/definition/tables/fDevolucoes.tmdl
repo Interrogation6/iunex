@@ -68,7 +68,7 @@ table fDevolucoes
 				let
 				    Source = stg_devolucoes,
 				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
-				    #"Removed Columns" = Table.RemoveColumns(#"Removed Errors",{"flag_ok"})
+				    #"Removed Columns" = Table.RemoveColumns(#"Removed Errors",{"id_pedido"})
 				in
 				    #"Removed Columns"
 
