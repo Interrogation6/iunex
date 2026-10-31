@@ -117,11 +117,11 @@ expression 'Transform Sample File' =
 
 expression 'Transform File' =
 		let
-		    Source = (Parameter1) => let
-		        Source = Csv.Document(Parameter1,[Delimiter=";", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
-		        #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
-		    in
-		        #"Promoted Headers"
+		    Source = (Parameter1 as binary) => let
+		    Source = Csv.Document(Parameter1,[Delimiter=";", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
 		in
 		    Source
 	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File""}" ]
@@ -170,7 +170,7 @@ expression Path = "C:\Users\Kelvyn\Downloads\AnalistaBI\dados\" meta [IsParamete
 
 expression auxSegmento =
 		let
-		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8sxL0VPSAVGlxSVFmYlKsTrRSo4lickgURCdmJIPFnPPLwMJAanUojygUCwA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Name = _t, Alias = _t]),
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8sxL0VPSAVGlxSVFmYlKsTrRSo4lickgURCdmJIPFnPPLwMJAanUojyIEFDT4V0QXSgmxAIA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Name = _t, Alias = _t]),
 		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Name", type text}, {"Alias", type text}})
 		in
 		    #"Changed Type"
@@ -303,9 +303,12 @@ expression stg_devolucoes =
 		    AdjustIDs = Table.TransformColumns(Source, {
 		        {"id_devolucao", each fxExtrairID(_, 2), Int64.Type},
 		        {"id_pedido_origem", each fxExtrairID(_, 2), Int64.Type}
-		    })
+		    }),
+		    #"Merged Queries" = Table.NestedJoin(AdjustIDs, {"id_pedido_origem"}, stg_vendas, {"id_pedido"}, "stg_vendas", JoinKind.LeftOuter),
+		    #"Expanded stg_vendas" = Table.ExpandTableColumn(#"Merged Queries", "stg_vendas", {"id_pedido"}, {"flag_ok"}),
+		    ValidatePedido = Table.TransformColumns(#"Expanded stg_vendas", {{"flag_ok", each if _ = null then error [Reason="Erro de Relacionamento", Message="Não foi possível relacionar esta devolução com seu pedido."] else true, type logical}})
 		in
-		    AdjustIDs
+		    ValidatePedido
 	lineageTag: 1cbcdc57-ac47-4110-acb0-ac6b66f230b1
 	queryGroup: Stage
 
@@ -641,4 +644,126 @@ expression fxAplicarCambio =
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Function
+
+expression metas_2024 =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\metas_comerciais.xlsx"), null, false),
+		    #"Metas 2024_sheet" = Source{[Item="Metas 2024",Kind="Sheet"]}[Data],
+		    FilterNullAndWhitespace = each List.Select(_, each _ <> null and (not (_ is text) or Text.Trim(_) <> "")),
+		    #"Removed Bottom Rows" = Table.RemoveLastN(#"Metas 2024_sheet", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
+		    #"Removed Top Rows" = Table.Skip(#"Removed Bottom Rows", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Removed Top Rows", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Regiao", type text}, {"Segmento", type text}, {"Jan", Currency.Type}, {"Fev", Currency.Type}, {"Mar", Currency.Type}, {"Abr", Currency.Type}, {"Mai", Currency.Type}, {"Jun", Currency.Type}, {"Jul", Currency.Type}, {"Ago", Currency.Type}, {"Set", Currency.Type}, {"Out", Currency.Type}, {"Nov", Currency.Type}, {"Dez", Currency.Type}, {"Meta Ano", Currency.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 76cf429d-23fb-4741-af72-eb349997b8df
+	queryGroup: Origem\Metas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression metas_2025 =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\metas_comerciais.xlsx"), null, false),
+		    #"Metas 2025_sheet" = Source{[Item="Metas 2025",Kind="Sheet"]}[Data],
+		    FilterNullAndWhitespace = each List.Select(_, each _ <> null and (not (_ is text) or Text.Trim(_) <> "")),
+		    #"Removed Bottom Rows" = Table.RemoveLastN(#"Metas 2025_sheet", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
+		    #"Removed Top Rows" = Table.Skip(#"Removed Bottom Rows", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Removed Top Rows", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Regiao", type text}, {"Segmento", type text}, {"Jan", Currency.Type}, {"Fev", Currency.Type}, {"Mar", Currency.Type}, {"Abr", Currency.Type}, {"Mai", Currency.Type}, {"Jun", Currency.Type}, {"Jul", Currency.Type}, {"Ago", Currency.Type}, {"Set", Currency.Type}, {"Out", Currency.Type}, {"Nov", Currency.Type}, {"Dez", Currency.Type}, {"Meta Ano", Currency.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 8168deac-d91a-453d-b276-99bf5d66652e
+	queryGroup: Origem\Metas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression metas_2026 =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\Users\Kelvyn\Downloads\AnalistaBI\dados\metas_comerciais.xlsx"), null, false),
+		    #"Metas 2026_sheet" = Source{[Item="Metas 2026",Kind="Sheet"]}[Data],
+		    FilterNullAndWhitespace = each List.Select(_, each _ <> null and (not (_ is text) or Text.Trim(_) <> "")),
+		    #"Removed Bottom Rows" = Table.RemoveLastN(#"Metas 2026_sheet", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
+		    #"Removed Top Rows" = Table.Skip(#"Removed Bottom Rows", each try List.IsEmpty(List.Skip(FilterNullAndWhitespace(Record.FieldValues(_)), 1)) otherwise false),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Removed Top Rows", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Regiao", type text}, {"Segmento", type text}, {"Jan", Currency.Type}, {"Fev", Currency.Type}, {"Mar", Currency.Type}, {"Abr", Currency.Type}, {"Mai", Currency.Type}, {"Jun", Currency.Type}, {"Jul", Currency.Type}, {"Ago", Currency.Type}, {"Set", Currency.Type}, {"Out", Currency.Type}, {"Nov", Currency.Type}, {"Dez", Currency.Type}, {"Meta Ano", Currency.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 925bebc4-1d95-4f6c-a483-ff4f95eb50d2
+	queryGroup: Origem\Metas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_metas =
+		let
+		    Source = Table.Combine({stg_metas_2024, stg_metas_2025, stg_metas_2026}),
+		    ValidateNull = Table.TransformColumns(Source, {
+		    {"Jan", each fxRejeitarNulo(_), Currency.Type},
+		    {"Fev", each fxRejeitarNulo(_), Currency.Type},
+		    {"Mar", each fxRejeitarNulo(_), Currency.Type},
+		    {"Abr", each fxRejeitarNulo(_), Currency.Type},
+		    {"Mai", each fxRejeitarNulo(_), Currency.Type},
+		    {"Jun", each fxRejeitarNulo(_), Currency.Type},
+		    {"Jul", each fxRejeitarNulo(_), Currency.Type},
+		    {"Ago", each fxRejeitarNulo(_), Currency.Type},
+		    {"Set", each fxRejeitarNulo(_), Currency.Type},
+		    {"Out", each fxRejeitarNulo(_), Currency.Type},
+		    {"Nov", each fxRejeitarNulo(_), Currency.Type},
+		    {"Dez", each fxRejeitarNulo(_), Currency.Type}
+		}),
+		    UnpivotMes = Table.UnpivotOtherColumns(ValidateNull, {"Regiao", "Segmento", "Ano"}, "Mes", "Valor_Meta"),
+		    #"Capitalized Each Word" = Table.TransformColumns(UnpivotMes,{{"Regiao", Text.Proper, type text}, {"Segmento", Text.Proper, type text}}),
+		    RenamedColumns = Table.TransformColumnNames(#"Capitalized Each Word", Text.Lower)
+		in
+		    RenamedColumns
+	lineageTag: 73075798-4fce-40d0-acf9-66d6f10791dc
+	queryGroup: Stage
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_metas_2024 =
+		let
+		    Source = metas_2024,
+		    AddedAno = Table.AddColumn(Source, "Ano", each 2024, Int64.Type)
+		in
+		    AddedAno
+	lineageTag: cf336bf0-9531-4242-8675-bf85862246e6
+	queryGroup: Stage\Metas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_metas_2025 =
+		let
+		    Source = metas_2025,
+		    AddedAno = Table.AddColumn(Source, "Ano", each 2025, Int64.Type)
+		in
+		    AddedAno
+	lineageTag: 8bda7e55-f801-463a-8fb6-28dbbdcd0c51
+	queryGroup: Stage\Metas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stg_metas_2026 =
+		let
+		    Source = metas_2026,
+		    AddedAno = Table.AddColumn(Source, "Ano", each 2026, Int64.Type)
+		in
+		    AddedAno
+	lineageTag: 11a700ee-14a5-4182-94ad-efa6747a132e
+	queryGroup: Stage\Metas
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
 

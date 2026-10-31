@@ -14,7 +14,7 @@ table fDevolucoes
 		dataType: int64
 		formatString: 0
 		lineageTag: a13b966d-5fe6-48d9-8cdc-53a89c7f72bd
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_pedido_origem
 
 		annotation SummarizationSetBy = Automatic
@@ -66,9 +66,11 @@ table fDevolucoes
 		queryGroup: Modelo
 		source =
 				let
-				    Source = stg_devolucoes
+				    Source = stg_devolucoes,
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+				    #"Removed Columns" = Table.RemoveColumns(#"Removed Errors",{"flag_ok"})
 				in
-				    Source
+				    #"Removed Columns"
 
 	annotation PBI_NavigationStepName = Navigation
 

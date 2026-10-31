@@ -1,0 +1,61 @@
+table fMetas
+	lineageTag: f3905375-9248-4087-aa2f-f4161f515ffa
+
+	column regiao
+		dataType: string
+		lineageTag: ce1fa18d-7438-4537-8234-3562d1817be6
+		summarizeBy: none
+		sourceColumn: regiao
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento
+		dataType: string
+		lineageTag: 46601e4f-bae9-4743-9f0b-523aafaa2d2c
+		summarizeBy: none
+		sourceColumn: segmento
+
+		annotation SummarizationSetBy = Automatic
+
+	column ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c1192be-65b5-4a37-bdce-f94bf5494ba6
+		summarizeBy: sum
+		sourceColumn: ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes
+		dataType: string
+		lineageTag: 4658bc6d-f4b1-4f61-8587-125186d76dea
+		summarizeBy: none
+		sourceColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor_meta
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 55c5a334-6f25-4198-ab1e-aa4d8b1a7bca
+		summarizeBy: sum
+		sourceColumn: valor_meta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	partition fMetas = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = stg_metas,
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

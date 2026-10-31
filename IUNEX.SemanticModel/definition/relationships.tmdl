@@ -8,3 +8,8 @@ relationship d476bec1-9fd0-4c96-8e08-ca1a530581c8
 	fromColumn: fDevolucoes.data_devolucao
 	toColumn: LocalDateTable_448c963b-079a-458a-9768-33c8edafc7ca.Date
 
+relationship d8efaa30-17af-788c-a14d-8a49fcc23230
+	toCardinality: many
+	fromColumn: fDevolucoes.id_pedido_origem
+	toColumn: fVendas.id_pedido
+
