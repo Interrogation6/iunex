@@ -287,8 +287,23 @@ expression stg_devolucoes =
 		        {"id_devolucao", each fxExtrairID(_, 2), Int64.Type},
 		        {"id_pedido_origem", each fxExtrairID(_, 2), Int64.Type}
 		    }),
-		    #"Merged Queries" = Table.NestedJoin(AdjustIDs, {"id_pedido_origem"}, stg_vendas, {"id_pedido"}, "stg_vendas", JoinKind.LeftOuter),
-		    #"Expanded stg_vendas" = Table.ExpandTableColumn(#"Merged Queries", "stg_vendas", {"id_pedido"}, {"flag_ok"}),
+		
+		    ChavesVendas = Table.Distinct(
+		        Table.SelectColumns(
+		            stg_vendas,
+		            {"id_pedido", "item"}
+		        )
+		    ),
+		
+		    #"Merged Queries" = Table.NestedJoin(
+		        AdjustIDs,
+		        {"id_pedido_origem", "item"},
+		        ChavesVendas,
+		        {"id_pedido", "item"},
+		        "venda_encontrada",
+		        JoinKind.LeftOuter
+		    ),
+		    #"Expanded stg_vendas" = Table.ExpandTableColumn(#"Merged Queries", "venda_encontrada", {"id_pedido"}, {"flag_ok"}),
 		    ValidatePedido = Table.TransformColumns(#"Expanded stg_vendas", {{"flag_ok", each if _ = null then error [Reason="Erro de Relacionamento", Message="Não foi possível relacionar esta devolução com seu pedido."] else true, type logical}})
 		in
 		    ValidatePedido
@@ -374,7 +389,7 @@ expression stg_vendedores =
 
 expression vendas_2024 =
 		let
-		    Source = Csv.Document(File.Contents(Path & "\vendas_2024.csv"),[Delimiter=";", Columns=11, Encoding=28591, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents(Path & "vendas_2024.csv"),[Delimiter=";", Columns=11, Encoding=28591, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ID_PEDIDO", type text}, {"ITEM", Int64.Type}, {"DT_EMISSAO", type date}, {"COD_CLIENTE", type text}, {"COD_PRODUTO", type text}, {"COD_VENDEDOR", type text}, {"QTDE", Int64.Type}, {"VLR_UNITARIO", Currency.Type}, {"DESCONTO", type number}, {"MOEDA", type text}, {"CANAL", type text}})
 		in
@@ -388,7 +403,7 @@ expression vendas_2024 =
 
 expression vendas_2025 =
 		let
-		    Source = Csv.Document(File.Contents(Path & "\vendas_2025.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents(Path & "vendas_2025.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type date}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}}, "en-us")
 		in
@@ -402,7 +417,7 @@ expression vendas_2025 =
 
 expression vendas_2026 =
 		let
-		    Source = Csv.Document(File.Contents(Path & "\vendas_2026.csv"),[Delimiter="|", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents(Path & "vendas_2026.csv"),[Delimiter="|", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type text}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}, {"id_filial", type text}, {"frete_rateado", Currency.Type}}, "en-us"),
 		    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"data_emissao", type date}})
@@ -820,7 +835,7 @@ expression stg_metas_2026 =
 
 expression metas_workbook =
 		let
-		    Source = Excel.Workbook(File.Contents(Path & "\metas_comerciais.xlsx"), null, false)
+		    Source = Excel.Workbook(File.Contents(Path & "metas_comerciais.xlsx"), null, false)
 		in
 		    Source
 	lineageTag: 18dca79d-463c-4ae2-9852-2a591fcf128e
