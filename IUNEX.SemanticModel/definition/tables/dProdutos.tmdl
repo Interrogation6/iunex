@@ -1,0 +1,95 @@
+table dProdutos
+	lineageTag: 5a99484e-f40d-485b-ac25-4b5a26ca7ef4
+
+	column id_produto
+		dataType: int64
+		formatString: 0
+		lineageTag: e31a4523-f345-4d57-b9ed-9af440258589
+		summarizeBy: none
+		sourceColumn: id_produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column descricao
+		dataType: string
+		lineageTag: 050104e6-44f5-4753-ae08-128bd26351c2
+		summarizeBy: none
+		sourceColumn: descricao
+
+		annotation SummarizationSetBy = Automatic
+
+	column categoria
+		dataType: string
+		lineageTag: ac76090f-ff98-4a61-b5d2-c6bb0f3bcdab
+		summarizeBy: none
+		sourceColumn: categoria
+
+		annotation SummarizationSetBy = Automatic
+
+	column subcategoria
+		dataType: string
+		lineageTag: 96fe8a90-b5bb-4ba4-a060-022629dffdd7
+		summarizeBy: none
+		sourceColumn: subcategoria
+
+		annotation SummarizationSetBy = Automatic
+
+	column linha
+		dataType: string
+		lineageTag: a254cb08-c73d-4f42-99c7-7e5f99ee67df
+		summarizeBy: none
+		sourceColumn: linha
+
+		annotation SummarizationSetBy = Automatic
+
+	column unidade
+		dataType: string
+		lineageTag: 2fb22ba2-2f66-4839-8e5a-faa236f75732
+		summarizeBy: none
+		sourceColumn: unidade
+
+		annotation SummarizationSetBy = Automatic
+
+	column custo_padrao
+		dataType: double
+		lineageTag: b8a904a9-f1d5-453a-8715-187e6bfef133
+		summarizeBy: none
+		sourceColumn: custo_padrao
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column preco_lista
+		dataType: double
+		lineageTag: 78dbf591-5771-4ea2-8db5-2f448a2546bc
+		summarizeBy: none
+		sourceColumn: preco_lista
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column flag_descontinuado
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4b56bf8f-2e1c-4a67-9d03-b5d31471d3a5
+		summarizeBy: none
+		sourceColumn: flag_descontinuado
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dProdutos = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = stg_produtos,
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

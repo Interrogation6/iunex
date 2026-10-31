@@ -54,7 +54,7 @@ queryGroup Stage\Metas
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["cambio_usd","carteira_historica","clientes","devolucoes","feriados","produtos","seguranca_acessos","Sample File","Parameter1","Transform Sample File","Transform File","stg_metas","stg_Carteira_Historica","stg_Clientes","auxSegmento","Path","auxRegiao","fxValidarCNPJ","fxExtrairID","stg_devolucoes","stg_produtos","fxRejeitarNulo","stg_seguranca_acessos","stg_vendas","stg_vendedores","vendas_2024","vendas_2025","vendas_2026","vendedores","stg_vendas_2024","stg_vendas_2025","stg_vendas_2026","fVendas","fDevolucoes","fxAplicarCambio","metas_2024","metas_2025","metas_2026","stg_metas_2024","stg_metas_2025","stg_metas_2026","fMetas"]
+annotation PBI_QueryOrder = ["cambio_usd","carteira_historica","clientes","devolucoes","feriados","produtos","seguranca_acessos","Sample File","Parameter1","Transform Sample File","Transform File","stg_metas","stg_Carteira_Historica","stg_Clientes","auxSegmento","Path","auxRegiao","fxValidarCNPJ","fxExtrairID","stg_devolucoes","stg_produtos","fxRejeitarNulo","stg_seguranca_acessos","stg_vendas","stg_vendedores","vendas_2024","vendas_2025","vendas_2026","vendedores","stg_vendas_2024","stg_vendas_2025","stg_vendas_2026","fVendas","fDevolucoes","fxAplicarCambio","metas_2024","metas_2025","metas_2026","stg_metas_2024","stg_metas_2025","stg_metas_2026","fMetas","dCartHist","dClientes","dProdutos","dAcessos","dVendedores"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
@@ -64,6 +64,16 @@ ref table LocalDateTable_dbc58cfe-77c1-439a-b8dd-357cb5f2af0f
 ref table fDevolucoes
 ref table LocalDateTable_448c963b-079a-458a-9768-33c8edafc7ca
 ref table fMetas
+ref table dCartHist
+ref table LocalDateTable_6168895a-1390-40a9-837b-c989de292328
+ref table LocalDateTable_4be6bbdb-9f7e-442a-a2db-6a2f3854f834
+ref table dClientes
+ref table LocalDateTable_a38abcfb-fee7-4e11-89e2-c102322698bd
+ref table dProdutos
+ref table dAcessos
+ref table dVendedores
+ref table LocalDateTable_91993098-e94e-442e-a857-2fcfe451a655
+ref table LocalDateTable_c93b7386-9d32-4a66-b34b-5c3adbd0a993
 
 ref cultureInfo en-US
 

@@ -1,0 +1,99 @@
+table dVendedores
+	lineageTag: 972391ac-4dcf-4e38-8c8c-c2e82656ceda
+
+	column id_vendedor
+		dataType: int64
+		formatString: 0
+		lineageTag: b52a4924-9967-4f25-a483-bd564e0c0158
+		summarizeBy: sum
+		sourceColumn: id_vendedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column nome
+		dataType: string
+		lineageTag: 8a4d25fb-33c6-439c-be8c-2cdbdc6a215d
+		summarizeBy: none
+		sourceColumn: nome
+
+		annotation SummarizationSetBy = Automatic
+
+	column email_corporativo
+		dataType: string
+		lineageTag: 0e9618a5-aa7c-4ea6-aba1-1dec3f5c60c3
+		summarizeBy: none
+		sourceColumn: email_corporativo
+
+		annotation SummarizationSetBy = Automatic
+
+	column cargo
+		dataType: string
+		lineageTag: f991322c-2011-4af6-9021-ae2640e434d4
+		summarizeBy: none
+		sourceColumn: cargo
+
+		annotation SummarizationSetBy = Automatic
+
+	column regiao
+		dataType: string
+		lineageTag: 32c3ffe6-5062-4114-a201-8db9a9c369da
+		summarizeBy: none
+		sourceColumn: regiao
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_gestor
+		dataType: int64
+		formatString: 0
+		lineageTag: 9ce4d7e1-a5a8-430b-a96d-dd807b61476c
+		summarizeBy: sum
+		sourceColumn: id_gestor
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_admissao
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d3099a7e-fb7c-48cf-abca-fad6c36a437c
+		summarizeBy: none
+		sourceColumn: data_admissao
+
+		variation Variation
+			isDefault
+			relationship: 57034c4f-a610-4b5b-93f4-24e94e3082ac
+			defaultHierarchy: LocalDateTable_91993098-e94e-442e-a857-2fcfe451a655.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column data_desligamento
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e47b38f7-f109-4611-9706-5c106c466c1c
+		summarizeBy: none
+		sourceColumn: data_desligamento
+
+		variation Variation
+			isDefault
+			relationship: f9aa46e8-7a1a-4817-b789-8520491dacde
+			defaultHierarchy: LocalDateTable_c93b7386-9d32-4a66-b34b-5c3adbd0a993.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dVendedores = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = stg_vendedores,
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

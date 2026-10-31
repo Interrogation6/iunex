@@ -1,0 +1,115 @@
+table dClientes
+	lineageTag: fd14a9d4-ad58-42d4-bc25-11a66338d14e
+
+	column id_cliente
+		dataType: int64
+		formatString: 0
+		lineageTag: 4335e5c8-e9fb-4b39-ab8d-a6ce072083b1
+		summarizeBy: none
+		sourceColumn: id_cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_matriz
+		dataType: int64
+		formatString: 0
+		lineageTag: 5397e1bc-e518-4c96-bf76-668fe6365373
+		summarizeBy: sum
+		sourceColumn: id_matriz
+
+		annotation SummarizationSetBy = Automatic
+
+	column razao_social
+		dataType: string
+		lineageTag: a89fdec8-5481-4e89-a8f2-b2ba310b0ad4
+		summarizeBy: none
+		sourceColumn: razao_social
+
+		annotation SummarizationSetBy = Automatic
+
+	column cnpj
+		dataType: string
+		lineageTag: f08d0cb7-4186-4f56-a28a-4ed5646c4a78
+		summarizeBy: none
+		sourceColumn: cnpj
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento
+		dataType: string
+		lineageTag: 595a78fd-0994-40ad-875f-780727d8e0e6
+		summarizeBy: none
+		sourceColumn: segmento
+
+		annotation SummarizationSetBy = Automatic
+
+	column regiao
+		dataType: string
+		lineageTag: ef178665-7ab9-449c-abec-d1e71ca04229
+		summarizeBy: none
+		sourceColumn: regiao
+
+		annotation SummarizationSetBy = Automatic
+
+	column uf
+		dataType: string
+		lineageTag: c6ebc2b3-331b-46b2-8cbf-9259fd64f0fb
+		summarizeBy: none
+		sourceColumn: uf
+
+		annotation SummarizationSetBy = Automatic
+
+	column cidade
+		dataType: string
+		lineageTag: 0da8f065-5d0e-4d94-9d70-73ca1592575b
+		summarizeBy: none
+		sourceColumn: cidade
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_cadastro
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 93b5e589-995a-4782-a503-c7839c2a1bf4
+		summarizeBy: none
+		sourceColumn: data_cadastro
+
+		variation Variation
+			isDefault
+			relationship: 5edef07f-fe8f-4954-8af5-bd5480d85fec
+			defaultHierarchy: LocalDateTable_a38abcfb-fee7-4e11-89e2-c102322698bd.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column situacao
+		dataType: string
+		lineageTag: e16e853d-dfd2-4de9-a483-06a37dc1950c
+		summarizeBy: none
+		sourceColumn: situacao
+
+		annotation SummarizationSetBy = Automatic
+
+	column grupo
+		dataType: string
+		lineageTag: 120b205e-b05b-400e-8707-4390cb2af6d0
+		summarizeBy: none
+		sourceColumn: grupo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dClientes = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = stg_Clientes,
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

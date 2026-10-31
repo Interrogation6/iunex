@@ -51,7 +51,8 @@ table fMetas
 		source =
 				let
 				    Source = stg_metas,
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				    RenamedColumns = Table.TransformColumnNames(Source, Text.Lower),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(RenamedColumns)
 				in
 				    #"Removed Errors"
 

@@ -1,0 +1,50 @@
+table dAcessos
+	lineageTag: a15614a3-90e6-454d-a3dc-997740840835
+
+	column email
+		dataType: string
+		lineageTag: b4d237e0-1104-4631-a9b1-5fec4b93be31
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column regiao_permitida
+		dataType: string
+		lineageTag: 15eec0ae-91b0-4a02-99f4-8db14983d2cb
+		summarizeBy: none
+		sourceColumn: regiao_permitida
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento_permitido
+		dataType: string
+		lineageTag: 70782636-ea0a-4bd7-a444-46121ce59169
+		summarizeBy: none
+		sourceColumn: segmento_permitido
+
+		annotation SummarizationSetBy = Automatic
+
+	column ativo
+		dataType: string
+		lineageTag: 81d7a627-d9e2-42db-934a-c94a6627ff69
+		summarizeBy: none
+		sourceColumn: ativo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dAcessos = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = stg_seguranca_acessos,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"email", "regiao_permitida", "segmento_permitido", "ativo"}),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Removed Other Columns")
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

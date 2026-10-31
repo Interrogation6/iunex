@@ -717,10 +717,9 @@ expression stg_metas =
 		    {"Dez", each fxRejeitarNulo(_), Currency.Type}
 		}),
 		    UnpivotMes = Table.UnpivotOtherColumns(ValidateNull, {"Regiao", "Segmento", "Ano"}, "Mes", "Valor_Meta"),
-		    #"Capitalized Each Word" = Table.TransformColumns(UnpivotMes,{{"Regiao", Text.Proper, type text}, {"Segmento", Text.Proper, type text}}),
-		    RenamedColumns = Table.TransformColumnNames(#"Capitalized Each Word", Text.Lower)
+		    #"Capitalized Each Word" = Table.TransformColumns(UnpivotMes,{{"Regiao", Text.Proper, type text}, {"Segmento", Text.Proper, type text}})
 		in
-		    RenamedColumns
+		    #"Capitalized Each Word"
 	lineageTag: 73075798-4fce-40d0-acf9-66d6f10791dc
 	queryGroup: Stage
 

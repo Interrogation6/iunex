@@ -39,7 +39,7 @@ table fVendas
 		dataType: int64
 		formatString: 0
 		lineageTag: d7104c9b-bcf2-4b9d-ba2e-87f2fd157345
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_cliente
 
 		annotation SummarizationSetBy = Automatic
@@ -48,7 +48,7 @@ table fVendas
 		dataType: int64
 		formatString: 0
 		lineageTag: 95fd6da8-4d16-46c5-a38b-6a6952d03c28
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_produto
 
 		annotation SummarizationSetBy = Automatic

@@ -1,0 +1,67 @@
+table dCartHist
+	lineageTag: 20c2410d-4cf6-416e-b053-a0d515b7f66a
+
+	column id_cliente
+		dataType: int64
+		formatString: 0
+		lineageTag: a8e409d0-a9ae-4352-a423-15f81cdde5f3
+		summarizeBy: none
+		sourceColumn: id_cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_vendedor
+		dataType: int64
+		formatString: 0
+		lineageTag: fe53d2c4-ff01-4592-a548-e4bcae55baf8
+		summarizeBy: sum
+		sourceColumn: id_vendedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column vigencia_inicio
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 13bb830b-ecf0-4e83-a1cd-fc3d4afc06bd
+		summarizeBy: none
+		sourceColumn: vigencia_inicio
+
+		variation Variation
+			isDefault
+			relationship: feb35f49-aaaa-4d17-a0c4-4b86543be301
+			defaultHierarchy: LocalDateTable_6168895a-1390-40a9-837b-c989de292328.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column vigencia_fim
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8f31269f-9474-4eb7-bcd2-3571a8ff5aa9
+		summarizeBy: none
+		sourceColumn: vigencia_fim
+
+		variation Variation
+			isDefault
+			relationship: b8498f0c-465d-4920-a8d6-480455c3674f
+			defaultHierarchy: LocalDateTable_4be6bbdb-9f7e-442a-a2db-6a2f3854f834.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dCartHist = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = stg_Carteira_Historica,
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -13,3 +13,40 @@ relationship d8efaa30-17af-788c-a14d-8a49fcc23230
 	fromColumn: fDevolucoes.id_pedido_origem
 	toColumn: fVendas.id_pedido
 
+relationship feb35f49-aaaa-4d17-a0c4-4b86543be301
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dCartHist.vigencia_inicio
+	toColumn: LocalDateTable_6168895a-1390-40a9-837b-c989de292328.Date
+
+relationship b8498f0c-465d-4920-a8d6-480455c3674f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dCartHist.vigencia_fim
+	toColumn: LocalDateTable_4be6bbdb-9f7e-442a-a2db-6a2f3854f834.Date
+
+relationship 5edef07f-fe8f-4954-8af5-bd5480d85fec
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dClientes.data_cadastro
+	toColumn: LocalDateTable_a38abcfb-fee7-4e11-89e2-c102322698bd.Date
+
+relationship 57034c4f-a610-4b5b-93f4-24e94e3082ac
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dVendedores.data_admissao
+	toColumn: LocalDateTable_91993098-e94e-442e-a857-2fcfe451a655.Date
+
+relationship f9aa46e8-7a1a-4817-b789-8520491dacde
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dVendedores.data_desligamento
+	toColumn: LocalDateTable_c93b7386-9d32-4a66-b34b-5c3adbd0a993.Date
+
+relationship AutoDetected_674a5029-585f-4c1a-9b0c-b23ad2628a6d
+	fromColumn: fVendas.id_cliente
+	toColumn: dClientes.id_cliente
+
+relationship AutoDetected_f7c3be8b-4060-4292-964e-9c40f30d15f3
+	fromColumn: dCartHist.id_cliente
+	toColumn: dClientes.id_cliente
+
+relationship AutoDetected_d50a1f94-959a-415b-91f0-439b8acd6100
+	fromColumn: fVendas.id_produto
+	toColumn: dProdutos.id_produto
+
