@@ -1,5 +1,4 @@
 table fDevolucoes
-	excludeFromModelRefresh
 	lineageTag: a517d2b6-2d66-4956-90ed-df37e8a6a5ce
 
 	column id_devolucao
@@ -212,5 +211,5 @@ table fDevolucoes
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Exception
+	annotation PBI_ResultType = Table
 

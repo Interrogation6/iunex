@@ -18,11 +18,6 @@ relationship addd4c1a-af58-c501-0b50-a57bac2bc66a
 	fromColumn: fDevolucoes.data_devolucao
 	toColumn: dCalendario.data
 
-relationship 98a421b6-0017-93be-1039-4ec78405ec80
-	toCardinality: many
-	fromColumn: fMetas.regiao
-	toColumn: dClientes.regiao
-
 relationship 9deef9c4-3a3e-7383-f47c-af50baae3a1b
 	fromColumn: fVendas.id_cliente
 	toColumn: dClientes.id_cliente
@@ -46,4 +41,12 @@ relationship da823cfc-94a4-b674-e05d-b2d2ebf3f0e1
 relationship f03e1675-b434-cf33-3030-fd62ae989410
 	fromColumn: fDevolucoes.id_vendedor
 	toColumn: dVendedores.id_vendedor
+
+relationship b25abce5-5234-c64e-c031-65dc0e312b50
+	fromColumn: dClientes.regiao
+	toColumn: dRegiao.regiao
+
+relationship 177bde8f-f809-3c23-0628-ffa549ba96c8
+	fromColumn: fMetas.regiao
+	toColumn: dRegiao.regiao
 

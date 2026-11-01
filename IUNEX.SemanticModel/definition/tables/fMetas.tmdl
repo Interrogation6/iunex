@@ -3,9 +3,12 @@ table fMetas
 
 	column regiao
 		dataType: string
+		isHidden
 		lineageTag: ce1fa18d-7438-4537-8234-3562d1817be6
 		summarizeBy: none
 		sourceColumn: regiao
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

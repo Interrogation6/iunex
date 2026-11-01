@@ -46,9 +46,12 @@ table dClientes
 
 	column regiao
 		dataType: string
+		isHidden
 		lineageTag: ef178665-7ab9-449c-abec-d1e71ca04229
 		summarizeBy: none
 		sourceColumn: regiao
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
