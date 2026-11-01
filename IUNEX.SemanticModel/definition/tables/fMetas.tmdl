@@ -45,16 +45,60 @@ table fMetas
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
+	column data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: feeaa31c-52e2-414e-9c2b-eb6aa7f6362a
+		summarizeBy: none
+		sourceColumn: data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
 	partition fMetas = m
 		mode: import
 		queryGroup: Modelo
 		source =
 				let
 				    Source = stg_metas,
-				    RenamedColumns = Table.TransformColumnNames(Source, Text.Lower),
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(RenamedColumns)
+				
+				    RenamedColumns = Table.TransformColumnNames(
+				        Source,
+				        Text.Lower
+				    ),
+				
+				    RemovedErrors = Table.RemoveRowsWithErrors(
+				        RenamedColumns
+				    ),
+				
+				    AddedData = Table.AddColumn(
+				        RemovedErrors,
+				        "data",
+				        each
+				            let
+				                Mes = Text.Upper(Text.Trim([mes])),
+				                Meses = {
+				                    "JAN", "FEV", "MAR", "ABR",
+				                    "MAI", "JUN", "JUL", "AGO",
+				                    "SET", "OUT", "NOV", "DEZ"
+				                },
+				                MesNumero = List.PositionOf(Meses, Mes) + 1
+				            in
+				                if List.Contains({"META ANO", "TOTAL ANO"}, Mes) then
+				                    #date([ano], 12, 31)
+				                else if MesNumero > 0 then
+				                    #date([ano], MesNumero, 1)
+				                else
+				                    error [
+				                        Reason = "Mês inválido",
+				                        Message = "Não foi possível identificar o mês da meta.",
+				                        Detail = [mes]
+				                    ],
+				        type date
+				    )
 				in
-				    #"Removed Errors"
+				    AddedData
 
 	annotation PBI_NavigationStepName = Navigation
 

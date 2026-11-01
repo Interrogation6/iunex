@@ -52,9 +52,7 @@ annotation PBI_ProTooling = ["DevMode"]
 
 ref table fVendas
 ref table DateTableTemplate_f578ad0b-3a6c-4932-b49c-0a11549e4451
-ref table LocalDateTable_dbc58cfe-77c1-439a-b8dd-357cb5f2af0f
 ref table fDevolucoes
-ref table LocalDateTable_448c963b-079a-458a-9768-33c8edafc7ca
 ref table fMetas
 ref table dCartHist
 ref table LocalDateTable_6168895a-1390-40a9-837b-c989de292328
@@ -67,8 +65,8 @@ ref table LocalDateTable_c93b7386-9d32-4a66-b34b-5c3adbd0a993
 ref table LocalDateTable_0007c9f5-8560-4ff8-be71-79d27aced495
 ref table fErros
 ref table dCalendario
-ref table LocalDateTable_6da4bc51-81f4-450b-b554-41a1f3d390f1
-ref table LocalDateTable_400e2587-34a8-405a-9f94-a8900d876cf8
+ref table LocalDateTable_7da135b2-3511-4ed3-9888-26734861cc80
+ref table LocalDateTable_b45770f7-ffb0-46b2-b7cb-27d8e3669072
 
 ref cultureInfo en-US
 

@@ -5,7 +5,7 @@ table dVendedores
 		dataType: int64
 		formatString: 0
 		lineageTag: b52a4924-9967-4f25-a483-bd564e0c0158
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_vendedor
 
 		annotation SummarizationSetBy = Automatic

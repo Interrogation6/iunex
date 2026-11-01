@@ -26,11 +26,6 @@ table fVendas
 		summarizeBy: none
 		sourceColumn: data_emissao
 
-		variation Variation
-			isDefault
-			relationship: 9f6eee55-1958-4cd5-ab44-c4a0700fbb19
-			defaultHierarchy: LocalDateTable_dbc58cfe-77c1-439a-b8dd-357cb5f2af0f.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -39,7 +34,7 @@ table fVendas
 		dataType: int64
 		formatString: 0
 		lineageTag: d7104c9b-bcf2-4b9d-ba2e-87f2fd157345
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: id_cliente
 
 		annotation SummarizationSetBy = Automatic
@@ -159,10 +154,32 @@ table fVendas
 		dataType: int64
 		formatString: 0
 		lineageTag: d4cc3677-f0c7-4034-8e53-9c8433249cde
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_cliente_modelo
 
 		annotation SummarizationSetBy = Automatic
+
+	column receita_bruta
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 1ca62ee8-f8df-4b2f-a274-cdd1b4af7afd
+		summarizeBy: sum
+		sourceColumn: receita_bruta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column receita_liquida
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 64e2f8b0-6620-4d5d-ab3b-714e5c70fc37
+		summarizeBy: sum
+		sourceColumn: receita_liquida
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
 	partition fVendas = m
 		mode: import
@@ -190,7 +207,7 @@ table fVendas
 				),
 				
 				MergeClientes = Table.NestedJoin(
-				    #"Removed Errors",
+				    FilterFaturado,
 				    {"id_cliente"},
 				    IdsClientes,
 				    {"id_cliente"},

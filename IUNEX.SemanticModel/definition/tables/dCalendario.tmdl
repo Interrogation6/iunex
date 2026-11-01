@@ -1,189 +1,189 @@
 table dCalendario
 	lineageTag: 534d6fd8-dc85-43ab-be73-1f768d953064
 
-	column Data
+	column data
 		dataType: dateTime
 		formatString: Long Date
-		lineageTag: 391a84b4-7888-46e8-9bb3-87fc64f7dad8
+		lineageTag: eed0df8f-0d97-4db3-9161-e9eb34a1ecee
 		summarizeBy: none
-		sourceColumn: Data
+		sourceColumn: data
 
 		variation Variation
 			isDefault
-			relationship: fae0b47d-fc8f-46ef-bbe1-045bbae8ba5b
-			defaultHierarchy: LocalDateTable_6da4bc51-81f4-450b-b554-41a1f3d390f1.'Date Hierarchy'
+			relationship: 1246b8e6-1d8d-4b07-81ef-826cc9521b54
+			defaultHierarchy: LocalDateTable_7da135b2-3511-4ed3-9888-26734861cc80.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
 
-	column Ano
+	column ano
 		dataType: int64
 		formatString: 0
-		lineageTag: efc6f86e-8737-4464-8763-86e2b3966c6d
+		lineageTag: 2c190991-3175-4035-a998-0fb1f88bdd1b
 		summarizeBy: sum
-		sourceColumn: Ano
+		sourceColumn: ano
 
 		annotation SummarizationSetBy = Automatic
 
-	column MesNumero
+	column mesnumero
 		dataType: int64
 		formatString: 0
-		lineageTag: 4bfbeff3-580f-4b32-98ad-767b9e2d0908
+		lineageTag: 030e6459-f49c-4b87-9226-7efe7bc61745
 		summarizeBy: sum
-		sourceColumn: MesNumero
+		sourceColumn: mesnumero
 
 		annotation SummarizationSetBy = Automatic
 
-	column MesNome
+	column mesnome
 		dataType: string
-		lineageTag: c58a9489-7a29-4207-96e9-fa0009f37d36
+		lineageTag: e6b7982c-9094-4710-ac39-2ff6832dc05f
 		summarizeBy: none
-		sourceColumn: MesNome
+		sourceColumn: mesnome
 
 		annotation SummarizationSetBy = Automatic
 
-	column MesAno
+	column mesano
 		dataType: string
-		lineageTag: c9b93ffa-a9dd-4546-9c8a-fb87d7fb17a0
+		lineageTag: c61d5bae-3428-4715-8abd-a44b11b2d973
 		summarizeBy: none
-		sourceColumn: MesAno
+		sourceColumn: mesano
 
 		annotation SummarizationSetBy = Automatic
 
-	column MesAnoOrdem
+	column mesanoordem
 		dataType: int64
 		formatString: 0
-		lineageTag: a3bcc713-2b0e-4e8b-9fb8-3782155c4d5e
+		lineageTag: 6d0b5e81-8d88-4d5c-83e7-60f701d30550
 		summarizeBy: sum
-		sourceColumn: MesAnoOrdem
+		sourceColumn: mesanoordem
 
 		annotation SummarizationSetBy = Automatic
 
-	column InicioMes
+	column iniciomes
 		dataType: dateTime
 		formatString: Long Date
-		lineageTag: 572e7202-8b81-4070-a49e-6a1f7201e9a2
+		lineageTag: 05e8bd3e-6c37-4e61-a831-955a3357a4fe
 		summarizeBy: none
-		sourceColumn: InicioMes
+		sourceColumn: iniciomes
 
 		variation Variation
 			isDefault
-			relationship: dfd46706-124b-489e-bbe5-1a045fad95e7
-			defaultHierarchy: LocalDateTable_400e2587-34a8-405a-9f94-a8900d876cf8.'Date Hierarchy'
+			relationship: 534d3c99-dc6d-4bee-ab6e-48ad3d0ddfd8
+			defaultHierarchy: LocalDateTable_b45770f7-ffb0-46b2-b7cb-27d8e3669072.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
 
-	column Trimestre
+	column trimestre
 		dataType: string
-		lineageTag: ac89d436-9d90-4cde-9342-9a3fd8cdc5d3
+		lineageTag: 51c8816f-c1ab-4464-84b9-ed47abadf103
 		summarizeBy: none
-		sourceColumn: Trimestre
+		sourceColumn: trimestre
 
 		annotation SummarizationSetBy = Automatic
 
-	column AnoFiscal
+	column anofiscal
 		dataType: int64
 		formatString: 0
-		lineageTag: 17ab7509-8c74-44d7-96b1-bd52670121ae
+		lineageTag: 1e1c2fbf-061e-4c9b-b260-789a85832abf
 		summarizeBy: sum
-		sourceColumn: AnoFiscal
+		sourceColumn: anofiscal
 
 		annotation SummarizationSetBy = Automatic
 
-	column AnoFiscalNome
+	column anofiscalnome
 		dataType: string
-		lineageTag: 760e1fc4-62c9-4bc4-97b9-ac7b6bc494c1
+		lineageTag: 1167a52f-6052-43ef-8003-f25ce558a983
 		summarizeBy: none
-		sourceColumn: AnoFiscalNome
+		sourceColumn: anofiscalnome
 
 		annotation SummarizationSetBy = Automatic
 
-	column MesFiscal
+	column mesfiscal
 		dataType: int64
 		formatString: 0
-		lineageTag: b310de57-abfa-4a6d-877f-034bcbefb920
+		lineageTag: cadd2c96-9c9c-47b7-a191-35804dbf6474
 		summarizeBy: sum
-		sourceColumn: MesFiscal
+		sourceColumn: mesfiscal
 
 		annotation SummarizationSetBy = Automatic
 
-	column TrimestreFiscal
+	column trimestrefiscal
 		dataType: string
-		lineageTag: a983d092-3489-4f67-a0b5-737e0ce5b235
+		lineageTag: d9c8d5b7-9942-4024-a35e-5ce5a38ff333
 		summarizeBy: none
-		sourceColumn: TrimestreFiscal
+		sourceColumn: trimestrefiscal
 
 		annotation SummarizationSetBy = Automatic
 
-	column DiaSemanaNumero
+	column diasemananumero
 		dataType: int64
 		formatString: 0
-		lineageTag: d68ddb6a-f032-45c7-a6c4-72922002215d
+		lineageTag: 0734336e-4c2e-4b20-83d8-c380111401c4
 		summarizeBy: sum
-		sourceColumn: DiaSemanaNumero
+		sourceColumn: diasemananumero
 
 		annotation SummarizationSetBy = Automatic
 
-	column DiaSemanaNome
+	column diasemananome
 		dataType: string
-		lineageTag: 931abdd0-ab70-413c-8165-ae3c8e413f51
+		lineageTag: ae0e4983-c9bf-4a3d-9e36-4ae6fb3dc512
 		summarizeBy: none
-		sourceColumn: DiaSemanaNome
+		sourceColumn: diasemananome
 
 		annotation SummarizationSetBy = Automatic
 
-	column IsFimSemana
+	column isfimsemana
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 2e0f4671-0e7b-4817-ad5e-13730dc589b9
+		lineageTag: 9b0560aa-70dd-4c35-b178-ec8a319cdfa7
 		summarizeBy: none
-		sourceColumn: IsFimSemana
+		sourceColumn: isfimsemana
 
 		annotation SummarizationSetBy = Automatic
 
-	column DescricaoFeriado
+	column descricaoferiado
 		dataType: string
-		lineageTag: 63c4ea59-23a7-4c51-a861-011e53513fd1
+		lineageTag: ab435528-1ef3-4599-8e1d-8e833550542d
 		summarizeBy: none
-		sourceColumn: DescricaoFeriado
+		sourceColumn: descricaoferiado
 
 		annotation SummarizationSetBy = Automatic
 
-	column AbrangenciaFeriado
+	column abrangenciaferiado
 		dataType: string
-		lineageTag: 10d378ef-b460-4395-992a-23483797ce9e
+		lineageTag: f9b51175-ce8b-4327-814f-f141a51d347f
 		summarizeBy: none
-		sourceColumn: AbrangenciaFeriado
+		sourceColumn: abrangenciaferiado
 
 		annotation SummarizationSetBy = Automatic
 
-	column IsFeriadoNacional
+	column isferiadonacional
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 0d4ee42b-a384-4a4e-b81e-ba750b8dcb11
+		lineageTag: 09c5ceac-95ef-4d98-b92c-b21246a75a16
 		summarizeBy: none
-		sourceColumn: IsFeriadoNacional
+		sourceColumn: isferiadonacional
 
 		annotation SummarizationSetBy = Automatic
 
-	column IsFeriado
+	column isferiado
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: eeb96a03-74a6-4e82-ad09-8ef19b4bf4ec
+		lineageTag: 266b5543-0841-446c-9a20-2fb9aa91cad2
 		summarizeBy: none
-		sourceColumn: IsFeriado
+		sourceColumn: isferiado
 
 		annotation SummarizationSetBy = Automatic
 
-	column IsDiaUtil
+	column isdiautil
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: ed05798b-5841-498b-966e-28880ad65f3c
+		lineageTag: 460f8406-6fb9-4be9-9493-1765849864c9
 		summarizeBy: none
-		sourceColumn: IsDiaUtil
+		sourceColumn: isdiautil
 
 		annotation SummarizationSetBy = Automatic
 
@@ -211,99 +211,99 @@ table dCalendario
 				    Calendario = Table.FromList(
 				        Datas,
 				        Splitter.SplitByNothing(),
-				        {"Data"}
+				        {"data"}
 				    ),
 				
 				    TiparData = Table.TransformColumnTypes(
 				        Calendario,
-				        {{"Data", type date}}
+				        {{"data", type date}}
 				    ),
 				
 				    AddAno = Table.AddColumn(
-				        TiparData, "Ano",
-				        each Date.Year([Data]),
+				        TiparData, "ano",
+				        each Date.Year([data]),
 				        Int64.Type
 				    ),
 				
 				    AddMesNumero = Table.AddColumn(
-				        AddAno, "MesNumero",
-				        each Date.Month([Data]),
+				        AddAno, "mesnumero",
+				        each Date.Month([data]),
 				        Int64.Type
 				    ),
 				
 				    AddMesNome = Table.AddColumn(
-				        AddMesNumero, "MesNome",
-				        each Date.MonthName([Data], "pt-BR"),
+				        AddMesNumero, "mesnome",
+				        each Date.MonthName([data], "pt-BR"),
 				        type text
 				    ),
 				
 				    AddMesAno = Table.AddColumn(
-				        AddMesNome, "MesAno",
-				        each Date.ToText([Data], "MMM/yyyy", "pt-BR"),
+				        AddMesNome, "mesano",
+				        each Date.ToText([data], "MMM/yyyy", "pt-BR"),
 				        type text
 				    ),
 				
 				    AddMesAnoOrdem = Table.AddColumn(
-				        AddMesAno, "MesAnoOrdem",
-				        each [Ano] * 100 + [MesNumero],
+				        AddMesAno, "mesanoordem",
+				        each [ano] * 100 + [mesnumero],
 				        Int64.Type
 				    ),
 				
 				    AddInicioMes = Table.AddColumn(
-				        AddMesAnoOrdem, "InicioMes",
-				        each Date.StartOfMonth([Data]),
+				        AddMesAnoOrdem, "iniciomes",
+				        each Date.StartOfMonth([data]),
 				        type date
 				    ),
 				
 				    AddTrimestre = Table.AddColumn(
-				        AddInicioMes, "Trimestre",
-				        each "T" & Text.From(Date.QuarterOfYear([Data])),
+				        AddInicioMes, "trimestre",
+				        each "T" & Text.From(Date.QuarterOfYear([data])),
 				        type text
 				    ),
 				
 				    AddAnoFiscal = Table.AddColumn(
-				        AddTrimestre, "AnoFiscal",
-				        each if [MesNumero] >= 4
-				             then [Ano] + 1
-				             else [Ano],
+				        AddTrimestre, "anofiscal",
+				        each if [mesnumero] >= 4
+				             then [ano] + 1
+				             else [ano],
 				        Int64.Type
 				    ),
 				
 				    AddAnoFiscalNome = Table.AddColumn(
-				        AddAnoFiscal, "AnoFiscalNome",
-				        each "FY" & Text.From([AnoFiscal]),
+				        AddAnoFiscal, "anofiscalnome",
+				        each "FY" & Text.From([anofiscal]),
 				        type text
 				    ),
 				
 				    AddMesFiscal = Table.AddColumn(
-				        AddAnoFiscalNome, "MesFiscal",
-				        each Number.Mod([MesNumero] + 8, 12) + 1,
+				        AddAnoFiscalNome, "mesfiscal",
+				        each Number.Mod([mesnumero] + 8, 12) + 1,
 				        Int64.Type
 				    ),
 				
 				    AddTrimestreFiscal = Table.AddColumn(
-				        AddMesFiscal, "TrimestreFiscal",
+				        AddMesFiscal, "trimestrefiscal",
 				        each "T" & Text.From(
-				            Number.RoundUp([MesFiscal] / 3)
+				            Number.RoundUp([mesfiscal] / 3)
 				        ),
 				        type text
 				    ),
 				
 				    AddDiaSemanaNumero = Table.AddColumn(
-				        AddTrimestreFiscal, "DiaSemanaNumero",
-				        each Date.DayOfWeek([Data], Day.Monday) + 1,
+				        AddTrimestreFiscal, "diasemananumero",
+				        each Date.DayOfWeek([data], Day.Monday) + 1,
 				        Int64.Type
 				    ),
 				
 				    AddDiaSemanaNome = Table.AddColumn(
-				        AddDiaSemanaNumero, "DiaSemanaNome",
-				        each Date.DayOfWeekName([Data], "pt-BR"),
+				        AddDiaSemanaNumero, "diasemananome",
+				        each Date.DayOfWeekName([data], "pt-BR"),
 				        type text
 				    ),
 				
 				    AddFimSemana = Table.AddColumn(
-				        AddDiaSemanaNome, "IsFimSemana",
-				        each [DiaSemanaNumero] >= 6,
+				        AddDiaSemanaNome, "isfimsemana",
+				        each [diasemananumero] >= 6,
 				        type logical
 				    ),
 				
@@ -317,7 +317,7 @@ table dCalendario
 				        {"data"},
 				        {
 				            {
-				                "DescricaoFeriado",
+				                "descricaoferiado",
 				                each Text.Combine(
 				                    List.Distinct(
 				                        List.RemoveNulls([descricao])
@@ -327,7 +327,7 @@ table dCalendario
 				                type text
 				            },
 				            {
-				                "AbrangenciaFeriado",
+				                "abrangenciaferiado",
 				                each Text.Combine(
 				                    List.Distinct(
 				                        List.RemoveNulls([abrangencia])
@@ -337,7 +337,7 @@ table dCalendario
 				                type text
 				            },
 				            {
-				                "IsFeriadoNacional",
+				                "isferiadonacional",
 				                each List.AnyTrue(
 				                    List.Transform(
 				                        [abrangencia],
@@ -356,7 +356,7 @@ table dCalendario
 				
 				    MergeFeriados = Table.NestedJoin(
 				        AddFimSemana,
-				        {"Data"},
+				        {"data"},
 				        AgruparFeriados,
 				        {"data"},
 				        "Feriado",
@@ -367,15 +367,15 @@ table dCalendario
 				        MergeFeriados,
 				        "Feriado",
 				        {
-				            "DescricaoFeriado",
-				            "AbrangenciaFeriado",
-				            "IsFeriadoNacional"
+				            "descricaoferiado",
+				            "abrangenciaferiado",
+				            "isferiadonacional"
 				        }
 				    ),
 				
 				    AddIsFeriado = Table.AddColumn(
-				        ExpandFeriados, "IsFeriado",
-				        each [DescricaoFeriado] <> null,
+				        ExpandFeriados, "isferiado",
+				        each [descricaoferiado] <> null,
 				        type logical
 				    ),
 				
@@ -383,7 +383,7 @@ table dCalendario
 				        AddIsFeriado,
 				        {
 				            {
-				                "IsFeriadoNacional",
+				                "isferiadonacional",
 				                each if _ = null then false else _,
 				                type logical
 				            }
@@ -391,9 +391,9 @@ table dCalendario
 				    ),
 				
 				    AddIsDiaUtil = Table.AddColumn(
-				        CorrigirFlagNacional, "IsDiaUtil",
-				        each not [IsFimSemana]
-				             and not [IsFeriadoNacional],
+				        CorrigirFlagNacional, "isdiautil",
+				        each not [isfimsemana]
+				             and not [isferiadonacional],
 				        type logical
 				    )
 				in

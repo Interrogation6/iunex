@@ -14,7 +14,7 @@ table dCartHist
 		dataType: int64
 		formatString: 0
 		lineageTag: fe53d2c4-ff01-4592-a548-e4bcae55baf8
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_vendedor
 
 		annotation SummarizationSetBy = Automatic

@@ -35,11 +35,6 @@ table fDevolucoes
 		summarizeBy: none
 		sourceColumn: data_devolucao
 
-		variation Variation
-			isDefault
-			relationship: d476bec1-9fd0-4c96-8e08-ca1a530581c8
-			defaultHierarchy: LocalDateTable_448c963b-079a-458a-9768-33c8edafc7ca.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
