@@ -2,36 +2,17 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "21ac6f457648203b92b3",
   "position": {
-    "x": 256,
-    "y": 768,
+    "x": 496,
+    "y": 760,
     "z": 6000,
     "height": 288,
-    "width": 1616,
+    "width": 1128,
     "tabOrder": 6000
   },
   "visual": {
     "visualType": "pivotTable",
     "query": {
       "queryState": {
-        "Columns": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dCalendario"
-                    }
-                  },
-                  "Property": "mesfiscalnome"
-                }
-              },
-              "queryRef": "dCalendario.mesfiscalnome",
-              "nativeQueryRef": "mesfiscalnome",
-              "active": true
-            }
-          ]
-        },
         "Rows": {
           "projections": [
             {
@@ -111,6 +92,34 @@
               },
               "queryRef": "Medidas.Meta",
               "nativeQueryRef": "Meta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "% Atingimento da Meta"
+                }
+              },
+              "queryRef": "Medidas.% Atingimento da Meta",
+              "nativeQueryRef": "% Atingimento da Meta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Variação YoY %"
+                }
+              },
+              "queryRef": "Medidas.Variação YoY %",
+              "nativeQueryRef": "Variação YoY %"
             }
           ],
           "fieldParameters": [
@@ -225,7 +234,14 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'Center'"
+                  "Value": "'Right'"
+                }
+              }
+            },
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
                 }
               }
             }
@@ -251,7 +267,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "175.37311110932285D"
+                  "Value": "250D"
                 }
               }
             }
@@ -281,20 +297,6 @@
         "type": "Advanced",
         "howCreated": "User",
         "isHiddenInViewMode": true
-      },
-      {
-        "name": "bba200570991d9a2270a",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dCalendario"
-              }
-            },
-            "Property": "mesfiscalnome"
-          }
-        },
-        "type": "Categorical"
       },
       {
         "name": "25e4f21b4a60e8cd9c5c",

@@ -19,7 +19,7 @@
     {
       "source": "91cf644a3c51bc15e08a",
       "target": "3c2af4f255ba84de2741",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "fc9a5aab662cbc3119ca",

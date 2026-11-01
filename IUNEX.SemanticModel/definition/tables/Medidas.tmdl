@@ -180,15 +180,24 @@ table Medidas
 
 	measure 'Clientes Ativos' =
 			
-			VAR DataReferencia = MAX(dCalendario[data])
+			VAR DataReferencia =
+			    MIN(
+			        [Data Máxima da Base],
+			        MAX(dCalendario[data])
+			    )
+			
 			RETURN
 			CALCULATE(
 			    DISTINCTCOUNT(fVendas[id_cliente]),
+			
+			    REMOVEFILTERS(dCalendario),
+			
 			    DATESBETWEEN(
 			        dCalendario[data],
 			        DataReferencia - 89,
 			        DataReferencia
 			    ),
+			
 			    fVendas[id_cliente] <> -1,
 			    NOT ISBLANK(fVendas[id_cliente])
 			)
@@ -525,7 +534,8 @@ table Medidas
 			DIVIDE(
 			    [Receita Líquida YTD FY]
 			        - [Receita Líquida YTD FY Anterior],
-			    [Receita Líquida YTD FY Anterior]
+			    [Receita Líquida YTD FY Anterior],
+			    "Infinito"
 			)
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Receita
@@ -566,7 +576,7 @@ table Medidas
 			        "Dados até "
 			            & FORMAT(DataCorte, "dd/MM/yyyy")
 			            & " — mês incompleto. ",
-			        BLANK()
+			        " "
 			    )
 		displayFolder: _Erros
 		lineageTag: dba46889-ab9f-40bd-9aa4-f19dcc9e3d54

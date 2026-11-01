@@ -249,6 +249,19 @@ table dCalendario
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Possui Dados' =
+			
+			VAR DataMaxBase = [Data Máxima da Base]
+			
+			VAR DataContexto = dCalendario[data]
+			
+			RETURN DataMaxBase >= DataContexto
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 65798dc6-88b4-4f6e-8b3a-e93cbbd9313f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dCalendario = m
 		mode: import
 		queryGroup: Modelo
