@@ -1,0 +1,25 @@
+table dSegmento
+	lineageTag: 31c7a62b-c351-4640-bc92-66ee0eb28f99
+
+	column segmento
+		dataType: string
+		lineageTag: 087f1cc0-dc7d-4c29-acbb-311ff338ad15
+		summarizeBy: none
+		sourceColumn: segmento
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dSegmento = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8sxLKS0uKcpMVIrViVZyzy9LLcrLB7MD8lNSixQCSpNyMpMhIo4licmJKRB2WGJRahaE6Xd4cb6CZ0pqXklmWiZEQSwA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [segmento = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"segmento", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

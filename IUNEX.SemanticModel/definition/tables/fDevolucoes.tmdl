@@ -182,12 +182,16 @@ table fDevolucoes
 			VAR _Id = fDevolucoes[id_vendedor_origem]
 			RETURN
 			    IF(
-			        CONTAINS(
-			            dVendedores,
-			            dVendedores[id_vendedor], _Id
-			        ),
-			        _Id,
-			        -1
+			        ISBLANK(_Id),
+			        BLANK(),
+			        IF(
+			            CONTAINS(
+			                dVendedores,
+			                dVendedores[id_vendedor], _Id
+			            ),
+			            _Id,
+			            -1
+			        )
 			    )
 		isHidden
 		formatString: 0

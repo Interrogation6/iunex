@@ -41,9 +41,12 @@ table dClientes
 
 	column segmento
 		dataType: string
+		isHidden
 		lineageTag: 595a78fd-0994-40ad-875f-780727d8e0e6
 		summarizeBy: none
 		sourceColumn: segmento
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

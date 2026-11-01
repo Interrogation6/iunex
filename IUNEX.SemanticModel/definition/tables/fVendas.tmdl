@@ -227,14 +227,19 @@ table fVendas
 			VAR _Id = fVendas[id_vendedor_origem]
 			RETURN
 			    IF(
-			        CONTAINS(
-			            dVendedores,
-			            dVendedores[id_vendedor], _Id
-			        ),
-			        _Id,
-			        -1
+			        ISBLANK(_Id),
+			        BLANK(),
+			        IF(
+			            CONTAINS(
+			                dVendedores,
+			                dVendedores[id_vendedor], _Id
+			            ),
+			            _Id,
+			            -1
+			        )
 			    )
 		isHidden
+		formatString: 0
 		lineageTag: 6c748b78-4111-446e-8fd9-d6671f3fbcb8
 		summarizeBy: none
 

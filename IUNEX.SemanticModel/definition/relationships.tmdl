@@ -50,3 +50,11 @@ relationship 177bde8f-f809-3c23-0628-ffa549ba96c8
 	fromColumn: fMetas.regiao
 	toColumn: dRegiao.regiao
 
+relationship 89bf9612-3e52-c93b-9ee2-31f30d02c90f
+	fromColumn: fMetas.segmento
+	toColumn: dSegmento.segmento
+
+relationship 13a31dfb-c0c3-e09b-cbc6-d63c2bb33659
+	fromColumn: dClientes.segmento
+	toColumn: dSegmento.segmento
+

@@ -14,9 +14,12 @@ table fMetas
 
 	column segmento
 		dataType: string
+		isHidden
 		lineageTag: 46601e4f-bae9-4743-9f0b-523aafaa2d2c
 		summarizeBy: none
 		sourceColumn: segmento
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

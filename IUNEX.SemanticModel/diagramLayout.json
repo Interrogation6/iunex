@@ -70,7 +70,7 @@
           "nodeIndex": "dClientes",
           "nodeLineageTag": "fd14a9d4-ad58-42d4-bc25-11a66338d14e",
           "size": {
-            "height": 128,
+            "height": 152,
             "width": 234
           },
           "zIndex": 8,
@@ -157,10 +157,23 @@
             "width": 234
           },
           "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1535.0885229089888,
+            "y": 794.64834738475736
+          },
+          "nodeIndex": "dSegmento",
+          "nodeLineageTag": "31c7a62b-c351-4640-bc92-66ee0eb28f99",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",
-      "zoomValue": 79.55318203769984,
+      "zoomValue": 79.553182037699841,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
