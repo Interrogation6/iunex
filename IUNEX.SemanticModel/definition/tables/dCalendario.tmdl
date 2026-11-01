@@ -1,17 +1,14 @@
 table dCalendario
 	lineageTag: 534d6fd8-dc85-43ab-be73-1f768d953064
+	dataCategory: Time
 
 	column data
 		dataType: dateTime
+		isKey
 		formatString: Long Date
 		lineageTag: eed0df8f-0d97-4db3-9161-e9eb34a1ecee
 		summarizeBy: none
 		sourceColumn: data
-
-		variation Variation
-			isDefault
-			relationship: 1246b8e6-1d8d-4b07-81ef-826cc9521b54
-			defaultHierarchy: LocalDateTable_7da135b2-3511-4ed3-9888-26734861cc80.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
@@ -66,11 +63,6 @@ table dCalendario
 		lineageTag: 05e8bd3e-6c37-4e61-a831-955a3357a4fe
 		summarizeBy: none
 		sourceColumn: iniciomes
-
-		variation Variation
-			isDefault
-			relationship: 534d3c99-dc6d-4bee-ab6e-48ad3d0ddfd8
-			defaultHierarchy: LocalDateTable_b45770f7-ffb0-46b2-b7cb-27d8e3669072.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 

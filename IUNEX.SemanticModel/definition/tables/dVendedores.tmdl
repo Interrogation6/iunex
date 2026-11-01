@@ -58,11 +58,6 @@ table dVendedores
 		summarizeBy: none
 		sourceColumn: data_admissao
 
-		variation Variation
-			isDefault
-			relationship: 57034c4f-a610-4b5b-93f4-24e94e3082ac
-			defaultHierarchy: LocalDateTable_91993098-e94e-442e-a857-2fcfe451a655.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -73,11 +68,6 @@ table dVendedores
 		lineageTag: e47b38f7-f109-4611-9706-5c106c466c1c
 		summarizeBy: none
 		sourceColumn: data_desligamento
-
-		variation Variation
-			isDefault
-			relationship: f9aa46e8-7a1a-4817-b789-8520491dacde
-			defaultHierarchy: LocalDateTable_c93b7386-9d32-4a66-b34b-5c3adbd0a993.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 

@@ -292,15 +292,7 @@ expression stg_devolucoes =
 		        }
 		    ),
 		
-		    SelectVendas = Table.SelectColumns(
-		        fVendas,
-		        {
-		            "id_pedido",
-		            "item",
-		            "valor_unitario_brl",
-		            "desconto_pct"
-		        }
-		    ),
+		    SelectVendas = Table.SelectColumns(fVendas,{"id_pedido", "item", "id_produto", "desconto_pct", "id_filial", "id_vendedor", "valor_unitario_brl", "id_cliente_modelo"}),
 		
 		    MergeVendas = Table.NestedJoin(
 		        AdjustIDs,
@@ -311,20 +303,7 @@ expression stg_devolucoes =
 		        JoinKind.LeftOuter
 		    ),
 		
-		    ExpandVendas = Table.ExpandTableColumn(
-		        MergeVendas,
-		        "VendaOriginal",
-		        {
-		            "id_pedido",
-		            "valor_unitario_brl",
-		            "desconto_pct"
-		        },
-		        {
-		            "id_pedido",
-		            "valor_unitario_brl",
-		            "desconto_pct"
-		        }
-		    ),
+		    ExpandVendas = Table.ExpandTableColumn(MergeVendas, "VendaOriginal", {"id_pedido", "id_produto", "desconto_pct", "id_filial", "id_vendedor", "valor_unitario_brl", "id_cliente_modelo"}, {"id_pedido", "id_produto", "desconto_pct", "id_filial", "id_vendedor", "valor_unitario_brl", "id_cliente_modelo"}),
 		
 		    ValidatePedido = Table.TransformColumns(
 		        ExpandVendas,

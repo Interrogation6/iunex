@@ -44,29 +44,22 @@ queryGroup Stage\Metas
 
 	annotation PBI_QueryGroupOrder = 0
 
-annotation __PBI_TimeIntelligenceEnabled = 1
+annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_QueryOrder = ["cambio_usd","carteira_historica","clientes","devolucoes","feriados","produtos","seguranca_acessos","stg_metas","stg_Carteira_Historica","stg_Clientes","auxSegmento","Path","auxRegiao","fxValidarCNPJ","fxExtrairID","stg_devolucoes","stg_produtos","fxRejeitarNulo","stg_seguranca_acessos","stg_vendas","stg_vendedores","vendas_2024","vendas_2025","vendas_2026","vendedores","stg_vendas_2024","stg_vendas_2025","stg_vendas_2026","fVendas","fDevolucoes","metas_2024","metas_2025","metas_2026","stg_metas_2024","stg_metas_2025","stg_metas_2026","fMetas","dCalendario","dCartHist","dClientes","dProdutos","dAcessos","dVendedores","metas_workbook","auxCambioDiario","fxQuarentena","fErros"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
 ref table fVendas
-ref table DateTableTemplate_f578ad0b-3a6c-4932-b49c-0a11549e4451
 ref table fDevolucoes
 ref table fMetas
 ref table dCartHist
-ref table LocalDateTable_6168895a-1390-40a9-837b-c989de292328
 ref table dClientes
 ref table dProdutos
 ref table dAcessos
 ref table dVendedores
-ref table LocalDateTable_91993098-e94e-442e-a857-2fcfe451a655
-ref table LocalDateTable_c93b7386-9d32-4a66-b34b-5c3adbd0a993
-ref table LocalDateTable_0007c9f5-8560-4ff8-be71-79d27aced495
 ref table fErros
 ref table dCalendario
-ref table LocalDateTable_7da135b2-3511-4ed3-9888-26734861cc80
-ref table LocalDateTable_b45770f7-ffb0-46b2-b7cb-27d8e3669072
 
 ref cultureInfo en-US
 

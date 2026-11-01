@@ -67,13 +67,8 @@ table fMetas
 				        Source,
 				        Text.Lower
 				    ),
-				
-				    RemovedErrors = Table.RemoveRowsWithErrors(
-				        RenamedColumns
-				    ),
-				
 				    AddedData = Table.AddColumn(
-				        RemovedErrors,
+				        RenamedColumns,
 				        "data",
 				        each
 				            let
@@ -96,9 +91,13 @@ table fMetas
 				                        Detail = [mes]
 				                    ],
 				        type date
+				    ),
+				
+				    RemovedErrors = Table.RemoveRowsWithErrors(
+				        AddedData
 				    )
 				in
-				    AddedData
+				    RemovedErrors
 
 	annotation PBI_NavigationStepName = Navigation
 

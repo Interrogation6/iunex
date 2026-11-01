@@ -26,11 +26,6 @@ table dCartHist
 		summarizeBy: none
 		sourceColumn: vigencia_inicio
 
-		variation Variation
-			isDefault
-			relationship: feb35f49-aaaa-4d17-a0c4-4b86543be301
-			defaultHierarchy: LocalDateTable_6168895a-1390-40a9-837b-c989de292328.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -41,11 +36,6 @@ table dCartHist
 		lineageTag: a4c472fe-3abf-4efb-ae7d-f01146e60118
 		summarizeBy: none
 		sourceColumn: vigencia_fim
-
-		variation Variation
-			isDefault
-			relationship: fc6f7740-3bc6-4c6f-a90e-57fd12ccc88d
-			defaultHierarchy: LocalDateTable_0007c9f5-8560-4ff8-be71-79d27aced495.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
