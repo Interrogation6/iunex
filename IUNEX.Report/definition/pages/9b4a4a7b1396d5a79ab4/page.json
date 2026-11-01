@@ -36,5 +36,48 @@
       "target": "3c2af4f255ba84de2741",
       "type": "NoFilter"
     }
-  ]
+  ],
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#EFF3F6'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspace": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#081B2C'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
 }
