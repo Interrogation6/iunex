@@ -2,11 +2,13 @@ table fDevolucoes
 	lineageTag: a517d2b6-2d66-4956-90ed-df37e8a6a5ce
 
 	column id_devolucao
-		dataType: int64
-		formatString: 0
+		dataType: decimal
+		formatString: 0.00
 		lineageTag: 0d1c24cc-8ab8-45e9-a071-25ee742fc29d
 		summarizeBy: none
 		sourceColumn: id_devolucao
+
+		changedProperty = DataType
 
 		annotation SummarizationSetBy = User
 
@@ -80,13 +82,15 @@ table fDevolucoes
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
 	column valor_liquido
-		dataType: decimal
-		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		dataType: double
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		lineageTag: 6522b4ac-3f70-4db3-a916-7e3b3b5b89b2
 		summarizeBy: sum
 		sourceColumn: valor_liquido
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = User
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 

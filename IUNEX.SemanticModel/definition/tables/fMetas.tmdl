@@ -53,7 +53,7 @@ table fMetas
 
 	column data
 		dataType: dateTime
-		formatString: Long Date
+		formatString: Short Date
 		lineageTag: feeaa31c-52e2-414e-9c2b-eb6aa7f6362a
 		summarizeBy: none
 		sourceColumn: data

@@ -77,10 +77,13 @@ table dProdutos
 		annotation SummarizationSetBy = Automatic
 
 	column flag_descontinuado
-		dataType: string
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 4b56bf8f-2e1c-4a67-9d03-b5d31471d3a5
 		summarizeBy: none
 		sourceColumn: flag_descontinuado
+
+		changedProperty = DataType
 
 		annotation SummarizationSetBy = Automatic
 

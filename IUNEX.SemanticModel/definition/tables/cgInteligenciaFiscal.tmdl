@@ -1,0 +1,35 @@
+table cgInteligenciaFiscal
+	lineageTag: 7e9af8bd-af42-46af-ba28-32746f95f70d
+
+	calculationGroup
+
+		calculationItem Atual = SELECTEDMEASURE()
+
+		calculationItem 'YTD Fiscal' =
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    DATESYTD(
+				        dCalendario[data],
+				        "03/31"
+				    )
+				)
+
+	column PeriodoFiscal
+		dataType: string
+		lineageTag: 547ba765-d494-4cdc-a2d4-29adc64765f1
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: beef689e-a227-4747-8db7-02c4e1f02ac5
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

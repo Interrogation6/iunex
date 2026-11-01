@@ -19,7 +19,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 5
+          "zIndex": 6
         },
         {
           "location": {
@@ -32,7 +32,7 @@
             "height": 224,
             "width": 234
           },
-          "zIndex": 2
+          "zIndex": 3
         },
         {
           "location": {
@@ -45,7 +45,7 @@
             "height": 72,
             "width": 234
           },
-          "zIndex": 3,
+          "zIndex": 4,
           "expandedHeight": 176
         },
         {
@@ -59,7 +59,7 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 11,
+          "zIndex": 12,
           "expandedHeight": 176
         },
         {
@@ -73,7 +73,7 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 8,
+          "zIndex": 9,
           "expandedHeight": 300
         },
         {
@@ -87,7 +87,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 7,
+          "zIndex": 8,
           "expandedHeight": 296
         },
         {
@@ -101,7 +101,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 9,
+          "zIndex": 10,
           "expandedHeight": 272
         },
         {
@@ -115,7 +115,7 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 6
+          "zIndex": 7
         },
         {
           "location": {
@@ -128,7 +128,7 @@
             "height": 72,
             "width": 234
           },
-          "zIndex": 4,
+          "zIndex": 5,
           "expandedHeight": 300
         },
         {
@@ -142,7 +142,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 10,
+          "zIndex": 11,
           "expandedHeight": 300
         },
         {
@@ -156,7 +156,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 1
+          "zIndex": 2
         },
         {
           "location": {
@@ -169,7 +169,35 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1379.0445748906222,
+            "y": 0
+          },
+          "nodeIndex": "Medidas",
+          "nodeLineageTag": "b8902f3e-43be-4373-9da5-1639e04cfe69",
+          "size": {
+            "height": 72,
+            "width": 234
+          },
+          "zIndex": 0,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 1625.5073284735226,
+            "y": 0
+          },
+          "nodeIndex": "cgInteligenciaFiscal",
+          "nodeLineageTag": "7e9af8bd-af42-46af-ba28-32746f95f70d",
+          "size": {
+            "height": 72,
+            "width": 234
+          },
+          "zIndex": 0,
+          "expandedHeight": 128
         }
       ],
       "name": "All tables",

@@ -1,0 +1,164 @@
+table Medidas
+	lineageTag: b8902f3e-43be-4373-9da5-1639e04cfe69
+
+	measure 'Receita Bruta' =
+			
+			SUM(fVendas[receita_bruta])
+		formatString: 0
+		displayFolder: Faturamento e Devoluções
+		lineageTag: 7278b47c-de30-4ec1-a7e4-77eea950e64d
+
+	measure 'Receita de Vendas' =
+			
+			SUM(fVendas[receita_liquida])
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Faturamento e Devoluções
+		lineageTag: 143cd1a0-fa20-444e-a380-1b61df151637
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Valor Devolvido' =
+			
+			SUM(fDevolucoes[valor_liquido])
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Faturamento e Devoluções
+		lineageTag: 114d83e9-7f08-4d57-b605-65f7a264711b
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Receita Líquida' =
+			
+			[Receita de Vendas] - [Valor Devolvido]
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Faturamento e Devoluções
+		lineageTag: 29f1009e-8ec0-43e1-9e58-6e943f77dce5
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Pedidos Faturados' =
+			
+			DISTINCTCOUNT(fVendas[id_pedido])
+		formatString: #,0
+		displayFolder: Faturamento e Devoluções
+		lineageTag: 7924ac26-2375-42f3-b74b-7ec0f708190f
+
+	measure 'Ticket Médio por Pedido' =
+			
+			DIVIDE(
+			    [Receita de Vendas],
+			    [Pedidos Faturados]
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Faturamento e Devoluções
+		lineageTag: 2212cae7-1621-466c-a4b6-e2577be4db88
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Devolução sobre Receita Bruta' =
+			
+			DIVIDE(
+			    [Valor Devolvido],
+			    [Receita Bruta]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Faturamento e Devoluções
+		lineageTag: 6bc3890e-46e9-4bad-bf45-b7d8ee38feb2
+
+	measure Meta =
+			
+			VAR DetalheCanal =
+			    ISINSCOPE(fVendas[canal])
+			        || ISFILTERED(fVendas[canal])
+			
+			VAR MetaMensal =
+			    CALCULATE(
+			        SUM(fMetas[valor_meta]),
+			        KEEPFILTERS(
+			            fMetas[mes] IN {
+			                "Jan", "Fev", "Mar", "Abr",
+			                "Mai", "Jun", "Jul", "Ago",
+			                "Set", "Out", "Nov", "Dez"
+			            }
+			        ),
+			        KEEPFILTERS(
+			            fMetas[regiao] <> "Total Geral"
+			        )
+			    )
+			
+			RETURN
+			    IF(
+			        DetalheCanal,
+			        BLANK(),
+			        MetaMensal
+			    )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Metas e Atingimento
+		lineageTag: 4ce3cf30-b902-4ec8-8199-b8bfda3c9d68
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Atingimento da Meta' =
+			
+			VAR MetaAtual = [Meta]
+			RETURN
+			    IF(
+			        ISBLANK(MetaAtual),
+			        BLANK(),
+			        DIVIDE(
+			            [Receita Líquida],
+			            MetaAtual
+			        )
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Metas e Atingimento
+		lineageTag: 4f11dcff-48a4-48ac-ae8d-0121ff41ef84
+
+	measure 'Desvio da Meta R$' =
+			
+			VAR MetaAtual = [Meta]
+			RETURN
+			    IF(
+			        ISBLANK(MetaAtual),
+			        BLANK(),
+			        [Receita Líquida] - MetaAtual
+			    )
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Metas e Atingimento
+		lineageTag: 4ba3d773-e252-4431-ac00-b1e7556559e7
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Desvio da Meta %' =
+			
+			VAR MetaAtual = [Meta]
+			RETURN
+			    IF(
+			        ISBLANK(MetaAtual),
+			        BLANK(),
+			        DIVIDE(
+			            [Receita Líquida] - MetaAtual,
+			            MetaAtual
+			        )
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Metas e Atingimento
+		lineageTag: d20fd1bb-e6d4-467e-8458-f495d0b85bae
+
+	column _
+		isHidden
+		formatString: 0
+		lineageTag: d0adc747-fd7a-41c9-a4a5-fc57be50166b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [_]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Medidas = calculated
+		mode: import
+		source =
+				
+				ROW("_", BLANK())
+
+	annotation PBI_Id = b4dc95e74a3247b7872ec5fc60afdd59
+
