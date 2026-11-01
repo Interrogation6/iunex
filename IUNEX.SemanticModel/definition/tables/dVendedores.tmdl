@@ -45,28 +45,41 @@ table dVendedores
 		annotation SummarizationSetBy = Automatic
 
 	column id_gestor
-		dataType: string
+		dataType: int64
+		formatString: 0
 		lineageTag: 9ce4d7e1-a5a8-430b-a96d-dd807b61476c
 		summarizeBy: none
 		sourceColumn: id_gestor
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = User
 
 	column data_admissao
-		dataType: string
+		dataType: dateTime
+		formatString: Short Date
 		lineageTag: d3099a7e-fb7c-48cf-abca-fad6c36a437c
 		summarizeBy: none
 		sourceColumn: data_admissao
 
+		changedProperty = DataType
+
 		annotation SummarizationSetBy = Automatic
 
+		annotation UnderlyingDateTimeDataType = Date
+
 	column data_desligamento
-		dataType: string
+		dataType: dateTime
+		formatString: Short Date
 		lineageTag: e47b38f7-f109-4611-9706-5c106c466c1c
 		summarizeBy: none
 		sourceColumn: data_desligamento
 
+		changedProperty = DataType
+
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	partition dVendedores = m
 		mode: import

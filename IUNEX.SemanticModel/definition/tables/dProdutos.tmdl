@@ -53,18 +53,26 @@ table dProdutos
 		annotation SummarizationSetBy = Automatic
 
 	column custo_padrao
-		dataType: string
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
 		lineageTag: b8a904a9-f1d5-453a-8715-187e6bfef133
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: custo_padrao
+
+		changedProperty = DataType
 
 		annotation SummarizationSetBy = Automatic
 
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
 	column preco_lista
-		dataType: string
+		dataType: decimal
+		formatString: #,0.00
 		lineageTag: 78dbf591-5771-4ea2-8db5-2f448a2546bc
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: preco_lista
+
+		changedProperty = DataType
 
 		annotation SummarizationSetBy = Automatic
 

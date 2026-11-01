@@ -13,12 +13,15 @@ table dClientes
 		annotation SummarizationSetBy = Automatic
 
 	column id_matriz
-		dataType: string
+		dataType: int64
+		formatString: 0
 		lineageTag: 5397e1bc-e518-4c96-bf76-668fe6365373
 		summarizeBy: none
 		sourceColumn: id_matriz
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = User
 
 	column razao_social
 		dataType: string
@@ -58,6 +61,7 @@ table dClientes
 	column uf
 		dataType: string
 		lineageTag: c6ebc2b3-331b-46b2-8cbf-9259fd64f0fb
+		dataCategory: County
 		summarizeBy: none
 		sourceColumn: uf
 
@@ -66,18 +70,24 @@ table dClientes
 	column cidade
 		dataType: string
 		lineageTag: 0da8f065-5d0e-4d94-9d70-73ca1592575b
+		dataCategory: City
 		summarizeBy: none
 		sourceColumn: cidade
 
 		annotation SummarizationSetBy = Automatic
 
 	column data_cadastro
-		dataType: string
+		dataType: dateTime
+		formatString: Short Date
 		lineageTag: 93b5e589-995a-4782-a503-c7839c2a1bf4
 		summarizeBy: none
 		sourceColumn: data_cadastro
 
+		changedProperty = DataType
+
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column situacao
 		dataType: string

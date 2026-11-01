@@ -384,7 +384,7 @@ expression stg_produtos =
 		    {"subcategoria", each fxRejeitarNulo(_), type text},
 		    {"linha", each fxRejeitarNulo(_), type text}
 		}),
-		    #"Changed Type" = Table.TransformColumnTypes(ValidateNulls,{{"flag_descontinuado", type logical}})
+		    #"Changed Type" = Table.TransformColumnTypes(ValidateNulls,{{"flag_descontinuado", type logical}, {"custo_padrao", Currency.Type}, {"preco_lista", Currency.Type}})
 		in
 		    #"Changed Type"
 	lineageTag: a473de1d-3fb4-4cd1-914e-afe66ce59d0f
@@ -435,7 +435,7 @@ expression stg_vendedores =
 		    Source = vendedores,
 		    AdjustIDs = Table.TransformColumns(Source, {
 		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type},
-		    {"id_gestor", each if _ = "" then "" else fxExtrairID(_, 1), Int64.Type}
+		    {"id_gestor", each if _ = "" then null else fxExtrairID(_, 1), Int64.Type}
 		}),
 		    ValidateIDs = fxValidarChaveUnica(
 		        AdjustIDs,
