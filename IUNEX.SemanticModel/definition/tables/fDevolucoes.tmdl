@@ -1,32 +1,35 @@
 table fDevolucoes
+	excludeFromModelRefresh
 	lineageTag: a517d2b6-2d66-4956-90ed-df37e8a6a5ce
 
 	column id_devolucao
 		dataType: int64
 		formatString: 0
 		lineageTag: 0d1c24cc-8ab8-45e9-a071-25ee742fc29d
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_devolucao
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column id_pedido_origem
 		dataType: int64
 		formatString: 0
 		lineageTag: a13b966d-5fe6-48d9-8cdc-53a89c7f72bd
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_pedido_origem
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
 
 	column item
 		dataType: int64
 		formatString: 0
 		lineageTag: 3283c4ba-8d71-4a24-9f14-ea0081a82e2c
-		summarizeBy: sum
+		summarizeBy: count
 		sourceColumn: item
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column data_devolucao
 		dataType: dateTime
@@ -59,10 +62,10 @@ table fDevolucoes
 	column desconto_pct
 		dataType: double
 		lineageTag: b397d076-b641-44ba-b0e5-a9dcc31b596f
-		summarizeBy: sum
+		summarizeBy: average
 		sourceColumn: desconto_pct
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -88,39 +91,111 @@ table fDevolucoes
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
-	column id_produto
-		dataType: int64
-		formatString: 0
-		lineageTag: 9fcf8908-d8a2-4dff-936d-c0bf2ea7735b
-		summarizeBy: sum
-		sourceColumn: id_produto
-
-		annotation SummarizationSetBy = Automatic
-
 	column id_filial
 		dataType: int64
 		formatString: 0
 		lineageTag: da852e3e-2353-4a98-aa5c-729f736f1ebd
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_filial
 
+		annotation SummarizationSetBy = User
+
+	column id_cliente_origem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1f0d7d4e-bfcc-4623-b307-191e198a3ac4
+		summarizeBy: sum
+		sourceColumn: id_cliente_origem
+
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
-	column id_vendedor
+	column id_produto_origem
 		dataType: int64
+		isHidden
 		formatString: 0
-		lineageTag: 50aa3c61-3827-4df9-ae53-8ac64b5a993c
+		lineageTag: 8d4fea8f-79af-42c4-8ca5-7b057a910b1f
 		summarizeBy: sum
-		sourceColumn: id_vendedor
+		sourceColumn: id_produto_origem
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
-	column id_cliente_modelo
+	column id_vendedor_origem
 		dataType: int64
+		isHidden
 		formatString: 0
-		lineageTag: e5a86163-936c-41d3-b12c-c694cc91429d
+		lineageTag: 4d5956f6-ef3e-4212-8529-e45bf7f57d84
 		summarizeBy: sum
-		sourceColumn: id_cliente_modelo
+		sourceColumn: id_vendedor_origem
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cliente =
+			
+			VAR _Id = fDevolucoes[id_cliente_origem]
+			RETURN
+			    IF(
+			        CONTAINS(
+			            dClientes,
+			            dClientes[id_cliente], _Id
+			        ),
+			        _Id,
+			        -1
+			    )
+		isHidden
+		formatString: 0
+		lineageTag: 88f0e7aa-3245-46d1-820f-c4a53cc9dfb3
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_produto =
+			
+			VAR _Id = fDevolucoes[id_produto_origem]
+			RETURN
+			    IF(
+			        CONTAINS(
+			            dProdutos,
+			            dProdutos[id_produto], _Id
+			        ),
+			        _Id,
+			        -1
+			    )
+		isHidden
+		formatString: 0
+		lineageTag: 3450f989-f3f1-47e7-85f8-01023c6da419
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_vendedor =
+			
+			VAR _Id = fDevolucoes[id_vendedor_origem]
+			RETURN
+			    IF(
+			        CONTAINS(
+			            dVendedores,
+			            dVendedores[id_vendedor], _Id
+			        ),
+			        _Id,
+			        -1
+			    )
+		isHidden
+		formatString: 0
+		lineageTag: 2f1f9143-3b63-4b2e-aa90-8ffe982bc795
+		summarizeBy: none
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

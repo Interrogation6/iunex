@@ -202,14 +202,13 @@ expression fxValidarCNPJ = ```
 
 	annotation PBI_ResultType = Function
 
-expression stg_Carteira_Historica = ```
+expression stg_Carteira_Historica =
 		let
 		    Source = carteira_historica,
 		    AdjustIDs = Table.TransformColumns(Source, {
 		        {"id_cliente", each fxExtrairID(_), Int64.Type},
 		        {"id_vendedor", each fxExtrairID(_), Int64.Type}
 		    }),
-		    
 		    ValidateVigencia = Table.AddColumn(
 		        AdjustIDs,
 		        "vigencia_fim_validada",
@@ -241,7 +240,6 @@ expression stg_Carteira_Historica = ```
 		
 		in
 		    RenameColuna
-		```
 	lineageTag: 35812855-11c2-4be9-86af-cdb9ebe31ec8
 	queryGroup: Stage
 
@@ -280,7 +278,7 @@ expression fxExtrairID = ```
 
 	annotation PBI_ResultType = Function
 
-expression stg_devolucoes =
+expression stg_devolucoes = ```
 		let
 		    Source = devolucoes,
 		
@@ -291,19 +289,48 @@ expression stg_devolucoes =
 		            {"id_pedido_origem", each fxExtrairID(_, 2), Int64.Type}
 		        }
 		    ),
-		
-		    SelectVendas = Table.SelectColumns(fVendas,{"id_pedido", "item", "id_produto", "desconto_pct", "id_filial", "id_vendedor", "valor_unitario_brl", "id_cliente_modelo"}),
-		
-		    MergeVendas = Table.NestedJoin(
+		    ValidateIDs = fxValidarChaveUnica(
 		        AdjustIDs,
-		        {"id_pedido_origem", "item"},
-		        SelectVendas,
-		        {"id_pedido", "item"},
-		        "VendaOriginal",
-		        JoinKind.LeftOuter
+		        {"id_devolucao"}
 		    ),
 		
-		    ExpandVendas = Table.ExpandTableColumn(MergeVendas, "VendaOriginal", {"id_pedido", "id_produto", "desconto_pct", "id_filial", "id_vendedor", "valor_unitario_brl", "id_cliente_modelo"}, {"id_pedido", "id_produto", "desconto_pct", "id_filial", "id_vendedor", "valor_unitario_brl", "id_cliente_modelo"}),
+		    
+		SelectVendas = Table.SelectColumns(
+		    fVendas,
+		    {
+		        "id_pedido",
+		        "item",
+		        "id_cliente_origem",
+		        "id_produto_origem",
+		        "id_vendedor_origem",
+		        "id_filial",
+		        "desconto_pct",
+		        "valor_unitario_brl"
+		    }
+		),
+		
+		MergeVendas = Table.NestedJoin(
+		    ValidateIDs,
+		    {"id_pedido_origem", "item"},
+		    SelectVendas,
+		    {"id_pedido", "item"},
+		    "VendaOriginal",
+		    JoinKind.LeftOuter
+		),
+		
+		ExpandVendas = Table.ExpandTableColumn(
+		    MergeVendas,
+		    "VendaOriginal",
+		    {
+		        "id_pedido",
+		        "id_cliente_origem",
+		        "id_produto_origem",
+		        "id_vendedor_origem",
+		        "id_filial",
+		        "desconto_pct",
+		        "valor_unitario_brl"
+		    }
+		),
 		
 		    ValidatePedido = Table.TransformColumns(
 		        ExpandVendas,
@@ -334,6 +361,7 @@ expression stg_devolucoes =
 		    )
 		in
 		    AddedValorLiquido
+		```
 	lineageTag: 1cbcdc57-ac47-4110-acb0-ac6b66f230b1
 	queryGroup: Stage
 
@@ -347,7 +375,11 @@ expression stg_produtos =
 		    AdjustIDs = Table.TransformColumns(Source, {
 		        {"id_produto", each fxExtrairID(_, 4), Int64.Type}
 		    }),
-		    ValidateNulls = Table.TransformColumns(AdjustIDs, {
+		    ValidateIDs = fxValidarChaveUnica(
+		        AdjustIDs,
+		        {"id_produto"}
+		    ),
+		    ValidateNulls = Table.TransformColumns(ValidateIDs, {
 		    {"categoria", each fxRejeitarNulo(_), type text},
 		    {"subcategoria", each fxRejeitarNulo(_), type text},
 		    {"linha", each fxRejeitarNulo(_), type text}
@@ -403,10 +435,14 @@ expression stg_vendedores =
 		    Source = vendedores,
 		    AdjustIDs = Table.TransformColumns(Source, {
 		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type},
-		    {"id_gestor", each fxExtrairID(_, 1), Int64.Type}
-		})
+		    {"id_gestor", each if _ = "" then "" else fxExtrairID(_, 1), Int64.Type}
+		}),
+		    ValidateIDs = fxValidarChaveUnica(
+		        AdjustIDs,
+		        {"id_vendedor"}
+		    )
 		in
-		    AdjustIDs
+		    ValidateIDs
 	lineageTag: b5eb01c4-c554-47f4-a573-daf3af0137c0
 	queryGroup: Stage
 
@@ -464,7 +500,11 @@ expression stg_Clientes = ```
 		        {"id_cliente", each fxExtrairID(_), Int64.Type},
 		        {"id_matriz", each if _ = "" then null else fxExtrairID(_), Int64.Type}
 		    }),
-		    DuplicateRazao = Table.DuplicateColumn(AdjustIDs, "razao_social", "grupo"),
+		    ValidateIDs = fxValidarChaveUnica(
+		        AdjustIDs,
+		        {"id_cliente"}
+		    ),
+		    DuplicateRazao = Table.DuplicateColumn(ValidateIDs, "razao_social", "grupo"),
 		    ExtractGrupo = Table.SplitColumn(DuplicateRazao, "grupo", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv, false), {"grupo"}),
 		    CleanTexts = Table.TransformColumns(ExtractGrupo,{
 		        {"segmento", each Text.Trim(Text.Proper(_)), type text},
@@ -564,7 +604,7 @@ expression stg_vendas_2024 =
 		        {"desconto_pct", each _ / 100, Percentage.Type}
 		    }
 		),
-		    AddedOrigem = Table.AddColumn(#"Changed Type", "origem", each "vendas_2024")
+		    AddedOrigem = Table.AddColumn(#"Changed Type", "origem", each "Vendas_2024")
 		in
 		    AddedOrigem
 	lineageTag: 0e95066d-3d9d-4a12-aa81-011c1be73115
@@ -611,7 +651,7 @@ expression stg_vendas_2025 =
 		    AddedFreteRateado = Table.AddColumn(ValidateNulls, "frete_rateado", each null, Currency.Type),
 		    DistinctIdItem = Table.Distinct(AddedFreteRateado, {"id_pedido", "item"}),
 		    #"Changed Type" = Table.TransformColumnTypes(DistinctIdItem,{{"desconto_pct", Percentage.Type}}),
-		    AddedOrigem = Table.AddColumn(#"Changed Type", "origem", each "vendas_2025")
+		    AddedOrigem = Table.AddColumn(#"Changed Type", "origem", each "Vendas_2025")
 		in
 		    AddedOrigem
 	lineageTag: 78c0c388-b32b-4c68-acbc-d3ce49d9f39e
@@ -679,7 +719,7 @@ expression stg_vendas_2026 =
 		    AddedOrigem = Table.AddColumn(
 		        #"Changed Type",
 		        "origem",
-		        each "vendas_2026"
+		        each "Vendas_2026"
 		    )
 		in
 		    AddedOrigem
@@ -697,7 +737,6 @@ expression stg_vendas =
 		        stg_vendas_2025,
 		        stg_vendas_2024
 		    }),
-		
 		    MergeCambio = Table.NestedJoin(
 		        Source,
 		        {"data_emissao"},
@@ -1145,6 +1184,174 @@ expression fxQuarentena =
 		in
 		    fxQuarentena
 	lineageTag: 24d22878-9811-4d12-aa1a-8193bdff5604
+	queryGroup: 'Parametros & Funcoes'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression fxValidarChaveUnica =
+		let
+		    fxValidarChaveUnica = (
+		        Tabela as table,
+		        ColunasChave as list
+		    ) as table =>
+		    let
+		        ColunasOriginais = Table.ColumnNames(Tabela),
+		
+		        ColunaErro = ColunasChave{0},
+		
+		        TipoChave = Record.Field(
+		            Type.RecordFields(
+		                Type.TableRow(Value.Type(Tabela))
+		            ),
+		            ColunaErro
+		        )[Type],
+		
+		        AddIndice = Table.AddIndexColumn(
+		            Tabela,
+		            "__IndiceUnico",
+		            0,
+		            1,
+		            Int64.Type
+		        ),
+		
+		        SelectChaves = Table.SelectColumns(
+		            AddIndice,
+		            ColunasChave & {"__IndiceUnico"}
+		        ),
+		
+		        RemoveErrosExistentes = Table.RemoveRowsWithErrors(
+		            SelectChaves,
+		            ColunasChave
+		        ),
+		
+		        FilterChavesValidas = Table.SelectRows(
+		            RemoveErrosExistentes,
+		            (Linha) =>
+		                List.AllTrue(
+		                    List.Transform(
+		                        ColunasChave,
+		                        (Chave) =>
+		                            Record.Field(Linha, Chave) <> null
+		                    )
+		                )
+		        ),
+		
+		        GroupChaves = Table.Group(
+		            FilterChavesValidas,
+		            ColunasChave,
+		            {
+		                {
+		                    "__PrimeiroIndice",
+		                    each List.Min([__IndiceUnico]),
+		                    Int64.Type
+		                },
+		                {
+		                    "__Indices",
+		                    each [__IndiceUnico],
+		                    type list
+		                }
+		            }
+		        ),
+		
+		        ExpandIndices = Table.ExpandListColumn(
+		            Table.SelectColumns(
+		                GroupChaves,
+		                {"__PrimeiroIndice", "__Indices"}
+		            ),
+		            "__Indices"
+		        ),
+		
+		        FilterDuplicados = Table.SelectRows(
+		            ExpandIndices,
+		            each [__Indices] <> [__PrimeiroIndice]
+		        ),
+		
+		        RenameIndice = Table.RenameColumns(
+		            Table.SelectColumns(
+		                FilterDuplicados,
+		                {"__Indices"}
+		            ),
+		            {{"__Indices", "__IndiceUnico"}}
+		        ),
+		
+		        AddMarcador = Table.AddColumn(
+		            RenameIndice,
+		            "__Duplicado",
+		            each true,
+		            type logical
+		        ),
+		
+		        MergeDuplicados = Table.NestedJoin(
+		            AddIndice,
+		            {"__IndiceUnico"},
+		            AddMarcador,
+		            {"__IndiceUnico"},
+		            "__Validacao",
+		            JoinKind.LeftOuter
+		        ),
+		
+		        ExpandDuplicados = Table.ExpandTableColumn(
+		            MergeDuplicados,
+		            "__Validacao",
+		            {"__Duplicado"},
+		            {"__Duplicado"}
+		        ),
+		
+		        ValidateChave = Table.AddColumn(
+		            ExpandDuplicados,
+		            "__ChaveValidada",
+		            (Linha) =>
+		                if Linha[__Duplicado] = true then
+		                    error [
+		                        Reason = "Chave Duplicada",
+		                        Message =
+		                            "Chave duplicada: " &
+		                            Text.Combine(
+		                                List.Transform(
+		                                    ColunasChave,
+		                                    (Chave) =>
+		                                        Chave & "=" &
+		                                        (
+		                                            try Text.From(
+		                                                Record.Field(Linha, Chave),
+		                                                "pt-BR"
+		                                            )
+		                                            otherwise "[ERRO]"
+		                                        )
+		                                ),
+		                                " | "
+		                            )
+		                    ]
+		                else
+		                    Record.Field(Linha, ColunaErro),
+		            TipoChave
+		        ),
+		
+		        RemoveAuxiliares = Table.RemoveColumns(
+		            ValidateChave,
+		            {
+		                ColunaErro,
+		                "__IndiceUnico",
+		                "__Duplicado"
+		            }
+		        ),
+		
+		        RenameChave = Table.RenameColumns(
+		            RemoveAuxiliares,
+		            {{"__ChaveValidada", ColunaErro}}
+		        ),
+		
+		        ReorderColumns = Table.ReorderColumns(
+		            RenameChave,
+		            ColunasOriginais
+		        )
+		    in
+		        ReorderColumns
+		in
+		    fxValidarChaveUnica
+	lineageTag: 6b63b8ae-6c3e-430c-9c1b-103631c966ae
 	queryGroup: 'Parametros & Funcoes'
 
 	annotation PBI_NavigationStepName = Navigation

@@ -5,19 +5,19 @@ table fVendas
 		dataType: int64
 		formatString: 0
 		lineageTag: b84f8395-8f7a-4c0e-b363-6e3cc46e5c3a
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_pedido
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column item
 		dataType: int64
 		formatString: 0
 		lineageTag: 0c7cdb05-25dd-4a34-bb81-13a91f079284
-		summarizeBy: sum
+		summarizeBy: count
 		sourceColumn: item
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column data_emissao
 		dataType: dateTime
@@ -29,33 +29,6 @@ table fVendas
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
-
-	column id_cliente
-		dataType: int64
-		formatString: 0
-		lineageTag: d7104c9b-bcf2-4b9d-ba2e-87f2fd157345
-		summarizeBy: sum
-		sourceColumn: id_cliente
-
-		annotation SummarizationSetBy = Automatic
-
-	column id_produto
-		dataType: int64
-		formatString: 0
-		lineageTag: 95fd6da8-4d16-46c5-a38b-6a6952d03c28
-		summarizeBy: none
-		sourceColumn: id_produto
-
-		annotation SummarizationSetBy = Automatic
-
-	column id_vendedor
-		dataType: int64
-		formatString: 0
-		lineageTag: 1cd99028-2720-456e-ae80-90c5628ab584
-		summarizeBy: sum
-		sourceColumn: id_vendedor
-
-		annotation SummarizationSetBy = Automatic
 
 	column quantidade
 		dataType: double
@@ -80,10 +53,10 @@ table fVendas
 	column desconto_pct
 		dataType: double
 		lineageTag: fa411867-6d07-4b21-ac45-63a6b2237149
-		summarizeBy: sum
+		summarizeBy: average
 		sourceColumn: desconto_pct
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -115,10 +88,10 @@ table fVendas
 		dataType: int64
 		formatString: 0
 		lineageTag: 5860d44a-5669-4ac1-a4f7-040390769d9b
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_filial
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column frete_rateado
 		dataType: decimal
@@ -150,15 +123,6 @@ table fVendas
 
 		annotation SummarizationSetBy = Automatic
 
-	column id_cliente_modelo
-		dataType: int64
-		formatString: 0
-		lineageTag: d4cc3677-f0c7-4034-8e53-9c8433249cde
-		summarizeBy: none
-		sourceColumn: id_cliente_modelo
-
-		annotation SummarizationSetBy = Automatic
-
 	column receita_bruta
 		dataType: decimal
 		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
@@ -181,63 +145,249 @@ table fVendas
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
+	column id_cliente_origem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b9911ac6-35fd-46c7-93f2-aae361e5ce5f
+		summarizeBy: sum
+		sourceColumn: id_cliente_origem
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_produto_origem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0389afc9-12a4-4f23-a944-078400c0f001
+		summarizeBy: sum
+		sourceColumn: id_produto_origem
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_vendedor_origem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8c91ee04-7305-47d3-96d2-38381dedbe99
+		summarizeBy: sum
+		sourceColumn: id_vendedor_origem
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cliente =
+			
+			VAR _Id = fVendas[id_cliente_origem]
+			RETURN
+			    IF(
+			        CONTAINS(
+			            dClientes,
+			            dClientes[id_cliente], _Id
+			        ),
+			        _Id,
+			        -1
+			    )
+		isHidden
+		formatString: 0
+		lineageTag: 6d5a1f93-bcff-45ee-9104-9893c4811f69
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_produto =
+			
+			VAR _Id = fVendas[id_produto_origem]
+			RETURN
+			    IF(
+			        CONTAINS(
+			            dProdutos,
+			            dProdutos[id_produto], _Id
+			        ),
+			        _Id,
+			        -1
+			    )
+		isHidden
+		lineageTag: 3e9fea56-8642-46d9-8eae-3ab463003e64
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_vendedor =
+			
+			VAR _Id = fVendas[id_vendedor_origem]
+			RETURN
+			    IF(
+			        CONTAINS(
+			            dVendedores,
+			            dVendedores[id_vendedor], _Id
+			        ),
+			        _Id,
+			        -1
+			    )
+		isHidden
+		lineageTag: 6c748b78-4111-446e-8fd9-d6671f3fbcb8
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fVendas = m
 		mode: import
 		queryGroup: Modelo
 		source =
 				let
 				    Source = stg_vendas,
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+				
+				    RemoveErrors = Table.RemoveRowsWithErrors(Source),
+				
 				    AddedReceitaBruta = Table.AddColumn(
-				    #"Removed Errors",
-				    "receita_bruta",
-				    each [quantidade] * [valor_unitario_brl],
-				    Currency.Type
-				),
+				        RemoveErrors,
+				        "receita_bruta",
+				        each [quantidade] * [valor_unitario_brl],
+				        Currency.Type
+				    ),
+				
 				    AddedReceitaLiquida = Table.AddColumn(
-				    AddedReceitaBruta,
-				    "receita_liquida",
-				    each [receita_bruta] * (1 - [desconto_pct]),
-				    Currency.Type
-				),
-				    FilterFaturado = Table.SelectRows(AddedReceitaLiquida, each ([status_pedido] = "Faturado")),
-				    IdsClientes = Table.SelectColumns(
-				    dClientes,
-				    {"id_cliente"}
-				),
+				        AddedReceitaBruta,
+				        "receita_liquida",
+				        each [receita_bruta] * (1 - [desconto_pct]),
+				        Currency.Type
+				    ),
 				
-				MergeClientes = Table.NestedJoin(
-				    FilterFaturado,
-				    {"id_cliente"},
-				    IdsClientes,
-				    {"id_cliente"},
-				    "ClienteEncontrado",
-				    JoinKind.LeftOuter
-				),
+				    FilterFaturado = Table.SelectRows(
+				        AddedReceitaLiquida,
+				        each [status_pedido] = "Faturado"
+				    ),
+				    #"Renamed Columns" = Table.RenameColumns(FilterFaturado,{{"id_cliente", "id_cliente_origem"}, {"id_produto", "id_produto_origem"}, {"id_vendedor", "id_vendedor_origem"}})/*,
 				
-				ExpandClientes = Table.ExpandTableColumn(
-				    MergeClientes,
-				    "ClienteEncontrado",
-				    {"id_cliente"},
-				    {"id_cliente_encontrado"}
-				),
+				    IdsClientes = Table.Buffer(
+				        Table.Distinct(
+				            Table.SelectColumns(
+				                dClientes,
+				                {"id_cliente"}
+				            )
+				        )
+				    ),
 				
-				MapearOrfaos = Table.AddColumn(
-				    ExpandClientes,
-				    "id_cliente_modelo",
-				    each
-				        if [id_cliente_encontrado] = null
-				        then -1
-				        else [id_cliente],
-				    Int64.Type
-				),
+				    MergeClientes = Table.NestedJoin(
+				        FilterFaturado,
+				        {"id_cliente"},
+				        IdsClientes,
+				        {"id_cliente"},
+				        "ClienteEncontrado",
+				        JoinKind.LeftOuter
+				    ),
 				
-				RemoverAuxiliar = Table.RemoveColumns(
-				    MapearOrfaos,
-				    {"id_cliente_encontrado"}
-				)
+				    AdjustClientes = Table.AddColumn(
+				        MergeClientes,
+				        "__id_cliente",
+				        each
+				            if Table.IsEmpty([ClienteEncontrado]) then
+				                -1
+				            else
+				                [id_cliente],
+				        Int64.Type
+				    ),
+				
+				    RemoveClienteAuxiliar = Table.RemoveColumns(
+				        AdjustClientes,
+				        {"id_cliente", "ClienteEncontrado"}
+				    ),
+				
+				    RenameCliente = Table.RenameColumns(
+				        RemoveClienteAuxiliar,
+				        {{"__id_cliente", "id_cliente"}}
+				    ),
+				
+				    IdsProdutos = Table.Buffer(
+				        Table.Distinct(
+				            Table.RenameColumns(
+				                Table.SelectColumns(
+				                    dProdutos,
+				                    {"id_produto"}
+				                ),
+				                {{"id_produto", "id_produto_encontrado"}}
+				            )
+				        )
+				    ),
+				
+				    MergeProdutos = Table.Join(
+				        RenameCliente,
+				        {"id_produto"},
+				        IdsProdutos,
+				        {"id_produto_encontrado"},
+				        JoinKind.LeftOuter
+				    ),
+				
+				    AdjustProdutos = Table.AddColumn(
+				        MergeProdutos,
+				        "__id_produto",
+				        each
+				            if [id_produto_encontrado] = null then
+				                -1
+				            else
+				                [id_produto],
+				        Int64.Type
+				    ),
+				
+				    RemoveProdutoAuxiliar = Table.RemoveColumns(
+				        AdjustProdutos,
+				        {"id_produto", "id_produto_encontrado"}
+				    ),
+				
+				    RenameProduto = Table.RenameColumns(
+				        RemoveProdutoAuxiliar,
+				        {{"__id_produto", "id_produto"}}
+				    ),
+				
+				    IdsVendedores = Table.Distinct(
+				        Table.SelectColumns(dVendedores, {"id_vendedor"})
+				    ),
+				
+				    MergeVendedores = Table.NestedJoin(
+				        RenameProduto,
+				        {"id_vendedor"},
+				        IdsVendedores,
+				        {"id_vendedor"},
+				        "VendedorEncontrado",
+				        JoinKind.LeftOuter
+				    ),
+				
+				    AdjustVendedores = Table.AddColumn(
+				        MergeVendedores,
+				        "__id_vendedor",
+				        each
+				            if [id_vendedor] = null then
+				                null
+				            else if Table.IsEmpty([VendedorEncontrado]) then
+				                -1
+				            else
+				                [id_vendedor],
+				        Int64.Type
+				    ),
+				
+				    RemoveVendedorAuxiliar = Table.RemoveColumns(
+				        AdjustVendedores,
+				        {"id_vendedor", "VendedorEncontrado"}
+				    ),
+				
+				    RenameVendedor = Table.RenameColumns(
+				        RemoveVendedorAuxiliar,
+				        {{"__id_vendedor", "id_vendedor"}}
+				    )*/
 				in
-				    RemoverAuxiliar
+				    #"Renamed Columns"
 
 	annotation PBI_NavigationStepName = Navigation
 

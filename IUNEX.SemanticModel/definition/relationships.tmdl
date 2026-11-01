@@ -2,14 +2,6 @@ relationship AutoDetected_f7c3be8b-4060-4292-964e-9c40f30d15f3
 	fromColumn: dCartHist.id_cliente
 	toColumn: dClientes.id_cliente
 
-relationship AutoDetected_d50a1f94-959a-415b-91f0-439b8acd6100
-	fromColumn: fVendas.id_produto
-	toColumn: dProdutos.id_produto
-
-relationship 94ccc408-86de-c8c2-0c9b-69be44b55d63
-	fromColumn: fVendas.id_cliente_modelo
-	toColumn: dClientes.id_cliente
-
 relationship a2ff07bc-fb97-a7ac-f720-2a176c13a7ac
 	fromColumn: dCartHist.id_vendedor
 	toColumn: dVendedores.id_vendedor
@@ -30,4 +22,28 @@ relationship 98a421b6-0017-93be-1039-4ec78405ec80
 	toCardinality: many
 	fromColumn: fMetas.regiao
 	toColumn: dClientes.regiao
+
+relationship 9deef9c4-3a3e-7383-f47c-af50baae3a1b
+	fromColumn: fVendas.id_cliente
+	toColumn: dClientes.id_cliente
+
+relationship 4881725b-3265-4ee5-34a1-06e104d2c02b
+	fromColumn: fVendas.id_produto
+	toColumn: dProdutos.id_produto
+
+relationship d0690f2e-0c56-59f3-10b4-f683fe950f9e
+	fromColumn: fVendas.id_vendedor
+	toColumn: dVendedores.id_vendedor
+
+relationship de60ea21-13d4-ea14-1b82-70cdfb816b1a
+	fromColumn: fDevolucoes.id_cliente
+	toColumn: dClientes.id_cliente
+
+relationship da823cfc-94a4-b674-e05d-b2d2ebf3f0e1
+	fromColumn: fDevolucoes.id_produto
+	toColumn: dProdutos.id_produto
+
+relationship f03e1675-b434-cf33-3030-fd62ae989410
+	fromColumn: fDevolucoes.id_vendedor
+	toColumn: dVendedores.id_vendedor
 

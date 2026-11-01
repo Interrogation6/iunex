@@ -8,6 +8,8 @@ table dVendedores
 		summarizeBy: none
 		sourceColumn: id_vendedor
 
+		changedProperty = DataType
+
 		annotation SummarizationSetBy = Automatic
 
 	column nome
@@ -43,35 +45,28 @@ table dVendedores
 		annotation SummarizationSetBy = Automatic
 
 	column id_gestor
-		dataType: int64
-		formatString: 0
+		dataType: string
 		lineageTag: 9ce4d7e1-a5a8-430b-a96d-dd807b61476c
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_gestor
 
 		annotation SummarizationSetBy = Automatic
 
 	column data_admissao
-		dataType: dateTime
-		formatString: Long Date
+		dataType: string
 		lineageTag: d3099a7e-fb7c-48cf-abca-fad6c36a437c
 		summarizeBy: none
 		sourceColumn: data_admissao
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation UnderlyingDateTimeDataType = Date
-
 	column data_desligamento
-		dataType: dateTime
-		formatString: Long Date
+		dataType: string
 		lineageTag: e47b38f7-f109-4611-9706-5c106c466c1c
 		summarizeBy: none
 		sourceColumn: data_desligamento
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
 
 	partition dVendedores = m
 		mode: import
@@ -79,9 +74,46 @@ table dVendedores
 		source =
 				let
 				    Source = stg_vendedores,
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				
+				    RemoveErrors = Table.RemoveRowsWithErrors(Source),
+				
+				    GetColunas = Table.ColumnNames(RemoveErrors),
+				
+				    CreateRegistroDesconhecido = Record.FromList(
+				        List.Transform(
+				            GetColunas,
+				            (Coluna) =>
+				                if Coluna = "id_vendedor" then
+				                    -1
+				                else if List.Contains(
+				                    {
+				                        "nome",
+				                        "cargo",
+				                        "regiao"
+				                    },
+				                    Coluna
+				                ) then
+				                    "Não Identificado"
+				                else
+				                    null
+				        ),
+				        GetColunas
+				    ),
+				
+				    CreateVendedorDesconhecido = Table.FromRecords(
+				        {CreateRegistroDesconhecido},
+				        GetColunas
+				    ),
+				
+				    CombineVendedores = Table.Combine(
+				        {
+				            RemoveErrors,
+				            CreateVendedorDesconhecido
+				        },
+				        Value.Type(RemoveErrors)
+				    )
 				in
-				    #"Removed Errors"
+				    CombineVendedores
 
 	annotation PBI_NavigationStepName = Navigation
 

@@ -8,6 +8,8 @@ table dProdutos
 		summarizeBy: none
 		sourceColumn: id_produto
 
+		changedProperty = DataType
+
 		annotation SummarizationSetBy = Automatic
 
 	column descricao
@@ -51,28 +53,23 @@ table dProdutos
 		annotation SummarizationSetBy = Automatic
 
 	column custo_padrao
-		dataType: double
+		dataType: string
 		lineageTag: b8a904a9-f1d5-453a-8715-187e6bfef133
 		summarizeBy: none
 		sourceColumn: custo_padrao
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column preco_lista
-		dataType: double
+		dataType: string
 		lineageTag: 78dbf591-5771-4ea2-8db5-2f448a2546bc
 		summarizeBy: none
 		sourceColumn: preco_lista
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column flag_descontinuado
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
+		dataType: string
 		lineageTag: 4b56bf8f-2e1c-4a67-9d03-b5d31471d3a5
 		summarizeBy: none
 		sourceColumn: flag_descontinuado
@@ -85,9 +82,47 @@ table dProdutos
 		source =
 				let
 				    Source = stg_produtos,
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				
+				    RemoveErrors = Table.RemoveRowsWithErrors(Source),
+				
+				    GetColunas = Table.ColumnNames(RemoveErrors),
+				
+				    CreateRegistroDesconhecido = Record.FromList(
+				        List.Transform(
+				            GetColunas,
+				            (Coluna) =>
+				                if Coluna = "id_produto" then
+				                    -1
+				                else if List.Contains(
+				                    {
+				                        "descricao",
+				                        "categoria",
+				                        "subcategoria",
+				                        "linha"
+				                    },
+				                    Coluna
+				                ) then
+				                    "Não Identificado"
+				                else
+				                    null
+				        ),
+				        GetColunas
+				    ),
+				
+				    CreateProdutoDesconhecido = Table.FromRecords(
+				        {CreateRegistroDesconhecido},
+				        GetColunas
+				    ),
+				
+				    CombineProdutos = Table.Combine(
+				        {
+				            RemoveErrors,
+				            CreateProdutoDesconhecido
+				        },
+				        Value.Type(RemoveErrors)
+				    )
 				in
-				    #"Removed Errors"
+				    CombineProdutos
 
 	annotation PBI_NavigationStepName = Navigation
 

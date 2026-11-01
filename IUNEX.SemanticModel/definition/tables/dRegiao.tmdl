@@ -1,0 +1,25 @@
+table dRegiao
+	lineageTag: c36650c9-dfe5-4b2f-941e-9b8c4ce35ddb
+
+	column regiao
+		dataType: string
+		lineageTag: 4b97051e-1832-44ce-9df1-0b8382bbf4fd
+		summarizeBy: none
+		sourceColumn: regiao
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dRegiao = m
+		mode: import
+		queryGroup: Modelo
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8ssvKklVitUBs1JSi6Ec59S8kqJ8XX+4QHBpChI7B6Lj8OJ8Bc8UoNLMtMzkxJR8pdhYAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [regiao = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"regiao", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
