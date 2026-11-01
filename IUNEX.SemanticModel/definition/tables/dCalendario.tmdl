@@ -5,7 +5,7 @@ table dCalendario
 	column data
 		dataType: dateTime
 		isKey
-		formatString: Long Date
+		formatString: Short Date
 		lineageTag: eed0df8f-0d97-4db3-9161-e9eb34a1ecee
 		summarizeBy: none
 		sourceColumn: data
@@ -37,6 +37,9 @@ table dCalendario
 		lineageTag: e6b7982c-9094-4710-ac39-2ff6832dc05f
 		summarizeBy: none
 		sourceColumn: mesnome
+		sortByColumn: mesnumero
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -45,15 +48,21 @@ table dCalendario
 		lineageTag: c61d5bae-3428-4715-8abd-a44b11b2d973
 		summarizeBy: none
 		sourceColumn: mesano
+		sortByColumn: mesanoordem
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
 	column mesanoordem
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 6d0b5e81-8d88-4d5c-83e7-60f701d30550
 		summarizeBy: sum
 		sourceColumn: mesanoordem
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -90,6 +99,9 @@ table dCalendario
 		lineageTag: 1167a52f-6052-43ef-8003-f25ce558a983
 		summarizeBy: none
 		sourceColumn: anofiscalnome
+		sortByColumn: anofiscal
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -112,10 +124,13 @@ table dCalendario
 
 	column diasemananumero
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0734336e-4c2e-4b20-83d8-c380111401c4
 		summarizeBy: sum
 		sourceColumn: diasemananumero
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -124,6 +139,9 @@ table dCalendario
 		lineageTag: ae0e4983-c9bf-4a3d-9e36-4ae6fb3dc512
 		summarizeBy: none
 		sourceColumn: diasemananome
+		sortByColumn: diasemananumero
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 

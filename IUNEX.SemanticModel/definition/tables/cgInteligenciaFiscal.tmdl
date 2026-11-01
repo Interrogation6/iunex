@@ -14,6 +14,26 @@ table cgInteligenciaFiscal
 				    )
 				)
 
+		calculationItem 'YTD Fiscal Anterior' =
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    DATEADD(
+				        DATESYTD(dCalendario[data], "03/31"),
+				        -1,
+				        YEAR
+				    )
+				)
+
+		calculationItem 'FY Anterior' =
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    DATEADD(
+				        dCalendario[data],
+				        -1,
+				        YEAR
+				    )
+				)
+
 	column PeriodoFiscal
 		dataType: string
 		lineageTag: 547ba765-d494-4cdc-a2d4-29adc64765f1

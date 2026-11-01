@@ -5,53 +5,43 @@ table Medidas
 			
 			SUM(fVendas[receita_bruta])
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
-		displayFolder: Faturamento e Devoluções
+		displayFolder: Receita
 		lineageTag: 7278b47c-de30-4ec1-a7e4-77eea950e64d
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
-	measure 'Receita de Vendas' =
-			
-			SUM(fVendas[receita_liquida])
-		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
-		displayFolder: Faturamento e Devoluções
-		lineageTag: 143cd1a0-fa20-444e-a380-1b61df151637
-
-		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
-
-	measure 'Valor Devolvido' =
+	measure 'Receita Devoluções' =
 			
 			SUM(fDevolucoes[valor_liquido])
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
-		displayFolder: Faturamento e Devoluções
+		displayFolder: Receita
 		lineageTag: 114d83e9-7f08-4d57-b605-65f7a264711b
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
 	measure 'Receita Líquida' =
 			
-			[Receita de Vendas] - [Valor Devolvido]
-		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
-		displayFolder: Faturamento e Devoluções
+			[Receita Bruta -Desconto] - [Receita Devoluções]
+		displayFolder: Receita
 		lineageTag: 29f1009e-8ec0-43e1-9e58-6e943f77dce5
 
-		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Pedidos Faturados' =
 			
 			DISTINCTCOUNT(fVendas[id_pedido])
 		formatString: #,0
-		displayFolder: Faturamento e Devoluções
+		displayFolder: Receita
 		lineageTag: 7924ac26-2375-42f3-b74b-7ec0f708190f
 
 	measure 'Ticket Médio por Pedido' =
 			
 			DIVIDE(
-			    [Receita de Vendas],
+			    [Receita Bruta -Desconto],
 			    [Pedidos Faturados]
 			)
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
-		displayFolder: Faturamento e Devoluções
+		displayFolder: Receita
 		lineageTag: 2212cae7-1621-466c-a4b6-e2577be4db88
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
@@ -59,11 +49,11 @@ table Medidas
 	measure '% Devolução sobre Receita Bruta' =
 			
 			DIVIDE(
-			    [Valor Devolvido],
+			    [Receita Devoluções],
 			    [Receita Bruta]
 			)
 		formatString: 0.00%;-0.00%;0.00%
-		displayFolder: Faturamento e Devoluções
+		displayFolder: Devoluções
 		lineageTag: 6bc3890e-46e9-4bad-bf45-b7d8ee38feb2
 
 	measure Meta =
@@ -94,7 +84,7 @@ table Medidas
 			        MetaMensal
 			    )
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
-		displayFolder: Metas e Atingimento
+		displayFolder: Metas
 		lineageTag: 4ce3cf30-b902-4ec8-8199-b8bfda3c9d68
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
@@ -112,7 +102,7 @@ table Medidas
 			        )
 			    )
 		formatString: 0.00%;-0.00%;0.00%
-		displayFolder: Metas e Atingimento
+		displayFolder: Metas
 		lineageTag: 4f11dcff-48a4-48ac-ae8d-0121ff41ef84
 
 	measure 'Desvio da Meta R$' =
@@ -125,7 +115,7 @@ table Medidas
 			        [Receita Líquida] - MetaAtual
 			    )
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
-		displayFolder: Metas e Atingimento
+		displayFolder: Metas
 		lineageTag: 4ba3d773-e252-4431-ac00-b1e7556559e7
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
@@ -143,8 +133,428 @@ table Medidas
 			        )
 			    )
 		formatString: 0.00%;-0.00%;0.00%
-		displayFolder: Metas e Atingimento
+		displayFolder: Metas
 		lineageTag: d20fd1bb-e6d4-467e-8458-f495d0b85bae
+
+	measure 'Receita Líquida YTD FY' =
+			
+			CALCULATE(
+			    [Receita Líquida],
+			    cgInteligenciaFiscal[PeriodoFiscal] = "YTD Fiscal"
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Receita\FY
+		lineageTag: 114f7c54-7cb3-469f-98db-1c175fd61b7d
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Receita Líquida YTD FY Anterior' =
+			
+			CALCULATE(
+			    [Receita Líquida],
+			    cgInteligenciaFiscal[PeriodoFiscal] = "YTD Fiscal Anterior"
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Receita\FY
+		lineageTag: 97e38974-5965-470c-9f56-30f5a65ff338
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Receita Líquida FY Anterior' =
+			
+			CALCULATE(
+			    [Receita Líquida],
+			    cgInteligenciaFiscal[PeriodoFiscal] = "FY Anterior"
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Receita\FY
+		lineageTag: c4b15a9b-e7a7-4709-ab25-5cfe29e2146a
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Clientes Ativos' =
+			
+			VAR DataReferencia = MAX(dCalendario[data])
+			RETURN
+			CALCULATE(
+			    DISTINCTCOUNT(fVendas[id_cliente]),
+			    DATESBETWEEN(
+			        dCalendario[data],
+			        DataReferencia - 89,
+			        DataReferencia
+			    ),
+			    fVendas[id_cliente] <> -1,
+			    NOT ISBLANK(fVendas[id_cliente])
+			)
+		formatString: 0
+		displayFolder: Clientes
+		lineageTag: ce9f0411-86cd-4669-8691-8f4a09a515ea
+
+	measure 'Clientes Reativados' =
+			
+			VAR InicioMes =
+			    DATE(
+			        YEAR(MAX(dCalendario[data])),
+			        MONTH(MAX(dCalendario[data])),
+			        1
+			    )
+			
+			VAR FimMes = EOMONTH(InicioMes, 0)
+			
+			RETURN
+			COUNTROWS(
+			    FILTER(
+			        VALUES(dClientes[id_cliente]),
+			        VAR ReceitaMes =
+			            CALCULATE(
+			                [Receita Bruta -Desconto],
+			                DATESBETWEEN(
+			                    dCalendario[data],
+			                    InicioMes,
+			                    FimMes
+			                )
+			            )
+			
+			        VAR UltimaCompra =
+			            CALCULATE(
+			                MAX(fVendas[data_emissao]),
+			                REMOVEFILTERS(dCalendario),
+			                fVendas[data_emissao] < InicioMes
+			            )
+			
+			        RETURN
+			            ReceitaMes > 50000
+			                && NOT ISBLANK(UltimaCompra)
+			                && DATEDIFF(
+			                    UltimaCompra,
+			                    InicioMes,
+			                    DAY
+			                ) > 90
+			    )
+			)
+		formatString: 0
+		displayFolder: Clientes
+		lineageTag: bb2cab5c-281e-46fd-ac15-5a617daaebbc
+
+	measure 'Dias sem Comprar' =
+			
+			VAR DataReferencia =
+			    MAX(dCalendario[data])
+			
+			VAR UltimaCompra =
+			    CALCULATE(
+			        MAX(fVendas[data_emissao]),
+			        REMOVEFILTERS(dCalendario),
+			        fVendas[data_emissao] <= DataReferencia
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(UltimaCompra),
+			        BLANK(),
+			        DATEDIFF(
+			            UltimaCompra,
+			            DataReferencia,
+			            DAY
+			        )
+			    )
+		formatString: 0
+		displayFolder: Clientes
+		lineageTag: 2ed3db30-b2d5-49ad-804a-fb9954abb7fb
+
+	measure 'Receita Bruta -Desconto' =
+			
+			sum(fVendas[receita_liquida])
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Receita
+		lineageTag: 4c64d356-af97-484c-9626-698142765f1c
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Faixa de Recência' =
+			
+			VAR Dias = [Dias sem Comprar]
+			
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(Dias), BLANK(),
+			        Dias <= 30, "0 a 30 dias",
+			        Dias <= 60, "31 a 60 dias",
+			        Dias <= 90, "61 a 90 dias",
+			        "Mais de 90 dias"
+			    )
+		displayFolder: Clientes
+		lineageTag: 100eab62-679e-4214-b52b-726e37ea956e
+
+	measure 'Receita de Clientes Reativados' =
+			
+			VAR InicioMes =
+			    DATE(
+			        YEAR(MAX(dCalendario[data])),
+			        MONTH(MAX(dCalendario[data])),
+			        1
+			    )
+			
+			VAR FimMes =
+			    EOMONTH(InicioMes, 0)
+			
+			RETURN
+			    SUMX(
+			        VALUES(dClientes[id_cliente]),
+			        IF(
+			            [Clientes Reativados] = 1,
+			            CALCULATE(
+			                [Receita Bruta -Desconto],
+			                DATESBETWEEN(
+			                    dCalendario[data],
+			                    InicioMes,
+			                    FimMes
+			                )
+			            )
+			        )
+			    )
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Clientes
+		lineageTag: cb4cdcee-9ed1-4a19-9d99-4fd4d2461156
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Ocorrências de Erro' =
+			
+			COUNTROWS(fErros)
+		formatString: 0
+		displayFolder: _Erros
+		lineageTag: 7fdd3df5-708a-4b11-8698-79c2a1285a48
+
+	measure 'Registros Rejeitados' =
+			
+			COUNTROWS(
+			    SUMMARIZE(
+			        fErros,
+			        fErros[Origem],
+			        fErros[Linha]
+			    )
+			)
+		formatString: 0
+		displayFolder: _Erros
+		lineageTag: 98bf62fb-b685-4af2-a206-18ff9cf2bdf5
+
+	measure 'Chaves Órfãs de Clientes' =
+			
+			VAR Vendas =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            fVendas,
+			            fVendas[id_cliente] = -1
+			                && NOT ISBLANK(fVendas[id_cliente_origem])
+			        ),
+			        "ID", fVendas[id_cliente_origem]
+			    )
+			
+			VAR Devolucoes =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            fDevolucoes,
+			            fDevolucoes[id_cliente] = -1
+			                && NOT ISBLANK(fDevolucoes[id_cliente_origem])
+			        ),
+			        "ID", fDevolucoes[id_cliente_origem]
+			    )
+			
+			RETURN
+			    COUNTROWS(
+			        DISTINCT(
+			            UNION(Vendas, Devolucoes)
+			        )
+			    )
+		formatString: 0
+		displayFolder: _Erros\Chaves Orfãs
+		lineageTag: 051629a6-0c07-4260-af1b-d8416631d231
+
+	measure 'Chaves Órfãs de Produtos' =
+			
+			VAR Vendas =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            fVendas,
+			            fVendas[id_produto] = -1
+			                && NOT ISBLANK(fVendas[id_produto_origem])
+			        ),
+			        "ID", fVendas[id_produto_origem]
+			    )
+			
+			VAR Devolucoes =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            fDevolucoes,
+			            fDevolucoes[id_produto] = -1
+			                && NOT ISBLANK(fDevolucoes[id_produto_origem])
+			        ),
+			        "ID", fDevolucoes[id_produto_origem]
+			    )
+			
+			RETURN
+			    COUNTROWS(
+			        DISTINCT(
+			            UNION(Vendas, Devolucoes)
+			        )
+			    )
+		formatString: 0
+		displayFolder: _Erros\Chaves Orfãs
+		lineageTag: 40ec60e6-8bbb-4f72-85a8-539a6950d6e6
+
+	measure 'Chaves Órfãs de Vendedores' =
+			
+			VAR Vendas =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            fVendas,
+			            fVendas[id_vendedor] = -1
+			                && NOT ISBLANK(fVendas[id_vendedor_origem])
+			        ),
+			        "ID", fVendas[id_vendedor_origem]
+			    )
+			
+			VAR Devolucoes =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            fDevolucoes,
+			            fDevolucoes[id_vendedor] = -1
+			                && NOT ISBLANK(fDevolucoes[id_vendedor_origem])
+			        ),
+			        "ID", fDevolucoes[id_vendedor_origem]
+			    )
+			
+			RETURN
+			    COUNTROWS(
+			        DISTINCT(
+			            UNION(Vendas, Devolucoes)
+			        )
+			    )
+		formatString: 0
+		displayFolder: _Erros\Chaves Orfãs
+		lineageTag: 643e8076-0cce-4c07-b429-583725c082c6
+
+	measure 'Data Máxima da Base' =
+			
+			CALCULATE(
+			    MAX(fVendas[data_emissao]),
+			    REMOVEFILTERS()
+			)
+		formatString: General Date
+		displayFolder: Datas
+		lineageTag: 3fb83b59-9eab-4195-95c7-b6fd874bf35a
+
+	measure 'Status do Mês Corrente' =
+			
+			VAR DataBase = [Data Máxima da Base]
+			
+			VAR InicioMes =
+			    DATE(YEAR(DataBase), MONTH(DataBase), 1)
+			
+			VAR MinContexto = MIN(dCalendario[data])
+			VAR MaxContexto = MAX(dCalendario[data])
+			
+			RETURN
+			    IF(
+			        NOT ISBLANK(DataBase)
+			            && DataBase < EOMONTH(DataBase, 0)
+			            && MinContexto <= DataBase
+			            && MaxContexto >= InicioMes,
+			        "Dados disponíveis até "
+			            & FORMAT(DataBase, "dd/MM/yyyy")
+			            & " — mês incompleto",
+			        BLANK()
+			    )
+		displayFolder: Datas
+		lineageTag: 95d50148-c49a-4bb4-8c39-a9ab103d748a
+
+	measure 'Orçamento Anual Aprovado' =
+			
+			CALCULATE(
+			    SUM(fMetas[valor_meta]),
+			    fMetas[mes] = "Meta Ano",
+			    fMetas[regiao] <> "Total Geral"
+			)
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Metas
+		lineageTag: 5c108d88-90f1-461f-afc3-2d886ebf5674
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Meta Geral' =
+			
+			CALCULATE(
+			    SUM(fMetas[valor_meta]),
+			    fMetas[regiao] = "Total Geral"
+			)
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Metas
+		lineageTag: 0e6e3305-16f7-48ea-9646-465904554c5b
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Receita Acumulada ABC %' =
+			
+			VAR ReceitaAtual =
+			    [Receita Líquida]
+			
+			VAR Clientes =
+			    ADDCOLUMNS(
+			        FILTER(
+			            ALLSELECTED(dClientes),
+			            dClientes[id_cliente] <> -1
+			        ),
+			        "@Receita", [Receita Líquida]
+			    )
+			
+			VAR ReceitaTotal =
+			    SUMX(Clientes, [@Receita])
+			
+			VAR ReceitaAcumulada =
+			    SUMX(
+			        FILTER(
+			            Clientes,
+			            [@Receita] >= ReceitaAtual
+			        ),
+			        [@Receita]
+			    )
+			
+			RETURN
+			    IF(
+			        HASONEVALUE(dClientes[id_cliente]),
+			        DIVIDE(ReceitaAcumulada, ReceitaTotal)
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Receita
+		lineageTag: a97bdf68-d971-436a-923b-d3bdb2080a48
+
+	measure 'Receita Líquida ACM % - Cliente' =
+			
+			VAR ReceitaAtual = [Receita Líquida]
+			
+			VAR ReceitaAcumulada =
+			    SUMX(
+			        FILTER(
+			            ALLSELECTED(dClientes[razao_social]),
+			            [Receita Líquida] >= ReceitaAtual
+			        ),
+			        [Receita Líquida]
+			    )
+			
+			VAR ReceitaTotal =
+			    CALCULATE(
+			        [Receita Líquida],
+			        ALLSELECTED(dClientes[razao_social])
+			    )
+			
+			RETURN
+			    DIVIDE(ReceitaAcumulada, ReceitaTotal)
+		displayFolder: Clientes
+		lineageTag: 047ed078-93bf-4432-b058-97b1d6da208f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column _
 		isHidden
