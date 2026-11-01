@@ -2,7 +2,7 @@ table fDevolucoes
 	lineageTag: a517d2b6-2d66-4956-90ed-df37e8a6a5ce
 
 	column id_devolucao
-		dataType: decimal
+		dataType: int64
 		formatString: 0.00
 		lineageTag: 0d1c24cc-8ab8-45e9-a071-25ee742fc29d
 		summarizeBy: none

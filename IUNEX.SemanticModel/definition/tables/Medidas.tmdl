@@ -4,9 +4,11 @@ table Medidas
 	measure 'Receita Bruta' =
 			
 			SUM(fVendas[receita_bruta])
-		formatString: 0
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		displayFolder: Faturamento e Devoluções
 		lineageTag: 7278b47c-de30-4ec1-a7e4-77eea950e64d
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
 	measure 'Receita de Vendas' =
 			
@@ -122,11 +124,11 @@ table Medidas
 			        BLANK(),
 			        [Receita Líquida] - MetaAtual
 			    )
-		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		displayFolder: Metas e Atingimento
 		lineageTag: 4ba3d773-e252-4431-ac00-b1e7556559e7
 
-		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
 	measure 'Desvio da Meta %' =
 			
