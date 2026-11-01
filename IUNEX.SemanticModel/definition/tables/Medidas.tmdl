@@ -603,6 +603,26 @@ table Medidas
 		displayFolder: _Erros
 		lineageTag: dba46889-ab9f-40bd-9aa4-f19dcc9e3d54
 
+	measure 'Aux Titulo Metrica Selecionada' =
+			
+			VAR Metrica =
+			    SELECTCOLUMNS(
+			        SUMMARIZE(
+			            pMetricaExecutiva,
+			            pMetricaExecutiva[pMetricaExecutiva],
+			            pMetricaExecutiva[pMetricaExecutiva Fields]
+			        ),
+			        "Nome", pMetricaExecutiva[pMetricaExecutiva]
+			    )
+			
+			RETURN
+			    IF(
+			        COUNTROWS(Metrica) = 1,
+			        MAXX(Metrica, [Nome]),
+			        "Métricas"
+			    ) & " & Metas"
+		lineageTag: 14efa043-2b4c-4e0c-b3ab-be373ff020df
+
 	column _
 		isHidden
 		formatString: 0

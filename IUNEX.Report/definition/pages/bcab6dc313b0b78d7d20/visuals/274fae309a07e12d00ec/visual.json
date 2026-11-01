@@ -4,10 +4,10 @@
   "position": {
     "x": 544,
     "y": 384,
-    "z": 4,
+    "z": 4000,
     "height": 480,
     "width": 1040,
-    "tabOrder": 4
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "pivotTable",
@@ -172,48 +172,6 @@
           ]
         },
         "howCreated": "User"
-      },
-      {
-        "name": "e66fee75eb0eb38734ba",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dClientes"
-              }
-            },
-            "Property": "razao_social"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "47a14c8b003e7c47cb86",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dCalendario"
-              }
-            },
-            "Property": "mesnome"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "4e134ee37abd0e5e3b08",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Medidas"
-              }
-            },
-            "Property": "Faixa de Recência"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "3c2af4f255ba84de2741",
   "position": {
-    "x": 1456,
-    "y": 144,
-    "z": 8000,
-    "height": 38.888888888888886,
-    "width": 456.66666666666663,
-    "tabOrder": 8000
+    "x": 1446.5597147950089,
+    "y": 174.54545454545453,
+    "z": 5000,
+    "height": 42.210338680926917,
+    "width": 347.9500891265597,
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "textbox",
@@ -30,8 +30,8 @@
                     },
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "16pt",
-                      "color": "#ffffff"
+                      "fontSize": "13pt",
+                      "color": "#356079"
                     }
                   }
                 ]
@@ -107,6 +107,27 @@
                   "Value": "0D"
                 }
               }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
             }
           }
         }
@@ -118,6 +139,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Aviso Dados'"
                 }
               }
             }
