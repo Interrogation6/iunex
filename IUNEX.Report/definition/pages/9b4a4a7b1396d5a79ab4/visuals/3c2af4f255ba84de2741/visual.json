@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "3c2af4f255ba84de2741",
   "position": {
-    "x": 1050,
-    "y": 290,
-    "z": 8000,
-    "height": 32,
-    "width": 814,
-    "tabOrder": 11000
+    "x": 1446.5597147950089,
+    "y": 174.54545454545453,
+    "z": 5000,
+    "height": 42.210338680926917,
+    "width": 347.9500891265597,
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "textbox",
@@ -31,7 +31,7 @@
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontSize": "13pt",
-                      "color": "#936111"
+                      "color": "#356079"
                     }
                   }
                 ]
@@ -111,7 +111,7 @@
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "10D"
                 }
               }
             },
@@ -139,6 +139,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Aviso Dados'"
                 }
               }
             }

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "a914a5d426a72d692aa0",
   "position": {
-    "x": 1148,
-    "y": 194,
+    "x": 1081.4682896176953,
+    "y": 0,
     "z": 12000,
-    "height": 82,
-    "width": 350,
-    "tabOrder": 9000
+    "height": 77.025189894091724,
+    "width": 349.88679958219552,
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "slicer",
@@ -217,7 +217,42 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "shadowSpread": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            },
+            "shadowBlur": {
+              "expr": {
+                "Literal": {
+                  "Value": "4D"
+                }
+              }
+            },
+            "shadowDistance": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "45D"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "86D"
                 }
               }
             }
@@ -232,22 +267,5 @@
     },
     "drillFilterOtherVisuals": true
   },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "964650088a030ad805ed",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fVendas"
-              }
-            },
-            "Property": "canal"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
-  }
+  "parentGroupName": "774592f5ae487a777037"
 }

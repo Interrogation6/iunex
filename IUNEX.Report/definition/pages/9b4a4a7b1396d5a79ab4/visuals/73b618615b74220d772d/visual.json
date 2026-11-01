@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "73b618615b74220d772d",
   "position": {
-    "x": 56,
-    "y": 338,
-    "z": 5000,
-    "height": 354,
-    "width": 1808,
-    "tabOrder": 12000
+    "x": 96,
+    "y": 320,
+    "z": 2000,
+    "height": 338.91083553400358,
+    "width": 1731.2743534415361,
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "lineStackedColumnComboChart",
@@ -97,6 +97,13 @@
                   "Value": "true"
                 }
               }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'TopCenter'"
+                }
+              }
             }
           }
         }
@@ -129,7 +136,6 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "background": [
         {
@@ -206,7 +212,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
@@ -259,8 +265,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Evolução mensal | Métrica selecionada e meta'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Aux Titulo Metrica Selecionada"
                 }
               }
             },
@@ -291,8 +302,22 @@
             }
           }
         }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   },
   "filterConfig": {
     "filters": [
@@ -345,34 +370,6 @@
         },
         "howCreated": "User",
         "isHiddenInViewMode": true
-      },
-      {
-        "name": "aa5dd6d32894024a3d88",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dCalendario"
-              }
-            },
-            "Property": "mesfiscalnome"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "41979c53d47c8b4bc7c0",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Medidas"
-              }
-            },
-            "Property": "Meta"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "21ac6f457648203b92b3",
   "position": {
-    "x": 56,
-    "y": 719,
-    "z": 6000,
-    "height": 313,
-    "width": 1808,
-    "tabOrder": 13000
+    "x": 96,
+    "y": 672.00000000000011,
+    "z": 3000,
+    "height": 308.1007595763669,
+    "width": 1731.2743534415361,
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "pivotTable",
@@ -278,7 +278,6 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "background": [
         {
@@ -355,7 +354,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
@@ -441,7 +440,8 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   },
   "filterConfig": {
     "filters": [
@@ -460,62 +460,6 @@
         "type": "Advanced",
         "howCreated": "User",
         "isHiddenInViewMode": true
-      },
-      {
-        "name": "25e4f21b4a60e8cd9c5c",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dRegiao"
-              }
-            },
-            "Property": "regiao"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "183d7a15620ee894b900",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dSegmento"
-              }
-            },
-            "Property": "segmento"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "69b6faddd57b377c1086",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fVendas"
-              }
-            },
-            "Property": "canal"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "1d48b01b17baa2bc2429",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Medidas"
-              }
-            },
-            "Property": "Meta"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

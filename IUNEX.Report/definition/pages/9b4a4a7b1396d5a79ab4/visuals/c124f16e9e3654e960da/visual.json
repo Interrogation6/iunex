@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "c124f16e9e3654e960da",
   "position": {
-    "x": 1512,
-    "y": 194,
-    "z": 7000,
-    "height": 82,
-    "width": 350,
-    "tabOrder": 10000
+    "x": 96,
+    "y": 217.84615384615387,
+    "z": 4000,
+    "height": 76.615384615384627,
+    "width": 255.69230769230771,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "slicer",
@@ -296,7 +296,42 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "shadowSpread": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            },
+            "shadowBlur": {
+              "expr": {
+                "Literal": {
+                  "Value": "4D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "45D"
+                }
+              }
+            },
+            "shadowDistance": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "86D"
                 }
               }
             }
@@ -356,20 +391,6 @@
           ]
         },
         "howCreated": "User"
-      },
-      {
-        "name": "cbe57e7ac8266a7405e9",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "pMetricaExecutiva"
-              }
-            },
-            "Property": "pMetricaExecutiva"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }

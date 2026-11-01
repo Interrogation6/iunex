@@ -11,7 +11,7 @@
       "type": "SharedResources"
     },
     "customTheme": {
-      "name": "Nortech9398794877985861.json",
+      "name": "Nortech9413893168909191.json",
       "reportVersionAtImport": {
         "visual": "2.14.0",
         "report": "3.4.0",
@@ -131,8 +131,23 @@
       "type": "RegisteredResources",
       "items": [
         {
-          "name": "Nortech9398794877985861.json",
-          "path": "Nortech9398794877985861.json",
+          "name": "iunex-dark8366320118121932.png",
+          "path": "iunex-dark8366320118121932.png",
+          "type": "Image"
+        },
+        {
+          "name": "nortech-background873024962329813.png",
+          "path": "nortech-background873024962329813.png",
+          "type": "Image"
+        },
+        {
+          "name": "nortech-titulo-dark09200416907207798.png",
+          "path": "nortech-titulo-dark09200416907207798.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nortech9413893168909191.json",
+          "path": "Nortech9413893168909191.json",
           "type": "CustomTheme"
         }
       ]
