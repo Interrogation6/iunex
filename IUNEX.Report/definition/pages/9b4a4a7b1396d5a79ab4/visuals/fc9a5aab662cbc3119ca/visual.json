@@ -122,6 +122,11 @@
         }
       ]
     },
+    "syncGroup": {
+      "groupName": "regiao",
+      "fieldChanges": true,
+      "filterChanges": true
+    },
     "drillFilterOtherVisuals": true
   },
   "filterConfig": {

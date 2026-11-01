@@ -122,6 +122,11 @@
         }
       ]
     },
+    "syncGroup": {
+      "groupName": "segmento",
+      "fieldChanges": true,
+      "filterChanges": true
+    },
     "drillFilterOtherVisuals": true
   },
   "filterConfig": {

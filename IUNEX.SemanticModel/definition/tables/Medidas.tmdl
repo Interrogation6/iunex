@@ -37,10 +37,14 @@ table Medidas
 
 	measure 'Ticket Médio por Pedido' =
 			
-			DIVIDE(
-			    [Receita Bruta -Desconto],
-			    [Pedidos Faturados]
-			)
+			VAR Pedidos = [Pedidos Faturados]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(Pedidos), BLANK(),
+			        Pedidos = 0, "Indefinido",
+			        DIVIDE([Receita Bruta -Desconto], Pedidos)
+			    )
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		displayFolder: Receita
 		lineageTag: 2212cae7-1621-466c-a4b6-e2577be4db88
@@ -49,10 +53,14 @@ table Medidas
 
 	measure '% Devolução sobre Receita Bruta' =
 			
-			DIVIDE(
-			    [Receita Devoluções],
-			    [Receita Bruta]
-			)
+			VAR Receita = [Receita Bruta]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(Receita), BLANK(),
+			        Receita = 0, "Indefinido",
+			        DIVIDE([Receita Devoluções], Receita)
+			    )
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Devoluções
 		lineageTag: 6bc3890e-46e9-4bad-bf45-b7d8ee38feb2
@@ -99,13 +107,11 @@ table Medidas
 			
 			VAR MetaAtual = [Meta]
 			RETURN
-			    IF(
-			        ISBLANK(MetaAtual),
-			        BLANK(),
-			        DIVIDE(
-			            [Receita Líquida],
-			            MetaAtual
-			        )
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(MetaAtual), BLANK(),
+			        MetaAtual = 0, "Indefinido",
+			        DIVIDE([Receita Líquida], MetaAtual)
 			    )
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Metas
@@ -130,9 +136,10 @@ table Medidas
 			
 			VAR MetaAtual = [Meta]
 			RETURN
-			    IF(
-			        ISBLANK(MetaAtual),
-			        BLANK(),
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(MetaAtual), BLANK(),
+			        MetaAtual = 0, "Indefinido",
 			        DIVIDE(
 			            [Receita Líquida] - MetaAtual,
 			            MetaAtual
@@ -524,19 +531,34 @@ table Medidas
 			    )
 			
 			RETURN
-			    DIVIDE(ReceitaAcumulada, ReceitaTotal)
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(ReceitaTotal), BLANK(),
+			        ReceitaTotal = 0, "Indefinido",
+			        DIVIDE(ReceitaAcumulada, ReceitaTotal)
+			    )
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Clientes
 		lineageTag: 047ed078-93bf-4432-b058-97b1d6da208f
 
 	measure 'Variação YoY %' =
 			
-			DIVIDE(
+			VAR ReceitaAtual =
 			    [Receita Líquida YTD FY]
-			        - [Receita Líquida YTD FY Anterior],
-			    [Receita Líquida YTD FY Anterior],
-			    "Infinito"
-			)
+			
+			VAR ReceitaAnterior =
+			    [Receita Líquida YTD FY Anterior]
+			
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(ReceitaAnterior), BLANK(),
+			        ReceitaAnterior = 0, "Indefinido",
+			        DIVIDE(
+			            ReceitaAtual - ReceitaAnterior,
+			            ReceitaAnterior
+			        )
+			    )
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Receita
 		lineageTag: 490b7bbf-23f0-4078-98e2-3b0ff54f99c1

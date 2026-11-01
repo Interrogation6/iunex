@@ -353,20 +353,6 @@
           }
         },
         "type": "Advanced"
-      },
-      {
-        "name": "9f2195f0d055001e54a8",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Medidas"
-              }
-            },
-            "Property": "Receita Líquida"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

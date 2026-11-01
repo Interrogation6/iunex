@@ -122,6 +122,11 @@
         }
       ]
     },
+    "syncGroup": {
+      "groupName": "canal",
+      "fieldChanges": true,
+      "filterChanges": true
+    },
     "drillFilterOtherVisuals": true
   },
   "filterConfig": {
