@@ -4,6 +4,7 @@ table dVendedores
 	column id_vendedor
 		dataType: int64
 		formatString: 0
+		displayFolder: ID
 		lineageTag: b52a4924-9967-4f25-a483-bd564e0c0158
 		summarizeBy: none
 		sourceColumn: id_vendedor
@@ -47,6 +48,7 @@ table dVendedores
 	column id_gestor
 		dataType: int64
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 9ce4d7e1-a5a8-430b-a96d-dd807b61476c
 		summarizeBy: none
 		sourceColumn: id_gestor
@@ -58,6 +60,7 @@ table dVendedores
 	column data_admissao
 		dataType: dateTime
 		formatString: Short Date
+		displayFolder: Data
 		lineageTag: d3099a7e-fb7c-48cf-abca-fad6c36a437c
 		summarizeBy: none
 		sourceColumn: data_admissao
@@ -71,6 +74,7 @@ table dVendedores
 	column data_desligamento
 		dataType: dateTime
 		formatString: Short Date
+		displayFolder: Data
 		lineageTag: e47b38f7-f109-4611-9706-5c106c466c1c
 		summarizeBy: none
 		sourceColumn: data_desligamento

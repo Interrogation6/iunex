@@ -4,17 +4,17 @@ table fDevolucoes
 	column id_devolucao
 		dataType: int64
 		formatString: 0.00
+		displayFolder: ID
 		lineageTag: 0d1c24cc-8ab8-45e9-a071-25ee742fc29d
 		summarizeBy: none
 		sourceColumn: id_devolucao
-
-		changedProperty = DataType
 
 		annotation SummarizationSetBy = User
 
 	column id_pedido_origem
 		dataType: int64
 		formatString: 0
+		displayFolder: ID
 		lineageTag: a13b966d-5fe6-48d9-8cdc-53a89c7f72bd
 		summarizeBy: none
 		sourceColumn: id_pedido_origem
@@ -97,6 +97,7 @@ table fDevolucoes
 	column id_filial
 		dataType: int64
 		formatString: 0
+		displayFolder: ID
 		lineageTag: da852e3e-2353-4a98-aa5c-729f736f1ebd
 		summarizeBy: none
 		sourceColumn: id_filial
@@ -107,6 +108,7 @@ table fDevolucoes
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 1f0d7d4e-bfcc-4623-b307-191e198a3ac4
 		summarizeBy: sum
 		sourceColumn: id_cliente_origem
@@ -119,6 +121,7 @@ table fDevolucoes
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 8d4fea8f-79af-42c4-8ca5-7b057a910b1f
 		summarizeBy: sum
 		sourceColumn: id_produto_origem
@@ -131,6 +134,7 @@ table fDevolucoes
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 4d5956f6-ef3e-4212-8529-e45bf7f57d84
 		summarizeBy: sum
 		sourceColumn: id_vendedor_origem
@@ -153,6 +157,7 @@ table fDevolucoes
 			    )
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 88f0e7aa-3245-46d1-820f-c4a53cc9dfb3
 		summarizeBy: none
 
@@ -174,6 +179,7 @@ table fDevolucoes
 			    )
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 3450f989-f3f1-47e7-85f8-01023c6da419
 		summarizeBy: none
 
@@ -199,6 +205,7 @@ table fDevolucoes
 			    )
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 2f1f9143-3b63-4b2e-aa90-8ffe982bc795
 		summarizeBy: none
 

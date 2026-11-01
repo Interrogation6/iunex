@@ -1,0 +1,117 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "5af16a924bd68b700894",
+  "position": {
+    "x": 0,
+    "y": 645.91304347826087,
+    "z": 1000,
+    "height": 432.88343558282207,
+    "width": 904.04907975460117,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dRegiao"
+                    }
+                  },
+                  "Property": "regiao"
+                }
+              },
+              "queryRef": "dRegiao.regiao",
+              "nativeQueryRef": "regiao"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dSegmento"
+                    }
+                  },
+                  "Property": "segmento"
+                }
+              },
+              "queryRef": "dSegmento.segmento",
+              "nativeQueryRef": "segmento"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dCalendario"
+                    }
+                  },
+                  "Property": "ano"
+                }
+              },
+              "queryRef": "dCalendario.ano",
+              "nativeQueryRef": "ano"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "% Atingimento da Meta"
+                }
+              },
+              "queryRef": "Medidas.% Atingimento da Meta",
+              "nativeQueryRef": "% Atingimento da Meta"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dCalendario"
+                  }
+                },
+                "Property": "ano"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dRegiao"
+                  }
+                },
+                "Property": "regiao"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

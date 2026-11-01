@@ -1,8 +1,9 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "90109d95a96a1e2a67ba",
-  "displayName": "Page 1",
+  "displayName": "Debug",
   "displayOption": "FitToPage",
   "height": 1080,
-  "width": 1920
+  "width": 1920,
+  "visibility": "HiddenInViewMode"
 }

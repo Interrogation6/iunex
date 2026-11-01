@@ -482,7 +482,8 @@ expression vendas_2026 =
 		let
 		    Source = Csv.Document(File.Contents(Path & "vendas_2026.csv"),[Delimiter="|", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
-		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type text}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}, {"id_filial", type text}, {"frete_rateado", Currency.Type}}, "en-us"),
+		    AdjustValor = Table.TransformColumns(#"Promoted Headers", {{"valor_unitario", each if _ = null then null else Number.FromText(Text.Replace(Text.Trim(_), ".", ",")), type number}}),
+		    #"Changed Type" = Table.TransformColumnTypes(AdjustValor,{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type text}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}, {"id_filial", type text}, {"frete_rateado", Currency.Type}}, "en-us"),
 		    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"data_emissao", type date}})
 		in
 		    #"Changed Type1"

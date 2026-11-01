@@ -2,6 +2,27 @@ table dCalendario
 	lineageTag: 534d6fd8-dc85-43ab-be73-1f768d953064
 	dataCategory: Time
 
+	measure 'Exibir FY Atual' =
+			
+			VAR FYMaxSelecionado =
+			    MAXX(
+			        ALLSELECTED(dCalendario),
+			        dCalendario[anofiscal]
+			    )
+			
+			VAR FYDoPonto =
+			    SELECTEDVALUE(dCalendario[anofiscal])
+			
+			RETURN
+			    IF(
+			        FYDoPonto = FYMaxSelecionado,
+			        1,
+			        0
+			    )
+		formatString: 0
+		displayFolder: Ano Fiscal
+		lineageTag: b7c3181a-3bea-4afd-9891-60cd5a0cdb8f
+
 	column data
 		dataType: dateTime
 		isKey
@@ -17,6 +38,7 @@ table dCalendario
 	column ano
 		dataType: int64
 		formatString: 0
+		displayFolder: Ano Civil
 		lineageTag: 2c190991-3175-4035-a998-0fb1f88bdd1b
 		summarizeBy: sum
 		sourceColumn: ano
@@ -26,6 +48,7 @@ table dCalendario
 	column mesnumero
 		dataType: int64
 		formatString: 0
+		displayFolder: Ano Civil
 		lineageTag: 030e6459-f49c-4b87-9226-7efe7bc61745
 		summarizeBy: sum
 		sourceColumn: mesnumero
@@ -34,6 +57,7 @@ table dCalendario
 
 	column mesnome
 		dataType: string
+		displayFolder: Ano Civil
 		lineageTag: e6b7982c-9094-4710-ac39-2ff6832dc05f
 		summarizeBy: none
 		sourceColumn: mesnome
@@ -45,6 +69,7 @@ table dCalendario
 
 	column mesano
 		dataType: string
+		displayFolder: Ano Civil
 		lineageTag: c61d5bae-3428-4715-8abd-a44b11b2d973
 		summarizeBy: none
 		sourceColumn: mesano
@@ -58,6 +83,7 @@ table dCalendario
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: Ano Civil
 		lineageTag: 6d0b5e81-8d88-4d5c-83e7-60f701d30550
 		summarizeBy: sum
 		sourceColumn: mesanoordem
@@ -69,6 +95,7 @@ table dCalendario
 	column iniciomes
 		dataType: dateTime
 		formatString: Long Date
+		displayFolder: Ano Civil
 		lineageTag: 05e8bd3e-6c37-4e61-a831-955a3357a4fe
 		summarizeBy: none
 		sourceColumn: iniciomes
@@ -79,6 +106,7 @@ table dCalendario
 
 	column trimestre
 		dataType: string
+		displayFolder: Ano Civil
 		lineageTag: 51c8816f-c1ab-4464-84b9-ed47abadf103
 		summarizeBy: none
 		sourceColumn: trimestre
@@ -88,6 +116,7 @@ table dCalendario
 	column anofiscal
 		dataType: int64
 		formatString: 0
+		displayFolder: Ano Fiscal
 		lineageTag: 1e1c2fbf-061e-4c9b-b260-789a85832abf
 		summarizeBy: sum
 		sourceColumn: anofiscal
@@ -96,6 +125,7 @@ table dCalendario
 
 	column anofiscalnome
 		dataType: string
+		displayFolder: Ano Fiscal
 		lineageTag: 1167a52f-6052-43ef-8003-f25ce558a983
 		summarizeBy: none
 		sourceColumn: anofiscalnome
@@ -108,6 +138,7 @@ table dCalendario
 	column mesfiscal
 		dataType: int64
 		formatString: 0
+		displayFolder: Ano Fiscal
 		lineageTag: cadd2c96-9c9c-47b7-a191-35804dbf6474
 		summarizeBy: sum
 		sourceColumn: mesfiscal
@@ -116,6 +147,7 @@ table dCalendario
 
 	column trimestrefiscal
 		dataType: string
+		displayFolder: Ano Fiscal
 		lineageTag: d9c8d5b7-9942-4024-a35e-5ce5a38ff333
 		summarizeBy: none
 		sourceColumn: trimestrefiscal
@@ -126,6 +158,7 @@ table dCalendario
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: Ano Civil
 		lineageTag: 0734336e-4c2e-4b20-83d8-c380111401c4
 		summarizeBy: sum
 		sourceColumn: diasemananumero
@@ -136,6 +169,7 @@ table dCalendario
 
 	column diasemananome
 		dataType: string
+		displayFolder: Ano Civil
 		lineageTag: ae0e4983-c9bf-4a3d-9e36-4ae6fb3dc512
 		summarizeBy: none
 		sourceColumn: diasemananome
@@ -148,6 +182,7 @@ table dCalendario
 	column isfimsemana
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
+		displayFolder: Dia Util
 		lineageTag: 9b0560aa-70dd-4c35-b178-ec8a319cdfa7
 		summarizeBy: none
 		sourceColumn: isfimsemana
@@ -156,6 +191,7 @@ table dCalendario
 
 	column descricaoferiado
 		dataType: string
+		displayFolder: Dia Util
 		lineageTag: ab435528-1ef3-4599-8e1d-8e833550542d
 		summarizeBy: none
 		sourceColumn: descricaoferiado
@@ -164,6 +200,7 @@ table dCalendario
 
 	column abrangenciaferiado
 		dataType: string
+		displayFolder: Dia Util
 		lineageTag: f9b51175-ce8b-4327-814f-f141a51d347f
 		summarizeBy: none
 		sourceColumn: abrangenciaferiado
@@ -173,6 +210,7 @@ table dCalendario
 	column isferiadonacional
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
+		displayFolder: Dia Util
 		lineageTag: 09c5ceac-95ef-4d98-b92c-b21246a75a16
 		summarizeBy: none
 		sourceColumn: isferiadonacional
@@ -182,6 +220,7 @@ table dCalendario
 	column isferiado
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
+		displayFolder: Dia Util
 		lineageTag: 266b5543-0841-446c-9a20-2fb9aa91cad2
 		summarizeBy: none
 		sourceColumn: isferiado
@@ -191,9 +230,22 @@ table dCalendario
 	column isdiautil
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
+		displayFolder: Dia Util
 		lineageTag: 460f8406-6fb9-4be9-9493-1765849864c9
 		summarizeBy: none
 		sourceColumn: isdiautil
+
+		annotation SummarizationSetBy = Automatic
+
+	column mesfiscalnome
+		dataType: string
+		displayFolder: Ano Fiscal
+		lineageTag: 5ec6b8fd-4802-4d3f-9086-cb58e072d93b
+		summarizeBy: none
+		sourceColumn: mesfiscalnome
+		sortByColumn: mesfiscal
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -291,8 +343,14 @@ table dCalendario
 				        Int64.Type
 				    ),
 				
+				    AddMesFiscalNome = Table.AddColumn(
+				        AddMesFiscal, "mesfiscalnome",
+				        each [mesnome],
+				        type text
+				    ),
+				
 				    AddTrimestreFiscal = Table.AddColumn(
-				        AddMesFiscal, "trimestrefiscal",
+				        AddMesFiscalNome, "trimestrefiscal",
 				        each "T" & Text.From(
 				            Number.RoundUp([mesfiscal] / 3)
 				        ),

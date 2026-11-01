@@ -65,6 +65,7 @@ ref table dRegiao
 ref table dSegmento
 ref table cgInteligenciaFiscal
 ref table Medidas
+ref table pMetricaExecutiva
 
 ref cultureInfo en-US
 

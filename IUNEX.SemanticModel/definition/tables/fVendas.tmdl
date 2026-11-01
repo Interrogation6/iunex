@@ -4,6 +4,7 @@ table fVendas
 	column id_pedido
 		dataType: int64
 		formatString: 0
+		displayFolder: ID
 		lineageTag: b84f8395-8f7a-4c0e-b363-6e3cc46e5c3a
 		summarizeBy: none
 		sourceColumn: id_pedido
@@ -87,6 +88,7 @@ table fVendas
 	column id_filial
 		dataType: int64
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 5860d44a-5669-4ac1-a4f7-040390769d9b
 		summarizeBy: none
 		sourceColumn: id_filial
@@ -149,6 +151,7 @@ table fVendas
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: b9911ac6-35fd-46c7-93f2-aae361e5ce5f
 		summarizeBy: sum
 		sourceColumn: id_cliente_origem
@@ -161,6 +164,7 @@ table fVendas
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 0389afc9-12a4-4f23-a944-078400c0f001
 		summarizeBy: sum
 		sourceColumn: id_produto_origem
@@ -173,6 +177,7 @@ table fVendas
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 8c91ee04-7305-47d3-96d2-38381dedbe99
 		summarizeBy: sum
 		sourceColumn: id_vendedor_origem
@@ -195,6 +200,7 @@ table fVendas
 			    )
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 6d5a1f93-bcff-45ee-9104-9893c4811f69
 		summarizeBy: none
 
@@ -215,6 +221,7 @@ table fVendas
 			        -1
 			    )
 		isHidden
+		displayFolder: ID
 		lineageTag: 3e9fea56-8642-46d9-8eae-3ab463003e64
 		summarizeBy: none
 
@@ -240,6 +247,7 @@ table fVendas
 			    )
 		isHidden
 		formatString: 0
+		displayFolder: ID
 		lineageTag: 6c748b78-4111-446e-8fd9-d6671f3fbcb8
 		summarizeBy: none
 

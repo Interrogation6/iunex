@@ -27,6 +27,7 @@ table fMetas
 		dataType: int64
 		isHidden
 		formatString: 0
+		displayFolder: Data
 		lineageTag: 3c1192be-65b5-4a37-bdce-f94bf5494ba6
 		summarizeBy: sum
 		sourceColumn: ano
@@ -38,6 +39,7 @@ table fMetas
 	column mes
 		dataType: string
 		isHidden
+		displayFolder: Data
 		lineageTag: 4658bc6d-f4b1-4f61-8587-125186d76dea
 		summarizeBy: none
 		sourceColumn: mes
@@ -61,6 +63,7 @@ table fMetas
 		dataType: dateTime
 		isHidden
 		formatString: Short Date
+		displayFolder: Data
 		lineageTag: feeaa31c-52e2-414e-9c2b-eb6aa7f6362a
 		summarizeBy: none
 		sourceColumn: data

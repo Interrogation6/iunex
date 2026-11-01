@@ -22,10 +22,11 @@ table Medidas
 	measure 'Receita Líquida' =
 			
 			[Receita Bruta -Desconto] - [Receita Devoluções]
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		displayFolder: Receita
 		lineageTag: 29f1009e-8ec0-43e1-9e58-6e943f77dce5
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
 	measure 'Pedidos Faturados' =
 			
@@ -56,15 +57,17 @@ table Medidas
 		displayFolder: Devoluções
 		lineageTag: 6bc3890e-46e9-4bad-bf45-b7d8ee38feb2
 
-	measure Meta =
+	measure Meta = ```
 			
 			VAR DetalheCanal =
 			    ISINSCOPE(fVendas[canal])
-			        || ISFILTERED(fVendas[canal])
 			
 			VAR MetaMensal =
 			    CALCULATE(
 			        SUM(fMetas[valor_meta]),
+			
+			        REMOVEFILTERS(fVendas[canal]),
+			
 			        KEEPFILTERS(
 			            fMetas[mes] IN {
 			                "Jan", "Fev", "Mar", "Abr",
@@ -72,6 +75,7 @@ table Medidas
 			                "Set", "Out", "Nov", "Dez"
 			            }
 			        ),
+			
 			        KEEPFILTERS(
 			            fMetas[regiao] <> "Total Geral"
 			        )
@@ -83,6 +87,8 @@ table Medidas
 			        BLANK(),
 			        MetaMensal
 			    )
+			
+			```
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		displayFolder: Metas
 		lineageTag: 4ce3cf30-b902-4ec8-8199-b8bfda3c9d68
@@ -343,23 +349,21 @@ table Medidas
 	measure 'Chaves Órfãs de Clientes' =
 			
 			VAR Vendas =
-			    SELECTCOLUMNS(
-			        FILTER(
-			            fVendas,
-			            fVendas[id_cliente] = -1
-			                && NOT ISBLANK(fVendas[id_cliente_origem])
-			        ),
-			        "ID", fVendas[id_cliente_origem]
+			    CALCULATETABLE(
+			        VALUES(fVendas[id_cliente_origem]),
+			        KEEPFILTERS(fVendas[id_cliente] = -1),
+			        KEEPFILTERS(
+			            NOT ISBLANK(fVendas[id_cliente_origem])
+			        )
 			    )
 			
 			VAR Devolucoes =
-			    SELECTCOLUMNS(
-			        FILTER(
-			            fDevolucoes,
-			            fDevolucoes[id_cliente] = -1
-			                && NOT ISBLANK(fDevolucoes[id_cliente_origem])
-			        ),
-			        "ID", fDevolucoes[id_cliente_origem]
+			    CALCULATETABLE(
+			        VALUES(fDevolucoes[id_cliente_origem]),
+			        KEEPFILTERS(fDevolucoes[id_cliente] = -1),
+			        KEEPFILTERS(
+			            NOT ISBLANK(fDevolucoes[id_cliente_origem])
+			        )
 			    )
 			
 			RETURN
@@ -375,23 +379,21 @@ table Medidas
 	measure 'Chaves Órfãs de Produtos' =
 			
 			VAR Vendas =
-			    SELECTCOLUMNS(
-			        FILTER(
-			            fVendas,
-			            fVendas[id_produto] = -1
-			                && NOT ISBLANK(fVendas[id_produto_origem])
-			        ),
-			        "ID", fVendas[id_produto_origem]
+			    CALCULATETABLE(
+			        VALUES(fVendas[id_produto_origem]),
+			        KEEPFILTERS(fVendas[id_produto] = -1),
+			        KEEPFILTERS(
+			            NOT ISBLANK(fVendas[id_produto_origem])
+			        )
 			    )
 			
 			VAR Devolucoes =
-			    SELECTCOLUMNS(
-			        FILTER(
-			            fDevolucoes,
-			            fDevolucoes[id_produto] = -1
-			                && NOT ISBLANK(fDevolucoes[id_produto_origem])
-			        ),
-			        "ID", fDevolucoes[id_produto_origem]
+			    CALCULATETABLE(
+			        VALUES(fDevolucoes[id_produto_origem]),
+			        KEEPFILTERS(fDevolucoes[id_produto] = -1),
+			        KEEPFILTERS(
+			            NOT ISBLANK(fDevolucoes[id_produto_origem])
+			        )
 			    )
 			
 			RETURN
@@ -407,23 +409,21 @@ table Medidas
 	measure 'Chaves Órfãs de Vendedores' =
 			
 			VAR Vendas =
-			    SELECTCOLUMNS(
-			        FILTER(
-			            fVendas,
-			            fVendas[id_vendedor] = -1
-			                && NOT ISBLANK(fVendas[id_vendedor_origem])
-			        ),
-			        "ID", fVendas[id_vendedor_origem]
+			    CALCULATETABLE(
+			        VALUES(fVendas[id_vendedor_origem]),
+			        KEEPFILTERS(fVendas[id_vendedor] = -1),
+			        KEEPFILTERS(
+			            NOT ISBLANK(fVendas[id_vendedor_origem])
+			        )
 			    )
 			
 			VAR Devolucoes =
-			    SELECTCOLUMNS(
-			        FILTER(
-			            fDevolucoes,
-			            fDevolucoes[id_vendedor] = -1
-			                && NOT ISBLANK(fDevolucoes[id_vendedor_origem])
-			        ),
-			        "ID", fDevolucoes[id_vendedor_origem]
+			    CALCULATETABLE(
+			        VALUES(fDevolucoes[id_vendedor_origem]),
+			        KEEPFILTERS(fDevolucoes[id_vendedor] = -1),
+			        KEEPFILTERS(
+			            NOT ISBLANK(fDevolucoes[id_vendedor_origem])
+			        )
 			    )
 			
 			RETURN
@@ -489,46 +489,11 @@ table Medidas
 			    SUM(fMetas[valor_meta]),
 			    fMetas[regiao] = "Total Geral"
 			)
-		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		displayFolder: Metas
 		lineageTag: 0e6e3305-16f7-48ea-9646-465904554c5b
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
-
-	measure 'Receita Acumulada ABC %' =
-			
-			VAR ReceitaAtual =
-			    [Receita Líquida]
-			
-			VAR Clientes =
-			    ADDCOLUMNS(
-			        FILTER(
-			            ALLSELECTED(dClientes),
-			            dClientes[id_cliente] <> -1
-			        ),
-			        "@Receita", [Receita Líquida]
-			    )
-			
-			VAR ReceitaTotal =
-			    SUMX(Clientes, [@Receita])
-			
-			VAR ReceitaAcumulada =
-			    SUMX(
-			        FILTER(
-			            Clientes,
-			            [@Receita] >= ReceitaAtual
-			        ),
-			        [@Receita]
-			    )
-			
-			RETURN
-			    IF(
-			        HASONEVALUE(dClientes[id_cliente]),
-			        DIVIDE(ReceitaAcumulada, ReceitaTotal)
-			    )
-		formatString: 0.00%;-0.00%;0.00%
-		displayFolder: Receita
-		lineageTag: a97bdf68-d971-436a-923b-d3bdb2080a48
 
 	measure 'Receita Líquida ACM % - Cliente' =
 			
@@ -551,10 +516,60 @@ table Medidas
 			
 			RETURN
 			    DIVIDE(ReceitaAcumulada, ReceitaTotal)
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Clientes
 		lineageTag: 047ed078-93bf-4432-b058-97b1d6da208f
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+	measure 'Variação YoY %' =
+			
+			DIVIDE(
+			    [Receita Líquida YTD FY]
+			        - [Receita Líquida YTD FY Anterior],
+			    [Receita Líquida YTD FY Anterior]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Receita
+		lineageTag: 490b7bbf-23f0-4078-98e2-3b0ff54f99c1
+
+	measure 'Aviso Mês Incompleto' =
+			
+			VAR DataCorte =
+			    CALCULATE(
+			        MAX(fVendas[data_emissao]),
+			        REMOVEFILTERS()
+			    )
+			
+			VAR UltimoDiaMes =
+			    EOMONTH(DataCorte, 0)
+			
+			VAR InicioMes =
+			    DATE(
+			        YEAR(DataCorte),
+			        MONTH(DataCorte),
+			        1
+			    )
+			
+			VAR MesEstaVisivel =
+			    COUNTROWS(
+			        FILTER(
+			            VALUES(dCalendario[data]),
+			            dCalendario[data] >= InicioMes
+			                && dCalendario[data] <= UltimoDiaMes
+			        )
+			    ) > 0
+			
+			RETURN
+			    IF(
+			        NOT ISBLANK(DataCorte)
+			            && DataCorte < UltimoDiaMes
+			            && MesEstaVisivel,
+			        "Dados até "
+			            & FORMAT(DataCorte, "dd/MM/yyyy")
+			            & " — mês incompleto. ",
+			        BLANK()
+			    )
+		displayFolder: _Erros
+		lineageTag: dba46889-ab9f-40bd-9aa4-f19dcc9e3d54
 
 	column _
 		isHidden

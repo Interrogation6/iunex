@@ -1,0 +1,50 @@
+table pMetricaExecutiva
+	lineageTag: 83664f2f-5c99-482b-885d-065eb9d0a278
+
+	column pMetricaExecutiva
+		lineageTag: a2b0d2d3-2afa-4423-b093-c52b118e33c8
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'pMetricaExecutiva Order'
+
+		relatedColumnDetails
+			groupByColumn: 'pMetricaExecutiva Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'pMetricaExecutiva Fields'
+		isHidden
+		lineageTag: 13f7d0b1-3482-42e7-a127-64f19ea95c3d
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'pMetricaExecutiva Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'pMetricaExecutiva Order'
+		isHidden
+		formatString: 0
+		lineageTag: 03053663-3b25-48ee-945d-5d4145dcd97f
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pMetricaExecutiva = calculated
+		mode: import
+		source =
+				{
+				    ("Receita Líquida", NAMEOF('Medidas'[Receita Líquida]), 0),
+				    ("Receita Bruta", NAMEOF('Medidas'[Receita Bruta]), 1),
+				    ("Receita após Desconto", NAMEOF('Medidas'[Receita Bruta -Desconto]), 2),
+				    ("Devoluções", NAMEOF('Medidas'[Receita Devoluções]), 3)
+				}
+
+	annotation PBI_Id = 2577bbb819614121aaa48ef05c45faff
+

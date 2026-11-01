@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "9b4a4a7b1396d5a79ab4",
+  "displayName": "Executivo",
+  "displayOption": "FitToWidth",
+  "height": 1080,
+  "width": 1920,
+  "visualInteractions": [
+    {
+      "source": "f754ef7b293453ddb007",
+      "target": "3c2af4f255ba84de2741",
+      "type": "DataFilter"
+    },
+    {
+      "source": "c124f16e9e3654e960da",
+      "target": "3c2af4f255ba84de2741",
+      "type": "NoFilter"
+    },
+    {
+      "source": "91cf644a3c51bc15e08a",
+      "target": "3c2af4f255ba84de2741",
+      "type": "NoFilter"
+    },
+    {
+      "source": "fc9a5aab662cbc3119ca",
+      "target": "3c2af4f255ba84de2741",
+      "type": "NoFilter"
+    },
+    {
+      "source": "1a40476ae000c9a4a11c",
+      "target": "3c2af4f255ba84de2741",
+      "type": "NoFilter"
+    },
+    {
+      "source": "a914a5d426a72d692aa0",
+      "target": "3c2af4f255ba84de2741",
+      "type": "NoFilter"
+    }
+  ]
+}
