@@ -1,0 +1,60 @@
+table dFaixasRecencia
+	lineageTag: 901aecee-cf35-428d-b868-3d1c43689792
+
+	column Faixa
+		lineageTag: b2332059-c24c-4ce7-9288-b951f7f429dc
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Faixa]
+		sortByColumn: Ordem
+
+		annotation SummarizationSetBy = Automatic
+
+	column MinDias
+		formatString: 0
+		lineageTag: 32ccfd58-9ecd-43b5-ae49-c1ec4b1a2e55
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [MinDias]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MaxDias
+		formatString: 0
+		lineageTag: e2eace48-7ea8-401d-be6a-bb00dd25a752
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [MaxDias]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordem
+		formatString: 0
+		lineageTag: 4a83dc3c-8a19-46b8-8457-f68d386af149
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Ordem]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dFaixasRecencia = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE(
+				    "Faixa", STRING,
+				    "MinDias", INTEGER,
+				    "MaxDias", INTEGER,
+				    "Ordem", INTEGER,
+				    {
+				        {"0–30 dias", 0, 30, 1},
+				        {"31–60 dias", 31, 60, 2},
+				        {"61–90 dias", 61, 90, 3},
+				        {"90+ dias", 91, 999999, 4}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = f2e65f6156b843cabe801370b0f71854
+

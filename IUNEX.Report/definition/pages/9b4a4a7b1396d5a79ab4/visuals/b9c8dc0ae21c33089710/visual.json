@@ -4,13 +4,13 @@
   "position": {
     "x": 360,
     "y": 70.15384615384616,
-    "z": 8000,
+    "z": 6000,
     "height": 108.92307692307693,
     "width": 1469.5384615384617,
-    "tabOrder": 6000
+    "tabOrder": 8000
   },
   "visualGroup": {
-    "displayName": "Group 1",
+    "displayName": "Cards",
     "groupMode": "ScaleMode"
   }
 }

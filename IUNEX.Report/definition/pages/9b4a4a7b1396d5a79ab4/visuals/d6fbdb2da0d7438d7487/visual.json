@@ -4,10 +4,10 @@
   "position": {
     "x": 257.53846153846155,
     "y": 132.92307692307693,
-    "z": 8001,
+    "z": 7000,
     "height": 41.53846153846154,
     "width": 94.15384615384616,
-    "tabOrder": 5001
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "image",
@@ -54,6 +54,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Iunex'"
                 }
               }
             }

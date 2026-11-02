@@ -4,7 +4,7 @@
   "position": {
     "x": 96,
     "y": 217.84615384615387,
-    "z": 4000,
+    "z": 2000,
     "height": 76.615384615384627,
     "width": 255.69230769230771,
     "tabOrder": 5000
@@ -181,6 +181,13 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Métrica'"
                 }
               }
             }

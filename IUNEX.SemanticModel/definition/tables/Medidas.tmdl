@@ -287,7 +287,7 @@ table Medidas
 	measure 'Receita Bruta -Desconto' =
 			
 			sum(fVendas[receita_liquida])
-		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		displayFolder: Receita
 		lineageTag: 4c64d356-af97-484c-9626-698142765f1c
 
@@ -336,7 +336,7 @@ table Medidas
 			            )
 			        )
 			    )
-		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		displayFolder: Clientes
 		lineageTag: cb4cdcee-9ed1-4a19-9d99-4fd4d2461156
 
@@ -622,6 +622,145 @@ table Medidas
 			        "Métricas"
 			    ) & " & Metas"
 		lineageTag: 14efa043-2b4c-4e0c-b3ab-be373ff020df
+
+	measure 'Mês/Ano mais recente' =
+			
+			VAR DataReferencia = MAX(dCalendario[data])
+			RETURN
+			    CALCULATE(
+			        SELECTEDVALUE(dCalendario[mesano]),
+			        dCalendario[data] = DataReferencia
+			    )
+		displayFolder: Datas
+		lineageTag: 90c3c54a-ce73-4c48-abdb-627476d7336a
+
+	measure 'Dias Inatividade Pré-Reativação' = ```
+			
+			VAR DataBase =
+			    [Data Máxima da Base]
+			
+			VAR DataContexto =
+			    MAX(dCalendario[data])
+			
+			VAR DataReferencia =
+			    MIN(DataBase, DataContexto)
+			
+			VAR InicioMes =
+			    DATE(
+			        YEAR(DataReferencia),
+			        MONTH(DataReferencia),
+			        1
+			    )
+			
+			VAR UltimaCompraAnterior =
+			    CALCULATE(
+			        MAX(fVendas[data_emissao]),
+			        REMOVEFILTERS(dCalendario),
+			        fVendas[data_emissao] < InicioMes
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(DataBase)
+			            || ISBLANK(UltimaCompraAnterior),
+			        BLANK(),
+			        DATEDIFF(
+			            UltimaCompraAnterior,
+			            InicioMes,
+			            DAY
+			        )
+			    )
+			
+			```
+		formatString: 0
+		displayFolder: Datas
+		lineageTag: 63ba504c-00e9-4e50-b5db-66f5ff638cea
+
+	measure 'Clientes por Faixa de Recência' =
+			
+			VAR MinDias =
+			    SELECTEDVALUE(dFaixasRecencia[MinDias])
+			
+			VAR MaxDias =
+			    SELECTEDVALUE(dFaixasRecencia[MaxDias])
+			
+			VAR Quantidade =
+			    COUNTROWS(
+			        FILTER(
+			            VALUES(dClientes[id_cliente]),
+			
+			            VAR ClienteID =
+			                dClientes[id_cliente]
+			
+			            VAR Dias =
+			                [Dias sem Comprar]
+			
+			            RETURN
+			                ClienteID <> -1
+			                    && NOT ISBLANK(Dias)
+			                    && Dias >= MinDias
+			                    && Dias <= MaxDias
+			        )
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(MinDias)
+			            || ISBLANK(MaxDias),
+			        BLANK(),
+			        COALESCE(Quantidade, 0)
+			    )
+		formatString: 0
+		displayFolder: Clientes
+		lineageTag: de2c5e10-3c50-41f4-b684-44fac69adc96
+
+	measure 'Classe ABC Cliente' = ```
+			
+			VAR Percentual =
+			    [Receita Líquida ACM % - Cliente]
+			
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        NOT ISNUMBER(Percentual), BLANK(),
+			        Percentual <= 0.80, "A",
+			        Percentual <= 0.95, "B",
+			        "C"
+			    )
+			
+			```
+		displayFolder: Clientes
+		lineageTag: 83a7aedf-b080-41e5-b647-7e24ada94f08
+
+	measure 'Clientes Classe B' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(dClientes[id_cliente]),
+			    KEEPFILTERS(
+			        FILTER(
+			            VALUES(dClientes[razao_social]),
+			            [Classe ABC Cliente] = "B"
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Clientes
+		lineageTag: 3da60c31-6f69-4eeb-bced-5d19d6fc7b10
+
+	measure 'Clientes Classe C' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(dClientes[id_cliente]),
+			    KEEPFILTERS(
+			        FILTER(
+			            VALUES(dClientes[razao_social]),
+			            [Classe ABC Cliente] = "C"
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Clientes
+		lineageTag: 8c7122a1-54b7-4807-9eaf-c6836955b3b6
 
 	column _
 		isHidden

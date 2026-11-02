@@ -1,6 +1,23 @@
 table dClientes
 	lineageTag: fd14a9d4-ad58-42d4-bc25-11a66338d14e
 
+	measure 'Primeira Razao Social' = MIN(dClientes[razao_social])
+		lineageTag: 116a774c-39c6-4605-a6e0-c0992c3379f9
+
+	measure 'Clientes Classe A' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(dClientes[id_cliente]),
+			    KEEPFILTERS(
+			        FILTER(
+			            VALUES(dClientes[razao_social]),
+			            [Classe ABC Cliente] = "A"
+			        )
+			    )
+			)
+		formatString: 0
+		lineageTag: b6328dee-0745-429b-87b2-302c359c45c7
+
 	column id_cliente
 		dataType: int64
 		formatString: 0

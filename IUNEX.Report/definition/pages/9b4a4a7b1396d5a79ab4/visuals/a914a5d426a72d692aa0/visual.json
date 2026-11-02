@@ -4,7 +4,7 @@
   "position": {
     "x": 1081.4682896176953,
     "y": 0,
-    "z": 12000,
+    "z": 3000,
     "height": 77.025189894091724,
     "width": 349.88679958219552,
     "tabOrder": 2000
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "fVendas.canal",
-              "nativeQueryRef": "canal",
-              "active": true
+              "nativeQueryRef": "Canal",
+              "active": true,
+              "displayName": "Canal"
             }
           ]
         }

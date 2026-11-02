@@ -4,7 +4,7 @@
   "position": {
     "x": 0,
     "y": 0,
-    "z": 9000,
+    "z": 0,
     "height": 78.950819641444014,
     "width": 347.89880640275123,
     "tabOrder": 1000
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "dCalendario.anofiscal",
-              "nativeQueryRef": "anofiscal",
-              "active": true
+              "nativeQueryRef": "Ano Fiscal",
+              "active": true,
+              "displayName": "Ano Fiscal"
             }
           ]
         }

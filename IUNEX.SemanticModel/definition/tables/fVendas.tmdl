@@ -1,6 +1,28 @@
 table fVendas
 	lineageTag: 3808c56e-bde3-43fe-ba07-8a19367da048
 
+	measure 'Venda Selecionada - Soma Quantidade' =
+			
+			SUM(fVendas[quantidade])
+		formatString: 0
+		lineageTag: b5f9236b-cc37-4c38-8e20-4e977cc3d49a
+
+	measure 'Venda Selecionada - Valor Unitário' =
+			
+			SELECTEDVALUE(fVendas[valor_unitario_brl], BLANK())
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 4d60049b-a7a3-4426-8f49-6de16fbb8b6c
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Data da Venda mais Recente' =
+			
+			MAX(fVendas[data_emissao])
+		formatString: dd/mm/yy
+		lineageTag: b2625c95-05c5-4051-b4e1-c98f6aa2864a
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
 	column id_pedido
 		dataType: int64
 		formatString: 0
@@ -35,10 +57,10 @@ table fVendas
 		dataType: double
 		formatString: 0
 		lineageTag: df8e88ee-1980-4def-ba01-df8da8d7bc9f
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: quantidade
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column valor_unitario
 		dataType: decimal

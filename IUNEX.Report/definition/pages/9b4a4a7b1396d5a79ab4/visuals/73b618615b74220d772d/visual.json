@@ -4,7 +4,7 @@
   "position": {
     "x": 96,
     "y": 320,
-    "z": 2000,
+    "z": 1500,
     "height": 338.91083553400358,
     "width": 1731.2743534415361,
     "tabOrder": 4000
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "dCalendario.mesfiscalnome",
-              "nativeQueryRef": "mesfiscalnome",
-              "active": true
+              "nativeQueryRef": "Mês",
+              "active": true,
+              "displayName": "Mês"
             }
           ]
         },

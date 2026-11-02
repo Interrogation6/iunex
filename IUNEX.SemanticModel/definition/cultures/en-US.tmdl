@@ -2666,6 +2666,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.461
 			          }
+			        },
+			        {
+			          "Razão Social": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -4011,6 +4021,16 @@ cultureInfo en-US
 			          "mesnome": {
 			            "State": "Generated"
 			          }
+			        },
+			        {
+			          "Mês": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -4100,6 +4120,16 @@ cultureInfo en-US
 			        {
 			          "anofiscal": {
 			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "Ano Fiscal": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -4296,6 +4326,16 @@ cultureInfo en-US
 			          "mesfiscalnome": {
 			            "State": "Generated"
 			          }
+			        },
+			        {
+			          "Mês": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -4349,6 +4389,16 @@ cultureInfo en-US
 			        {
 			          "regiao": {
 			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "Região": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -5279,6 +5329,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.605
 			          }
+			        },
+			        {
+			          "Receita Acumulada": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -5616,6 +5676,540 @@ cultureInfo en-US
 			          }
 			        }
 			      ]
+			    },
+			    "d_calendario.possui_dado": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dCalendario",
+			          "ConceptualProperty": "Possui Dados"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "possui dado": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "medida.aviso_mês_incompleto": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Aviso Mês Incompleto"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "aviso mês incompleto": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "medida.aux_titulo_metrica_selecionada": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Aux Titulo Metrica Selecionada"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "aux titulo metrica selecionada": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "medida.mês_ano_mais_recente": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Mês/Ano mais recente"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "mês/ano mais recente": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "mês ano mais recente": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "ano mais recente": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "Mês/Ano Referência": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "medida.dias_inatividade_préreativação": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Dias Inatividade Pré-Reativação"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "dias inatividade pré-reativação": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "dias inatividade pré reativação": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        }
+			      ]
+			    },
+			    "medida.clientes_por_faixa_de_recência": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Clientes por Faixa de Recência"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "clientes por faixa de recência": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "medida.classe_ABC_cliente": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Classe ABC Cliente"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "classe ABC cliente": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dFaixasRecencia"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "d faixas recencia": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "d faixa recencia": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.78
+			          }
+			        },
+			        {
+			          "dFaixasRecencia": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia.faixa": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dFaixasRecencia",
+			          "ConceptualProperty": "Faixa"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "faixa": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia.min_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dFaixasRecencia",
+			          "ConceptualProperty": "MinDias"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "min dias": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "MinDias": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "dias": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "minimum dias": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia.max_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dFaixasRecencia",
+			          "ConceptualProperty": "MaxDias"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "max dias": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "MaxDias": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "dias": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "maximum dias": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia.ordem": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dFaixasRecencia",
+			          "ConceptualProperty": "Ordem"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ordem": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "f_venda.venda_selecionada__soma_quantidade": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fVendas",
+			          "ConceptualProperty": "Venda Selecionada - Soma Quantidade"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "venda selecionada - soma quantidade": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "venda selecionada soma quantidade": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "Quantidade": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "d_cliente.primeira_razao_social": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dClientes",
+			          "ConceptualProperty": "Primeira Razao Social"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "primeira razao social": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "primeira razao party": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.468
+			          }
+			        },
+			        {
+			          "primeira razao get-together": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.468
+			          }
+			        },
+			        {
+			          "primeira razao gathering": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.468
+			          }
+			        },
+			        {
+			          "Cliente Selecionado": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "d_produto.produto_selecionado__descricao": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dProdutos",
+			          "ConceptualProperty": "Produto Selecionado - Descricao"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "produto selecionado - descricao": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "produto selecionado descricao": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "Produto": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "f_venda.venda_selecionada__valor_unitário": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fVendas",
+			          "ConceptualProperty": "Venda Selecionada - Valor Unitário"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "venda selecionada - valor unitário": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "venda selecionada valor unitário": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "Valor Unitário": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "f_venda.data_da_venda_mais_recente": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fVendas",
+			          "ConceptualProperty": "Data da Venda mais Recente"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "data da venda mais recente": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        },
+			        {
+			          "information da venda Mai recente": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.624
+			          }
+			        },
+			        {
+			          "fact da venda Mai recente": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.624
+			          }
+			        },
+			        {
+			          "info da venda Mai recente": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.624
+			          }
+			        },
+			        {
+			          "statistic da venda Mai recente": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.624
+			          }
+			        },
+			        {
+			          "document da venda Mai recente": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        },
+			        {
+			          "figure da venda Mai recente": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        },
+			        {
+			          "record da venda Mai recente": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        },
+			        {
+			          "Venda mais Recente": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
 			    }
 			  },
 			  "Relationships": {
@@ -5846,6 +6440,666 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "d_calendarios_have_f_venda"
+			        }
+			      ]
+			    },
+			    "f_venda_has_data_da_venda_mais_recente": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "f_venda.data_da_venda_mais_recente": {
+			          "Target": {
+			            "Entity": "f_venda.data_da_venda_mais_recente"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "f_venda.data_da_venda_mais_recente"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_data_da_venda_mais_recente"
+			        }
+			      ]
+			    },
+			    "f_venda_has_venda_selecionada__valor_unitário": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "f_venda.venda_selecionada__valor_unitário": {
+			          "Target": {
+			            "Entity": "f_venda.venda_selecionada__valor_unitário"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "f_venda.venda_selecionada__valor_unitário"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_venda_selecionada__valor_unitário"
+			        }
+			      ]
+			    },
+			    "d_produto_has_produto_selecionado__descricao": {
+			      "Binding": {
+			        "ConceptualEntity": "dProdutos"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_produto": {
+			          "Target": {
+			            "Entity": "d_produto"
+			          }
+			        },
+			        "d_produto.produto_selecionado__descricao": {
+			          "Target": {
+			            "Entity": "d_produto.produto_selecionado__descricao"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_produto"
+			            },
+			            "Object": {
+			              "Role": "d_produto.produto_selecionado__descricao"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_produtos_have_produto_selecionado__descricao"
+			        }
+			      ]
+			    },
+			    "d_cliente_has_primeira_razao_social": {
+			      "Binding": {
+			        "ConceptualEntity": "dClientes"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_cliente": {
+			          "Target": {
+			            "Entity": "d_cliente"
+			          }
+			        },
+			        "d_cliente.primeira_razao_social": {
+			          "Target": {
+			            "Entity": "d_cliente.primeira_razao_social"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_cliente"
+			            },
+			            "Object": {
+			              "Role": "d_cliente.primeira_razao_social"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_clientes_have_primeira_razao_social"
+			        }
+			      ]
+			    },
+			    "f_venda_has_venda_selecionada__soma_quantidade": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "f_venda.venda_selecionada__soma_quantidade": {
+			          "Target": {
+			            "Entity": "f_venda.venda_selecionada__soma_quantidade"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "f_venda.venda_selecionada__soma_quantidade"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_venda_selecionada__soma_quantidade"
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia_has_ordem": {
+			      "Binding": {
+			        "ConceptualEntity": "dFaixasRecencia"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_faixas_recencia": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia"
+			          }
+			        },
+			        "d_faixas_recencia.ordem": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia.ordem"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_faixas_recencia"
+			            },
+			            "Object": {
+			              "Role": "d_faixas_recencia.ordem"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_faixas_recencias_have_ordems"
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia_has_max_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "dFaixasRecencia"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_faixas_recencia": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia"
+			          }
+			        },
+			        "d_faixas_recencia.max_dias": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia.max_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_faixas_recencia"
+			            },
+			            "Object": {
+			              "Role": "d_faixas_recencia.max_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_faixas_recencias_have_max_dias"
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia_has_min_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "dFaixasRecencia"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_faixas_recencia": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia"
+			          }
+			        },
+			        "d_faixas_recencia.min_dias": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia.min_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_faixas_recencia"
+			            },
+			            "Object": {
+			              "Role": "d_faixas_recencia.min_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_faixas_recencias_have_min_dias"
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia_has_faixa": {
+			      "Binding": {
+			        "ConceptualEntity": "dFaixasRecencia"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_faixas_recencia": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia"
+			          }
+			        },
+			        "d_faixas_recencia.faixa": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia.faixa"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_faixas_recencia"
+			            },
+			            "Object": {
+			              "Role": "d_faixas_recencia.faixa"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_faixas_recencias_have_faixas"
+			        }
+			      ]
+			    },
+			    "f_venda_has_medida_classe_ABC_cliente": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "medida.classe_ABC_cliente": {
+			          "Target": {
+			            "Entity": "medida.classe_ABC_cliente"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "medida.classe_ABC_cliente"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_classe_ABC_cliente"
+			        }
+			      ]
+			    },
+			    "f_devolucoe_has_medida_classe_ABC_cliente": {
+			      "Binding": {
+			        "ConceptualEntity": "fDevolucoes"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_devolucoe": {
+			          "Target": {
+			            "Entity": "f_devolucoe"
+			          }
+			        },
+			        "medida.classe_ABC_cliente": {
+			          "Target": {
+			            "Entity": "medida.classe_ABC_cliente"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_devolucoe"
+			            },
+			            "Object": {
+			              "Role": "medida.classe_ABC_cliente"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_devolucoes_have_classe_ABC_cliente"
+			        }
+			      ]
+			    },
+			    "d_cliente_has_medida_classe_ABC_cliente": {
+			      "Binding": {
+			        "ConceptualEntity": "dClientes"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_cliente": {
+			          "Target": {
+			            "Entity": "d_cliente"
+			          }
+			        },
+			        "medida.classe_ABC_cliente": {
+			          "Target": {
+			            "Entity": "medida.classe_ABC_cliente"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_cliente"
+			            },
+			            "Object": {
+			              "Role": "medida.classe_ABC_cliente"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_clientes_have_classe_ABC_cliente"
+			        }
+			      ]
+			    },
+			    "d_faixas_recencia_has_medida_clientes_por_faixa_de_recência": {
+			      "Binding": {
+			        "ConceptualEntity": "dFaixasRecencia"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_faixas_recencia": {
+			          "Target": {
+			            "Entity": "d_faixas_recencia"
+			          }
+			        },
+			        "medida.clientes_por_faixa_de_recência": {
+			          "Target": {
+			            "Entity": "medida.clientes_por_faixa_de_recência"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_faixas_recencia"
+			            },
+			            "Object": {
+			              "Role": "medida.clientes_por_faixa_de_recência"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_faixas_recencias_have_clientes_por_faixa_de_recência"
+			        }
+			      ]
+			    },
+			    "d_cliente_has_medida_clientes_por_faixa_de_recência": {
+			      "Binding": {
+			        "ConceptualEntity": "dClientes"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_cliente": {
+			          "Target": {
+			            "Entity": "d_cliente"
+			          }
+			        },
+			        "medida.clientes_por_faixa_de_recência": {
+			          "Target": {
+			            "Entity": "medida.clientes_por_faixa_de_recência"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_cliente"
+			            },
+			            "Object": {
+			              "Role": "medida.clientes_por_faixa_de_recência"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_clientes_have_clientes_por_faixa_de_recência"
+			        }
+			      ]
+			    },
+			    "medida_has_dias_inatividade_préreativação": {
+			      "Binding": {
+			        "ConceptualEntity": "Medidas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "medida": {
+			          "Target": {
+			            "Entity": "medida"
+			          }
+			        },
+			        "medida.dias_inatividade_préreativação": {
+			          "Target": {
+			            "Entity": "medida.dias_inatividade_préreativação"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "medida"
+			            },
+			            "Object": {
+			              "Role": "medida.dias_inatividade_préreativação"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "medidas_have_dias_inatividade_préreativação"
+			        }
+			      ]
+			    },
+			    "d_calendario_has_medida_mês_ano_mais_recente": {
+			      "Binding": {
+			        "ConceptualEntity": "dCalendario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_calendario": {
+			          "Target": {
+			            "Entity": "d_calendario"
+			          }
+			        },
+			        "medida.mês_ano_mais_recente": {
+			          "Target": {
+			            "Entity": "medida.mês_ano_mais_recente"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_calendario"
+			            },
+			            "Object": {
+			              "Role": "medida.mês_ano_mais_recente"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_calendarios_have_mês_ano_mais_recente"
+			        }
+			      ]
+			    },
+			    "medida_has_aux_titulo_metrica_selecionada": {
+			      "Binding": {
+			        "ConceptualEntity": "Medidas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "medida": {
+			          "Target": {
+			            "Entity": "medida"
+			          }
+			        },
+			        "medida.aux_titulo_metrica_selecionada": {
+			          "Target": {
+			            "Entity": "medida.aux_titulo_metrica_selecionada"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "medida"
+			            },
+			            "Object": {
+			              "Role": "medida.aux_titulo_metrica_selecionada"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "medidas_have_aux_titulo_metrica_selecionada"
+			        }
+			      ]
+			    },
+			    "f_venda_has_medida_aviso_mês_incompleto": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "medida.aviso_mês_incompleto": {
+			          "Target": {
+			            "Entity": "medida.aviso_mês_incompleto"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "medida.aviso_mês_incompleto"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_aviso_mês_incompleto"
+			        }
+			      ]
+			    },
+			    "d_calendario_has_medida_aviso_mês_incompleto": {
+			      "Binding": {
+			        "ConceptualEntity": "dCalendario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_calendario": {
+			          "Target": {
+			            "Entity": "d_calendario"
+			          }
+			        },
+			        "medida.aviso_mês_incompleto": {
+			          "Target": {
+			            "Entity": "medida.aviso_mês_incompleto"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_calendario"
+			            },
+			            "Object": {
+			              "Role": "medida.aviso_mês_incompleto"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_calendarios_have_aviso_mês_incompleto"
+			        }
+			      ]
+			    },
+			    "d_calendario_has_possui_dado": {
+			      "Binding": {
+			        "ConceptualEntity": "dCalendario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_calendario": {
+			          "Target": {
+			            "Entity": "d_calendario"
+			          }
+			        },
+			        "d_calendario.possui_dado": {
+			          "Target": {
+			            "Entity": "d_calendario.possui_dado"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_calendario"
+			            },
+			            "Object": {
+			              "Role": "d_calendario.possui_dado"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_calendarios_have_possui_dadoes"
 			        }
 			      ]
 			    },

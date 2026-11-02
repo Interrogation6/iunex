@@ -1,0 +1,191 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "b5afdf9fb707e9680268",
+  "displayName": "Detalhe Cliente",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d7b9bff73133934900b2",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dClientes"
+              }
+            },
+            "Property": "razao_social"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "dClientes",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d"
+                          }
+                        },
+                        "Property": "razao_social"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Bravo Bravo Materiais Ltda'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "1e0d74501bb897479130",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "c22a7768143cadc01005",
+        "boundFilter": "d7b9bff73133934900b2",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dClientes"
+              }
+            },
+            "Property": "razao_social"
+          }
+        }
+      }
+    ],
+    "referenceScope": "CrossReport",
+    "acceptsFilterContext": "None"
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#EFF3F6'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          },
+          "image": {
+            "image": {
+              "name": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'nortech-background.png'"
+                  }
+                }
+              },
+              "url": {
+                "expr": {
+                  "ResourcePackageItem": {
+                    "PackageName": "RegisteredResources",
+                    "PackageType": 1,
+                    "ItemName": "nortech-background873024962329813.png"
+                  }
+                }
+              },
+              "scaling": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Normal'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspace": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#081B2C'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "44eafa2b556d03a60817",
+      "target": "5f1a014280ae4b526bcd",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ee122e202a086cd725ea",
+      "target": "b734fec2a58d39679094",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b734fec2a58d39679094",
+      "target": "ee122e202a086cd725ea",
+      "type": "NoFilter"
+    },
+    {
+      "source": "460186749de27e28c468",
+      "target": "9cbd6ba624978dd2e0e0",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b734fec2a58d39679094",
+      "target": "9cbd6ba624978dd2e0e0",
+      "type": "NoFilter"
+    },
+    {
+      "source": "ee122e202a086cd725ea",
+      "target": "9cbd6ba624978dd2e0e0",
+      "type": "NoFilter"
+    }
+  ]
+}

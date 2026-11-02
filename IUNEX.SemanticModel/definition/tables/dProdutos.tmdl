@@ -1,6 +1,11 @@
 table dProdutos
 	lineageTag: 5a99484e-f40d-485b-ac25-4b5a26ca7ef4
 
+	measure 'Produto Selecionado - Descricao' =
+			
+			SELECTEDVALUE(dProdutos[descricao], BLANK())
+		lineageTag: 4814bddb-a2eb-405c-8737-9afea0207309
+
 	column id_produto
 		dataType: int64
 		formatString: 0

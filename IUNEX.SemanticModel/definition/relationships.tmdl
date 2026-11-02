@@ -23,6 +23,7 @@ relationship 9deef9c4-3a3e-7383-f47c-af50baae3a1b
 	toColumn: dClientes.id_cliente
 
 relationship 4881725b-3265-4ee5-34a1-06e104d2c02b
+	crossFilteringBehavior: bothDirections
 	fromColumn: fVendas.id_produto
 	toColumn: dProdutos.id_produto
 

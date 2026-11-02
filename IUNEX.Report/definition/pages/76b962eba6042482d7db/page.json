@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "76b962eba6042482d7db",
+  "displayName": "Tooltip Cliente",
+  "displayOption": "ActualSize",
+  "height": 300,
+  "width": 400,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3cb45bbb2dece89aacee",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dClientes"
+              }
+            },
+            "Property": "razao_social"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "2b1f9c7a7177a76e8cb9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dClientes"
+              }
+            },
+            "Property": "razao_social"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "37e5417f7cc17745e398",
+    "type": "Tooltip",
+    "parameters": [
+      {
+        "name": "563b71bde63c5305b3a5",
+        "boundFilter": "2b1f9c7a7177a76e8cb9",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dClientes"
+              }
+            },
+            "Property": "razao_social"
+          }
+        }
+      }
+    ],
+    "acceptsFilterContext": "None"
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "ThemeDataColor": {
+                    "ColorId": 0,
+                    "Percent": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}
