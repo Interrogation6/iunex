@@ -3,9 +3,9 @@
   "name": "73c0523e020403e300c9",
   "position": {
     "x": 0,
-    "y": 55,
+    "y": 64,
     "z": 0,
-    "height": 245,
+    "height": 236,
     "width": 400,
     "tabOrder": 0
   },
@@ -157,5 +157,37 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "aa9e73665506d028136c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dCalendario"
+              }
+            },
+            "Property": "mesano"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b7b7800708e5e6c52602",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Medidas"
+              }
+            },
+            "Property": "Pedidos Faturados"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

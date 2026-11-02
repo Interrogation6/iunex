@@ -8,21 +8,6 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "3cb45bbb2dece89aacee",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dClientes"
-              }
-            },
-            "Property": "razao_social"
-          }
-        },
-        "type": "Categorical",
-        "howCreated": "User"
-      },
-      {
         "name": "2b1f9c7a7177a76e8cb9",
         "field": {
           "Column": {
