@@ -5,12 +5,14 @@ table fVendas
 			
 			SUM(fVendas[quantidade])
 		formatString: 0
+		displayFolder: Select
 		lineageTag: b5f9236b-cc37-4c38-8e20-4e977cc3d49a
 
 	measure 'Venda Selecionada - Valor Unitário' =
 			
 			SELECTEDVALUE(fVendas[valor_unitario_brl], BLANK())
 		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Select
 		lineageTag: 4d60049b-a7a3-4426-8f49-6de16fbb8b6c
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
@@ -19,6 +21,7 @@ table fVendas
 			
 			MAX(fVendas[data_emissao])
 		formatString: dd/mm/yy
+		displayFolder: Select
 		lineageTag: b2625c95-05c5-4051-b4e1-c98f6aa2864a
 
 		annotation PBI_FormatHint = {"isDateTimeCustom":true}

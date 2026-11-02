@@ -621,6 +621,7 @@ table Medidas
 			        MAXX(Metrica, [Nome]),
 			        "Métricas"
 			    ) & " & Metas"
+		displayFolder: _Aux
 		lineageTag: 14efa043-2b4c-4e0c-b3ab-be373ff020df
 
 	measure 'Mês/Ano mais recente' =
@@ -714,10 +715,9 @@ table Medidas
 		displayFolder: Clientes
 		lineageTag: de2c5e10-3c50-41f4-b684-44fac69adc96
 
-	measure 'Classe ABC Cliente' = ```
+	measure 'Classe ABC Dinâmica' =
 			
-			VAR Percentual =
-			    [Receita Líquida ACM % - Cliente]
+			VAR Percentual = [Receita Líquida ACM % - ABC]
 			
 			RETURN
 			    SWITCH(
@@ -727,40 +727,173 @@ table Medidas
 			        Percentual <= 0.95, "B",
 			        "C"
 			    )
-			
-			```
 		displayFolder: Clientes
 		lineageTag: 83a7aedf-b080-41e5-b647-7e24ada94f08
 
-	measure 'Clientes Classe B' =
+	measure 'Quantidade Classe B' = ```
 			
-			CALCULATE(
-			    DISTINCTCOUNT(dClientes[id_cliente]),
-			    KEEPFILTERS(
-			        FILTER(
-			            VALUES(dClientes[razao_social]),
-			            [Classe ABC Cliente] = "B"
-			        )
+			VAR Tipo =
+			    MAXX(
+			        SUMMARIZE(
+			            pAnaliseABC,
+			            pAnaliseABC[pAnaliseABC],
+			            pAnaliseABC[pAnaliseABC Fields]
+			        ),
+			        pAnaliseABC[pAnaliseABC]
 			    )
-			)
+			RETURN 
+			    SWITCH(
+			        Tipo,
+			        "Cliente",
+			            COUNTROWS(
+			                FILTER(
+			                    VALUES(dClientes[razao_social]),
+			                    [Classe ABC Dinâmica] = "B"
+			                )
+			            ),
+			        "Produto",
+			            COUNTROWS(
+			                FILTER(
+			                    VALUES(dProdutos[descricao]),
+			                    [Classe ABC Dinâmica] = "B"
+			                )
+			            )
+			    )
+			```
 		formatString: 0
-		displayFolder: Clientes
+		displayFolder: ABC
 		lineageTag: 3da60c31-6f69-4eeb-bced-5d19d6fc7b10
 
-	measure 'Clientes Classe C' =
+	measure 'Quantidade Classe C' = ```
 			
-			CALCULATE(
-			    DISTINCTCOUNT(dClientes[id_cliente]),
-			    KEEPFILTERS(
-			        FILTER(
-			            VALUES(dClientes[razao_social]),
-			            [Classe ABC Cliente] = "C"
-			        )
+			VAR Tipo =
+			    MAXX(
+			        SUMMARIZE(
+			            pAnaliseABC,
+			            pAnaliseABC[pAnaliseABC],
+			            pAnaliseABC[pAnaliseABC Fields]
+			        ),
+			        pAnaliseABC[pAnaliseABC]
 			    )
-			)
+			RETURN 
+			    SWITCH(
+			        Tipo,
+			        "Cliente",
+			            COUNTROWS(
+			                FILTER(
+			                    VALUES(dClientes[razao_social]),
+			                    [Classe ABC Dinâmica] = "C"
+			                )
+			            ),
+			        "Produto",
+			            COUNTROWS(
+			                FILTER(
+			                    VALUES(dProdutos[descricao]),
+			                    [Classe ABC Dinâmica] = "C"
+			                )
+			            )
+			    )
+			```
 		formatString: 0
-		displayFolder: Clientes
+		displayFolder: ABC
 		lineageTag: 8c7122a1-54b7-4807-9eaf-c6836955b3b6
+
+	measure 'Receita Líquida ACM % - ABC' =
+			
+			SWITCH(
+			    TRUE(),
+			
+			    ISINSCOPE(dClientes[razao_social]),
+			        [Receita Líquida ACM % - Cliente],
+			
+			    ISINSCOPE(dProdutos[descricao]),
+			        VAR ReceitaAtual = [Receita Líquida]
+			
+			        VAR Produtos =
+			            ADDCOLUMNS(
+			                ALLSELECTED(dProdutos[descricao]),
+			                "@Receita", CALCULATE([Receita Líquida])
+			            )
+			
+			        VAR ReceitaAcumulada =
+			            SUMX(
+			                FILTER(
+			                    Produtos,
+			                    [@Receita] >= ReceitaAtual
+			                ),
+			                [@Receita]
+			            )
+			
+			        VAR ReceitaTotal =
+			            SUMX(
+			                Produtos,
+			                [@Receita]
+			            )
+			
+			        RETURN
+			            DIVIDE(ReceitaAcumulada, ReceitaTotal),
+			
+			    BLANK()
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: ABC
+		lineageTag: 1fe4318c-f99c-4011-8cb7-cade5e9dfead
+
+	measure 'Aux Título Curva ABC' =
+			
+			VAR Selecao =
+			    SELECTCOLUMNS(
+			        SUMMARIZE(
+			            pAnaliseABC,
+			            pAnaliseABC[pAnaliseABC],
+			            pAnaliseABC[pAnaliseABC Fields]
+			        ),
+			        "Nome", pAnaliseABC[pAnaliseABC]
+			    )
+			
+			RETURN
+			    "Curva ABC de " &
+			    IF(
+			        COUNTROWS(Selecao) = 1,
+			        MAXX(Selecao, [Nome]),
+			        "Clientes e Produtos"
+			    )
+		displayFolder: _Aux
+		lineageTag: e873bec8-42d1-4177-af3b-217997fe70a6
+
+	measure 'Quantidade Classe A' = ```
+			
+			VAR Tipo =
+			    MAXX(
+			        SUMMARIZE(
+			            pAnaliseABC,
+			            pAnaliseABC[pAnaliseABC],
+			            pAnaliseABC[pAnaliseABC Fields]
+			        ),
+			        pAnaliseABC[pAnaliseABC]
+			    )
+			RETURN 
+			    SWITCH(
+			        Tipo,
+			        "Cliente",
+			            COUNTROWS(
+			                FILTER(
+			                    VALUES(dClientes[razao_social]),
+			                    [Classe ABC Dinâmica] = "A"
+			                )
+			            ),
+			        "Produto",
+			            COUNTROWS(
+			                FILTER(
+			                    VALUES(dProdutos[descricao]),
+			                    [Classe ABC Dinâmica] = "A"
+			                )
+			            )
+			    )
+			```
+		formatString: 0
+		displayFolder: ABC
+		lineageTag: b6328dee-0745-429b-87b2-302c359c45c7
 
 	column _
 		isHidden

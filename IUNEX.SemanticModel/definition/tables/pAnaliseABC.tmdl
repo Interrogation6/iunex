@@ -1,0 +1,48 @@
+table pAnaliseABC
+	lineageTag: aab4862e-3357-49bc-8d38-ce043c2156a4
+
+	column pAnaliseABC
+		lineageTag: d517cfce-0dda-4c17-be74-b692f244e4e4
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'pAnaliseABC Order'
+
+		relatedColumnDetails
+			groupByColumn: 'pAnaliseABC Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'pAnaliseABC Fields'
+		isHidden
+		lineageTag: 56c682fa-699d-4d0a-bcfb-2a94bf740757
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'pAnaliseABC Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'pAnaliseABC Order'
+		isHidden
+		formatString: 0
+		lineageTag: df99a98a-f744-4103-9056-c63ec9a5c6d3
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pAnaliseABC = calculated
+		mode: import
+		source =
+				{
+				    ("Cliente", NAMEOF('dClientes'[razao_social]), 0),
+				    ("Produto", NAMEOF('dProdutos'[descricao]), 1)
+				}
+
+	annotation PBI_Id = 691b2e17c0144554951be8a450fc3f96
+

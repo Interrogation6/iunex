@@ -4,6 +4,7 @@ table dProdutos
 	measure 'Produto Selecionado - Descricao' =
 			
 			SELECTEDVALUE(dProdutos[descricao], BLANK())
+		displayFolder: Select
 		lineageTag: 4814bddb-a2eb-405c-8737-9afea0207309
 
 	column id_produto

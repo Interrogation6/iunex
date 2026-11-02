@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "8af7070c282c0a039d08",
   "position": {
-    "x": 295.59462408533392,
-    "y": 0,
-    "z": 2000,
+    "x": 1171.5685640235886,
+    "y": 312.779306549257,
+    "z": 4000,
     "height": 89.818381948266378,
-    "width": 295.594624085334,
-    "tabOrder": 1000
+    "width": 218.43702852551496,
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,11 +23,11 @@
                       "Entity": "Medidas"
                     }
                   },
-                  "Property": "Clientes Classe B"
+                  "Property": "Quantidade Classe B"
                 }
               },
               "queryRef": "Medidas.Clientes Classe B",
-              "nativeQueryRef": "Clientes Classe B"
+              "nativeQueryRef": "Quantidade Classe B"
             }
           ]
         }
@@ -42,7 +42,7 @@
                     "Entity": "Medidas"
                   }
                 },
-                "Property": "Clientes Classe B"
+                "Property": "Quantidade Classe B"
               }
             },
             "direction": "Descending"
@@ -246,6 +246,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "parentGroupName": "9c9634b499b35963a8aa"
+  }
 }

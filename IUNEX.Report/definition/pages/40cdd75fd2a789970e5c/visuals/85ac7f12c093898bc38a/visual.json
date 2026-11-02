@@ -4,7 +4,7 @@
   "position": {
     "x": 967.9251513483764,
     "y": 407.88112272977435,
-    "z": 1000,
+    "z": 2000,
     "height": 348.70665932856355,
     "width": 858.02971931755633,
     "tabOrder": 8000
@@ -27,9 +27,25 @@
                 }
               },
               "queryRef": "dClientes.razao_social",
-              "nativeQueryRef": "Razão Social",
+              "nativeQueryRef": "Cliente",
               "active": true,
-              "displayName": "Razão Social"
+              "displayName": "Cliente"
+            }
+          ],
+          "fieldParameters": [
+            {
+              "parameterExpr": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pAnaliseABC"
+                    }
+                  },
+                  "Property": "pAnaliseABC"
+                }
+              },
+              "index": 0,
+              "length": 1
             }
           ]
         },
@@ -61,12 +77,11 @@
                       "Entity": "Medidas"
                     }
                   },
-                  "Property": "Receita Líquida ACM % - Cliente"
+                  "Property": "Receita Líquida ACM % - ABC"
                 }
               },
-              "queryRef": "Medidas.Receita Líquida ACM % - Cliente",
-              "nativeQueryRef": "Receita Acumulada",
-              "displayName": "Receita Acumulada"
+              "queryRef": "Medidas.Receita Líquida ACM % - ABC",
+              "nativeQueryRef": "Receita Líquida ACM % - ABC"
             }
           ]
         }
@@ -254,7 +269,7 @@
                                       "Entity": "Medidas"
                                     }
                                   },
-                                  "Property": "Classe ABC Cliente"
+                                  "Property": "Classe ABC Dinâmica"
                                 }
                               },
                               "Right": {
@@ -285,7 +300,7 @@
                                       "Entity": "Medidas"
                                     }
                                   },
-                                  "Property": "Classe ABC Cliente"
+                                  "Property": "Classe ABC Dinâmica"
                                 }
                               },
                               "Right": {
@@ -316,7 +331,7 @@
                                       "Entity": "Medidas"
                                     }
                                   },
-                                  "Property": "Classe ABC Cliente"
+                                  "Property": "Classe ABC Dinâmica"
                                 }
                               },
                               "Right": {
@@ -497,8 +512,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Curva ABC de Clientes'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Aux Título Curva ABC"
                 }
               }
             },
@@ -634,21 +654,6 @@
         }
       },
       {
-        "name": "f2ff0efa50e25c4043ca",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dClientes"
-              }
-            },
-            "Property": "razao_social"
-          }
-        },
-        "type": "TopN",
-        "howCreated": "User"
-      },
-      {
         "name": "2e6434f15030c8779b25",
         "field": {
           "Measure": {
@@ -701,18 +706,77 @@
         }
       },
       {
-        "name": "3188011092e684de5d08",
+        "name": "ff1134b86b85c34e59d7",
         "field": {
-          "Measure": {
+          "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "Medidas"
+                "Entity": "dProdutos"
               }
             },
-            "Property": "Receita Líquida ACM % - Cliente"
+            "Property": "descricao"
           }
         },
-        "type": "Advanced"
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "dProdutos",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "d"
+                              }
+                            },
+                            "Property": "descricao"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Não Identificado'"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
       }
     ]
   }

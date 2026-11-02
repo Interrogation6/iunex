@@ -2676,6 +2676,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Cliente": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -5329,16 +5339,6 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.605
 			          }
-			        },
-			        {
-			          "Receita Acumulada": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
 			        }
 			      ]
 			    },
@@ -5801,17 +5801,17 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "medida.classe_ABC_cliente": {
+			    "medida.classe_ABC_dinâmica": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Medidas",
-			          "ConceptualProperty": "Classe ABC Cliente"
+			          "ConceptualProperty": "Classe ABC Dinâmica"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "classe ABC cliente": {
+			          "classe ABC dinâmica": {
 			            "State": "Generated"
 			          }
 			        }
@@ -6210,23 +6210,428 @@ cultureInfo en-US
 			        }
 			      ],
 			      "SemanticType": "Time"
+			    },
+			    "d_cliente.quantidade_classe_a": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Quantidade Classe A"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "quantidade classe a": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "medida.quantidade_classe_b": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Quantidade Classe B"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "quantidade classe b": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "medida.quantidade_classe_c": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Quantidade Classe C"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "quantidade classe c": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "p_analise_ABC": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "pAnaliseABC"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "p analise ABC": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "pAnaliseABC": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "p_analise_ABC.p_analise_ABC": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "pAnaliseABC",
+			          "ConceptualProperty": "pAnaliseABC"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "p analise ABC": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "p analise ABC name": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "pAnaliseABC": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "ABC": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ],
+			      "NameType": "Name"
+			    },
+			    "p_analise_ABC.pAnaliseABC_field": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "pAnaliseABC",
+			          "ConceptualProperty": "pAnaliseABC Fields"
+			        }
+			      },
+			      "State": "Generated",
+			      "Visibility": {
+			        "Value": "Hidden"
+			      },
+			      "Terms": [
+			        {
+			          "pAnaliseABC field": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "panaliseabc arena": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "panaliseabc turf": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc ground": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc pitch": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc park": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc meadow": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "panaliseabc grassland": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "panaliseabc lea": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "panaliseabc pasture": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "panaliseabc countryside": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        }
+			      ]
+			    },
+			    "p_analise_ABC.pAnaliseABC_order": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "pAnaliseABC",
+			          "ConceptualProperty": "pAnaliseABC Order"
+			        }
+			      },
+			      "State": "Generated",
+			      "Visibility": {
+			        "Value": "Hidden"
+			      },
+			      "Terms": [
+			        {
+			          "pAnaliseABC order": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "panaliseabc instruction": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "panaliseabc direction": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "panaliseabc edict": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "panaliseabc command": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc directive": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc demand": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc mandate": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc imperative": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "panaliseabc stability": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "panaliseabc harmony": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        }
+			      ]
+			    },
+			    "medida.receita_líquida_ACM___ABC": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Receita Líquida ACM % - ABC"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "receita líquida ACM % - ABC": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "receita líquida ACM % ABC": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "receita líquida acm percentage abc": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.624
+			          }
+			        },
+			        {
+			          "receita líquida acm pct abc": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        }
+			      ]
+			    },
+			    "medida.aux_título_curva_ABC": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Medidas",
+			          "ConceptualProperty": "Aux Título Curva ABC"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "aux título curva ABC": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
 			    }
 			  },
 			  "Relationships": {
-			    "f_devolucoe_has_d_calendario": {
+			    "p_analise_ABC_has_p_analise_ABC": {
 			      "Binding": {
-			        "ConceptualEntity": "fDevolucoes"
+			        "ConceptualEntity": "pAnaliseABC"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "f_devolucoe": {
+			        "p_analise_ABC": {
 			          "Target": {
-			            "Entity": "f_devolucoe"
+			            "Entity": "p_analise_ABC"
 			          }
 			        },
-			        "d_calendario": {
+			        "p_analise_ABC.p_analise_ABC": {
 			          "Target": {
-			            "Entity": "d_calendario"
+			            "Entity": "p_analise_ABC.p_analise_ABC"
 			          }
 			        }
 			      },
@@ -6234,45 +6639,45 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "f_devolucoe"
+			              "Role": "p_analise_ABC"
 			            },
 			            "Object": {
-			              "Role": "d_calendario"
+			              "Role": "p_analise_ABC.p_analise_ABC"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "f_devolucoes_have_d_calendarios"
+			          "ID": "p_analise_ABCs_have_p_analise_ABCs"
 			        },
 			        {
-			          "Attribute": {
+			          "Name": {
 			            "Subject": {
-			              "Role": "d_calendario"
+			              "Role": "p_analise_ABC"
 			            },
-			            "Object": {
-			              "Role": "f_devolucoe"
+			            "Name": {
+			              "Role": "p_analise_ABC.p_analise_ABC"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "d_calendarios_have_f_devolucoes"
+			          "ID": "p_analise_ABCs_are_names_IDs_of_p_analise_ABCs"
 			        }
 			      ]
 			    },
-			    "f_venda_has_d_vendedore": {
+			    "p_analise_ABC_has_medida_quantidade_classe_c": {
 			      "Binding": {
-			        "ConceptualEntity": "fVendas"
+			        "ConceptualEntity": "pAnaliseABC"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "f_venda": {
+			        "p_analise_ABC": {
 			          "Target": {
-			            "Entity": "f_venda"
+			            "Entity": "p_analise_ABC"
 			          }
 			        },
-			        "d_vendedore": {
+			        "medida.quantidade_classe_c": {
 			          "Target": {
-			            "Entity": "d_vendedore"
+			            "Entity": "medida.quantidade_classe_c"
 			          }
 			        }
 			      },
@@ -6280,137 +6685,98 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "f_venda"
+			              "Role": "p_analise_ABC"
 			            },
 			            "Object": {
-			              "Role": "d_vendedore"
+			              "Role": "medida.quantidade_classe_c"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "f_venda_have_d_vendedores"
-			        },
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "d_vendedore"
-			            },
-			            "Object": {
-			              "Role": "f_venda"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "d_vendedores_have_f_venda"
+			          "ID": "p_analise_ABCs_have_quantidade_classe_c"
 			        }
 			      ]
 			    },
-			    "f_venda_has_d_produto": {
+			    "d_produto_has_medida_quantidade_classe_c": {
 			      "Binding": {
-			        "ConceptualEntity": "fVendas"
+			        "ConceptualEntity": "dProdutos"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "f_venda": {
-			          "Target": {
-			            "Entity": "f_venda"
-			          }
-			        },
 			        "d_produto": {
 			          "Target": {
 			            "Entity": "d_produto"
 			          }
+			        },
+			        "medida.quantidade_classe_c": {
+			          "Target": {
+			            "Entity": "medida.quantidade_classe_c"
+			          }
 			        }
 			      },
 			      "Phrasings": [
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "f_venda"
+			              "Role": "d_produto"
 			            },
 			            "Object": {
-			              "Role": "d_produto"
+			              "Role": "medida.quantidade_classe_c"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "f_venda_have_d_produtos"
-			        },
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "d_produto"
-			            },
-			            "Object": {
-			              "Role": "f_venda"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "d_produtos_have_f_venda"
+			          "ID": "d_produtos_have_quantidade_classe_c"
 			        }
 			      ]
 			    },
-			    "f_venda_has_d_cliente": {
+			    "d_cliente_has_medida_quantidade_classe_c": {
 			      "Binding": {
-			        "ConceptualEntity": "fVendas"
+			        "ConceptualEntity": "dClientes"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "f_venda": {
-			          "Target": {
-			            "Entity": "f_venda"
-			          }
-			        },
 			        "d_cliente": {
 			          "Target": {
 			            "Entity": "d_cliente"
 			          }
+			        },
+			        "medida.quantidade_classe_c": {
+			          "Target": {
+			            "Entity": "medida.quantidade_classe_c"
+			          }
 			        }
 			      },
 			      "Phrasings": [
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "f_venda"
+			              "Role": "d_cliente"
 			            },
 			            "Object": {
-			              "Role": "d_cliente"
+			              "Role": "medida.quantidade_classe_c"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "f_venda_have_d_clientes"
-			        },
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "d_cliente"
-			            },
-			            "Object": {
-			              "Role": "f_venda"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "d_clientes_have_f_venda"
+			          "ID": "d_clientes_have_quantidade_classe_c"
 			        }
 			      ]
 			    },
-			    "f_venda_has_d_calendario": {
+			    "p_analise_ABC_has_medida_quantidade_classe_b": {
 			      "Binding": {
-			        "ConceptualEntity": "fVendas"
+			        "ConceptualEntity": "pAnaliseABC"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "f_venda": {
+			        "p_analise_ABC": {
 			          "Target": {
-			            "Entity": "f_venda"
+			            "Entity": "p_analise_ABC"
 			          }
 			        },
-			        "d_calendario": {
+			        "medida.quantidade_classe_b": {
 			          "Target": {
-			            "Entity": "d_calendario"
+			            "Entity": "medida.quantidade_classe_b"
 			          }
 			        }
 			      },
@@ -6418,28 +6784,180 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "f_venda"
+			              "Role": "p_analise_ABC"
 			            },
 			            "Object": {
-			              "Role": "d_calendario"
+			              "Role": "medida.quantidade_classe_b"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "f_venda_have_d_calendarios"
+			          "ID": "p_analise_ABCs_have_quantidade_classe_b"
+			        }
+			      ]
+			    },
+			    "d_produto_has_medida_quantidade_classe_b": {
+			      "Binding": {
+			        "ConceptualEntity": "dProdutos"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_produto": {
+			          "Target": {
+			            "Entity": "d_produto"
+			          }
 			        },
+			        "medida.quantidade_classe_b": {
+			          "Target": {
+			            "Entity": "medida.quantidade_classe_b"
+			          }
+			        }
+			      },
+			      "Phrasings": [
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "d_calendario"
+			              "Role": "d_produto"
 			            },
 			            "Object": {
-			              "Role": "f_venda"
+			              "Role": "medida.quantidade_classe_b"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "d_calendarios_have_f_venda"
+			          "ID": "d_produtos_have_quantidade_classe_b"
+			        }
+			      ]
+			    },
+			    "d_cliente_has_medida_quantidade_classe_b": {
+			      "Binding": {
+			        "ConceptualEntity": "dClientes"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_cliente": {
+			          "Target": {
+			            "Entity": "d_cliente"
+			          }
+			        },
+			        "medida.quantidade_classe_b": {
+			          "Target": {
+			            "Entity": "medida.quantidade_classe_b"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_cliente"
+			            },
+			            "Object": {
+			              "Role": "medida.quantidade_classe_b"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_clientes_have_quantidade_classe_b"
+			        }
+			      ]
+			    },
+			    "p_analise_ABC_has_d_cliente_quantidade_classe_a": {
+			      "Binding": {
+			        "ConceptualEntity": "pAnaliseABC"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "p_analise_ABC": {
+			          "Target": {
+			            "Entity": "p_analise_ABC"
+			          }
+			        },
+			        "d_cliente.quantidade_classe_a": {
+			          "Target": {
+			            "Entity": "d_cliente.quantidade_classe_a"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "p_analise_ABC"
+			            },
+			            "Object": {
+			              "Role": "d_cliente.quantidade_classe_a"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "p_analise_ABCs_have_quantidade_classe_a"
+			        }
+			      ]
+			    },
+			    "d_produto_has_d_cliente_quantidade_classe_a": {
+			      "Binding": {
+			        "ConceptualEntity": "dProdutos"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_produto": {
+			          "Target": {
+			            "Entity": "d_produto"
+			          }
+			        },
+			        "d_cliente.quantidade_classe_a": {
+			          "Target": {
+			            "Entity": "d_cliente.quantidade_classe_a"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_produto"
+			            },
+			            "Object": {
+			              "Role": "d_cliente.quantidade_classe_a"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_produtos_have_quantidade_classe_a"
+			        }
+			      ]
+			    },
+			    "d_cliente_has_quantidade_classe_a": {
+			      "Binding": {
+			        "ConceptualEntity": "dClientes"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "d_cliente": {
+			          "Target": {
+			            "Entity": "d_cliente"
+			          }
+			        },
+			        "d_cliente.quantidade_classe_a": {
+			          "Target": {
+			            "Entity": "d_cliente.quantidade_classe_a"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_cliente"
+			            },
+			            "Object": {
+			              "Role": "d_cliente.quantidade_classe_a"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_clientes_have_quantidade_classe_a"
 			        }
 			      ]
 			    },
@@ -6740,20 +7258,20 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "f_venda_has_medida_classe_ABC_cliente": {
+			    "medida_has_classe_ABC_dinâmica": {
 			      "Binding": {
-			        "ConceptualEntity": "fVendas"
+			        "ConceptualEntity": "Medidas"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "f_venda": {
+			        "medida": {
 			          "Target": {
-			            "Entity": "f_venda"
+			            "Entity": "medida"
 			          }
 			        },
-			        "medida.classe_ABC_cliente": {
+			        "medida.classe_ABC_dinâmica": {
 			          "Target": {
-			            "Entity": "medida.classe_ABC_cliente"
+			            "Entity": "medida.classe_ABC_dinâmica"
 			          }
 			        }
 			      },
@@ -6761,81 +7279,15 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "f_venda"
+			              "Role": "medida"
 			            },
 			            "Object": {
-			              "Role": "medida.classe_ABC_cliente"
+			              "Role": "medida.classe_ABC_dinâmica"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "f_venda_have_classe_ABC_cliente"
-			        }
-			      ]
-			    },
-			    "f_devolucoe_has_medida_classe_ABC_cliente": {
-			      "Binding": {
-			        "ConceptualEntity": "fDevolucoes"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "f_devolucoe": {
-			          "Target": {
-			            "Entity": "f_devolucoe"
-			          }
-			        },
-			        "medida.classe_ABC_cliente": {
-			          "Target": {
-			            "Entity": "medida.classe_ABC_cliente"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "f_devolucoe"
-			            },
-			            "Object": {
-			              "Role": "medida.classe_ABC_cliente"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "f_devolucoes_have_classe_ABC_cliente"
-			        }
-			      ]
-			    },
-			    "d_cliente_has_medida_classe_ABC_cliente": {
-			      "Binding": {
-			        "ConceptualEntity": "dClientes"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "d_cliente": {
-			          "Target": {
-			            "Entity": "d_cliente"
-			          }
-			        },
-			        "medida.classe_ABC_cliente": {
-			          "Target": {
-			            "Entity": "medida.classe_ABC_cliente"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "d_cliente"
-			            },
-			            "Object": {
-			              "Role": "medida.classe_ABC_cliente"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "d_clientes_have_classe_ABC_cliente"
+			          "ID": "medidas_have_classe_ABC_dinâmica"
 			        }
 			      ]
 			    },
@@ -11835,6 +12287,302 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "d_clientes_are_in_ufs"
+			        }
+			      ]
+			    },
+			    "medida_has_receita_líquida_ACM___ABC": {
+			      "Binding": {
+			        "ConceptualEntity": "Medidas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "medida": {
+			          "Target": {
+			            "Entity": "medida"
+			          }
+			        },
+			        "medida.receita_líquida_ACM___ABC": {
+			          "Target": {
+			            "Entity": "medida.receita_líquida_ACM___ABC"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "medida"
+			            },
+			            "Object": {
+			              "Role": "medida.receita_líquida_ACM___ABC"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "medidas_have_receita_líquida_ACM___ABC"
+			        }
+			      ]
+			    },
+			    "medida_has_aux_título_curva_ABC": {
+			      "Binding": {
+			        "ConceptualEntity": "Medidas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "medida": {
+			          "Target": {
+			            "Entity": "medida"
+			          }
+			        },
+			        "medida.aux_título_curva_ABC": {
+			          "Target": {
+			            "Entity": "medida.aux_título_curva_ABC"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "medida"
+			            },
+			            "Object": {
+			              "Role": "medida.aux_título_curva_ABC"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "medidas_have_aux_título_curva_ABC"
+			        }
+			      ]
+			    },
+			    "f_venda_has_d_calendario": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "d_calendario": {
+			          "Target": {
+			            "Entity": "d_calendario"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "d_calendario"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_d_calendarios"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_calendario"
+			            },
+			            "Object": {
+			              "Role": "f_venda"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_calendarios_have_f_venda"
+			        }
+			      ]
+			    },
+			    "f_venda_has_d_cliente": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "d_cliente": {
+			          "Target": {
+			            "Entity": "d_cliente"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "d_cliente"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_d_clientes"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_cliente"
+			            },
+			            "Object": {
+			              "Role": "f_venda"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_clientes_have_f_venda"
+			        }
+			      ]
+			    },
+			    "f_venda_has_d_produto": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "d_produto": {
+			          "Target": {
+			            "Entity": "d_produto"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "d_produto"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_d_produtos"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_produto"
+			            },
+			            "Object": {
+			              "Role": "f_venda"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_produtos_have_f_venda"
+			        }
+			      ]
+			    },
+			    "f_venda_has_d_vendedore": {
+			      "Binding": {
+			        "ConceptualEntity": "fVendas"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_venda": {
+			          "Target": {
+			            "Entity": "f_venda"
+			          }
+			        },
+			        "d_vendedore": {
+			          "Target": {
+			            "Entity": "d_vendedore"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_venda"
+			            },
+			            "Object": {
+			              "Role": "d_vendedore"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_venda_have_d_vendedores"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_vendedore"
+			            },
+			            "Object": {
+			              "Role": "f_venda"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_vendedores_have_f_venda"
+			        }
+			      ]
+			    },
+			    "f_devolucoe_has_d_calendario": {
+			      "Binding": {
+			        "ConceptualEntity": "fDevolucoes"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "f_devolucoe": {
+			          "Target": {
+			            "Entity": "f_devolucoe"
+			          }
+			        },
+			        "d_calendario": {
+			          "Target": {
+			            "Entity": "d_calendario"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "f_devolucoe"
+			            },
+			            "Object": {
+			              "Role": "d_calendario"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "f_devolucoes_have_d_calendarios"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "d_calendario"
+			            },
+			            "Object": {
+			              "Role": "f_devolucoe"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "d_calendarios_have_f_devolucoes"
 			        }
 			      ]
 			    },

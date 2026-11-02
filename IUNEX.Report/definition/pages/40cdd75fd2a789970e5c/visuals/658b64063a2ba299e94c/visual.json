@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "dClientes.razao_social",
-              "nativeQueryRef": "razao_social"
+              "nativeQueryRef": "Razão Social",
+              "displayName": "Razão Social"
             },
             {
               "field": {

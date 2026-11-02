@@ -67,6 +67,7 @@ ref table cgInteligenciaFiscal
 ref table Medidas
 ref table pMetricaExecutiva
 ref table dFaixasRecencia
+ref table pAnaliseABC
 
 ref cultureInfo en-US
 
