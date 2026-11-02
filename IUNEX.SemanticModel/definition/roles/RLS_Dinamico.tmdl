@@ -29,5 +29,15 @@ role RLS_Dinamico
 			    SegmentoPermitido = "TODOS"
 			        || [segmento] = SegmentoPermitido
 
+	tablePermission fErros =
+			VAR Ativo =
+			    CALCULATE(
+			        SELECTEDVALUE(dAcessos[ativo]),
+			        dAcessos[nome] = USERPRINCIPALNAME()
+			    )
+			
+			RETURN
+			    Ativo == TRUE()
+
 	annotation PBI_Id = 7d1ce7be14674e0d964a4e8e48230bfd
 
