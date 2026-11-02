@@ -999,6 +999,10 @@ table Medidas
 		displayFolder: _Erros
 		lineageTag: 2107f554-a8e0-4ace-b3c7-2af3a3352e0f
 
+	measure 'Usuario Ativo' = USERPRINCIPALNAME()
+		displayFolder: _Aux
+		lineageTag: 1b6d7697-87ef-42b9-905a-9b51a46ea3db
+
 	column _
 		isHidden
 		formatString: 0

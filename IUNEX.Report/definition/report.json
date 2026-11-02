@@ -83,6 +83,21 @@
             }
           ]
         }
+      },
+      {
+        "name": "78933ba136909c654429",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dRegiao"
+              }
+            },
+            "Property": "regiao"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
       }
     ]
   },

@@ -36,11 +36,34 @@ table dAcessos
 		annotation SummarizationSetBy = Automatic
 
 	column ativo
-		dataType: string
+		dataType: boolean
 		isHidden
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 81d7a627-d9e2-42db-934a-c94a6627ff69
 		summarizeBy: none
 		sourceColumn: ativo
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column nome
+		dataType: string
+		isHidden
+		lineageTag: 832dff10-d24b-4bf3-bb32-06f4be5b3504
+		summarizeBy: none
+		sourceColumn: nome
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column perfil
+		dataType: string
+		isHidden
+		lineageTag: 8bad4ac1-d11e-4030-9932-c595dc91ae55
+		summarizeBy: none
+		sourceColumn: perfil
 
 		changedProperty = IsHidden
 
@@ -52,10 +75,19 @@ table dAcessos
 		source =
 				let
 				    Source = stg_seguranca_acessos,
-				    #"Removed Other Columns" = Table.SelectColumns(Source,{"email", "regiao_permitida", "segmento_permitido", "ativo"}),
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Removed Other Columns")
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+				    AdjustAtivo = Table.TransformColumns(#"Removed Errors",
+				{
+				                "ativo",
+				                each List.Contains(
+				                    {"SIM"},
+				                    Text.Upper(Text.Trim(Text.From(_ ?? "")))
+				                ),
+				                type logical
+				            }
+				)
 				in
-				    #"Removed Errors"
+				    AdjustAtivo
 
 	changedProperty = IsHidden
 

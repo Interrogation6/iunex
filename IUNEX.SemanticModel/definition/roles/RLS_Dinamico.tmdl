@@ -1,0 +1,33 @@
+role RLS_Dinamico
+	modelPermission: read
+
+	tablePermission dRegiao =
+			VAR RegiaoPermitida =
+			    CALCULATE(
+			        SELECTEDVALUE(dAcessos[regiao_permitida]),
+			        dAcessos[ativo] = TRUE(),
+			        dAcessos[nome] = USERPRINCIPALNAME()
+			    )
+			
+			RETURN
+			    RegiaoPermitida = "TODAS"
+			        || [regiao] = RegiaoPermitida
+
+	tablePermission dAcessos =
+			([ativo] == true())
+			&& ([nome] == USERPRINCIPALNAME())
+
+	tablePermission dSegmento =
+			VAR SegmentoPermitido =
+			    CALCULATE(
+			        SELECTEDVALUE(dAcessos[segmento_permitido]),
+			        dAcessos[ativo] = TRUE(),
+			        dAcessos[nome] = USERPRINCIPALNAME()
+			    )
+			
+			RETURN
+			    SegmentoPermitido = "TODOS"
+			        || [segmento] = SegmentoPermitido
+
+	annotation PBI_Id = 7d1ce7be14674e0d964a4e8e48230bfd
+

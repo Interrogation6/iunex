@@ -70,5 +70,7 @@ ref table dFaixasRecencia
 ref table pAnaliseABC
 ref table auxAtt
 
+ref role RLS_Dinamico
+
 ref cultureInfo en-US
 
