@@ -261,7 +261,7 @@ table Medidas
 	measure 'Dias sem Comprar' =
 			
 			VAR DataReferencia =
-			    MAX(dCalendario[data])
+			    [Data Máxima da Base]
 			
 			VAR UltimaCompra =
 			    CALCULATE(
@@ -792,41 +792,94 @@ table Medidas
 
 	measure 'Receita Líquida ACM % - ABC' =
 			
-			SWITCH(
-			    TRUE(),
+			VAR Selecao =
+			    SUMMARIZE(
+			        pAnaliseABC,
+			        pAnaliseABC[pAnaliseABC],
+			        pAnaliseABC[pAnaliseABC Fields]
+			    )
 			
-			    ISINSCOPE(dClientes[razao_social]),
-			        [Receita Líquida ACM % - Cliente],
+			VAR Tipo =
+			    IF(
+			        COUNTROWS(Selecao) = 1,
+			        MAXX(
+			            Selecao,
+			            pAnaliseABC[pAnaliseABC]
+			        )
+			    )
 			
-			    ISINSCOPE(dProdutos[descricao]),
-			        VAR ReceitaAtual = [Receita Líquida]
+			VAR ReceitaAtual =
+			    [Receita Líquida]
 			
-			        VAR Produtos =
-			            ADDCOLUMNS(
-			                ALLSELECTED(dProdutos[descricao]),
-			                "@Receita", CALCULATE([Receita Líquida])
-			            )
+			RETURN
+			    IF(
+			        ISBLANK(ReceitaAtual),
+			        BLANK(),
 			
-			        VAR ReceitaAcumulada =
-			            SUMX(
-			                FILTER(
-			                    Produtos,
-			                    [@Receita] >= ReceitaAtual
-			                ),
-			                [@Receita]
-			            )
+			        SWITCH(
+			            Tipo,
 			
-			        VAR ReceitaTotal =
-			            SUMX(
-			                Produtos,
-			                [@Receita]
-			            )
+			            "Cliente",
+			                VAR Clientes =
+			                    ADDCOLUMNS(
+			                        ALLSELECTED(dClientes[razao_social]),
+			                        "@Receita",
+			                            CALCULATE([Receita Líquida])
+			                    )
 			
-			        RETURN
-			            DIVIDE(ReceitaAcumulada, ReceitaTotal),
+			                VAR ReceitaTotal =
+			                    SUMX(Clientes, [@Receita])
 			
-			    BLANK()
-			)
+			                VAR ReceitaAcumulada =
+			                    SUMX(
+			                        FILTER(
+			                            Clientes,
+			                            [@Receita] >= ReceitaAtual
+			                        ),
+			                        [@Receita]
+			                    )
+			
+			                RETURN
+			                    IF(
+			                        ReceitaTotal > 0,
+			                        DIVIDE(
+			                            ReceitaAcumulada,
+			                            ReceitaTotal
+			                        )
+			                    ),
+			
+			            "Produto",
+			                VAR Produtos =
+			                    ADDCOLUMNS(
+			                        ALLSELECTED(dProdutos[descricao]),
+			                        "@Receita",
+			                            CALCULATE([Receita Líquida])
+			                    )
+			
+			                VAR ReceitaTotal =
+			                    SUMX(Produtos, [@Receita])
+			
+			                VAR ReceitaAcumulada =
+			                    SUMX(
+			                        FILTER(
+			                            Produtos,
+			                            [@Receita] >= ReceitaAtual
+			                        ),
+			                        [@Receita]
+			                    )
+			
+			                RETURN
+			                    IF(
+			                        ReceitaTotal > 0,
+			                        DIVIDE(
+			                            ReceitaAcumulada,
+			                            ReceitaTotal
+			                        )
+			                    ),
+			
+			            BLANK()
+			        )
+			    )
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: ABC
 		lineageTag: 1fe4318c-f99c-4011-8cb7-cade5e9dfead
@@ -931,6 +984,20 @@ table Medidas
 		formatString: 0
 		displayFolder: _Aux
 		lineageTag: a2d30384-b3d1-4a2d-b7b4-92625b2be3db
+
+	measure 'Devoluções Sem Venda de Origem' =
+			
+			COALESCE(
+			    CALCULATE(
+			        [Registros Rejeitados],
+			        fErros[Origem] = "Devoluções",
+			        fErros[Coluna] = "id_pedido"
+			    ),
+			    0
+			)
+		formatString: 0
+		displayFolder: _Erros
+		lineageTag: 2107f554-a8e0-4ace-b3c7-2af3a3352e0f
 
 	column _
 		isHidden

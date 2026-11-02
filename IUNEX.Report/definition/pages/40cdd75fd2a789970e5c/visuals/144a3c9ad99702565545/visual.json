@@ -82,7 +82,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'''dClientes''[razao_social]'"
+                                "Value": "'''dProdutos''[descricao]'"
                               }
                             }
                           ]
@@ -110,7 +110,7 @@
                                 "0": [
                                   {
                                     "Literal": {
-                                      "Value": "'''dClientes''[razao_social]'"
+                                      "Value": "'''dProdutos''[descricao]'"
                                     }
                                   }
                                 ]
@@ -134,7 +134,7 @@
                         },
                         "valueMap": [
                           {
-                            "0": "Cliente"
+                            "0": "Produto"
                           }
                         ]
                       }

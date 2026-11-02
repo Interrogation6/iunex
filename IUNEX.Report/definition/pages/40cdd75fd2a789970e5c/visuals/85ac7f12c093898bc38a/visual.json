@@ -20,16 +20,16 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "dClientes"
+                      "Entity": "dProdutos"
                     }
                   },
-                  "Property": "razao_social"
+                  "Property": "descricao"
                 }
               },
-              "queryRef": "dClientes.razao_social",
-              "nativeQueryRef": "Cliente",
+              "queryRef": "dProdutos.descricao",
+              "nativeQueryRef": "Produto",
               "active": true,
-              "displayName": "Cliente"
+              "displayName": "Produto"
             }
           ],
           "fieldParameters": [
@@ -637,6 +637,7 @@
             }
           ]
         },
+        "howCreated": "User",
         "objects": {
           "general": [
             {
@@ -761,7 +762,6 @@
             }
           ]
         },
-        "howCreated": "User",
         "objects": {
           "general": [
             {

@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "8c9f5dd6a080d3a6a061",
   "position": {
-    "x": 85.705967976710326,
-    "y": 315.80786026200872,
+    "x": 85.846153846153854,
+    "y": 492.00000000000006,
     "z": 0,
-    "height": 744,
+    "height": 567.69230769230774,
     "width": 1732.6153846153848,
     "tabOrder": 1000
   },
@@ -378,57 +378,74 @@
         "isHiddenInViewMode": true
       },
       {
-        "name": "843c4340b429c70ae223",
+        "name": "a7a2f1ee786144d6990c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fErros"
+              }
+            },
+            "Property": "Origem"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9de5415e000927b37e41",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fErros"
+              }
+            },
+            "Property": "Coluna"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "944ddb9d9996d90026cc",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fErros"
+              }
+            },
+            "Property": "Linha"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d73f4174a5cccedd08db",
         "field": {
           "Measure": {
             "Expression": {
               "SourceRef": {
-                "Entity": "Medidas"
+                "Entity": "fErros"
               }
             },
-            "Property": "Receita de Clientes Reativados"
+            "Property": "Erro Selecionado - ID"
           }
         },
-        "type": "Advanced",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "m",
-              "Entity": "Medidas",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "Not": {
-                  "Expression": {
-                    "Comparison": {
-                      "ComparisonKind": 0,
-                      "Left": {
-                        "Measure": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Source": "m"
-                            }
-                          },
-                          "Property": "Receita de Clientes Reativados"
-                        }
-                      },
-                      "Right": {
-                        "Literal": {
-                          "Value": "null"
-                        }
-                      }
-                    }
-                  }
-                }
+        "type": "Advanced"
+      },
+      {
+        "name": "0db10c7a2b52758e5a9d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fErros"
               }
-            }
-          ]
+            },
+            "Property": "Erro Selecionado - Motivo"
+          }
         },
-        "howCreated": "User"
+        "type": "Advanced"
       }
     ]
   }

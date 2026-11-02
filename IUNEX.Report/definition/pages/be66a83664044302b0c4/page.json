@@ -74,5 +74,12 @@
         }
       }
     ]
-  }
+  },
+  "visualInteractions": [
+    {
+      "source": "ac574985c1c30ea0c55d",
+      "target": "aa0e02ebd00057891d7a",
+      "type": "NoFilter"
+    }
+  ]
 }
