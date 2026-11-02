@@ -6,7 +6,7 @@ role RLS_Dinamico
 			    CALCULATE(
 			        SELECTEDVALUE(dAcessos[regiao_permitida]),
 			        dAcessos[ativo] = TRUE(),
-			        dAcessos[nome] = USERPRINCIPALNAME()
+			        dAcessos[email] = USERPRINCIPALNAME()
 			    )
 			
 			RETURN
@@ -15,14 +15,14 @@ role RLS_Dinamico
 
 	tablePermission dAcessos =
 			([ativo] == true())
-			&& ([nome] == USERPRINCIPALNAME())
+			&& ([email] == USERPRINCIPALNAME())
 
 	tablePermission dSegmento =
 			VAR SegmentoPermitido =
 			    CALCULATE(
 			        SELECTEDVALUE(dAcessos[segmento_permitido]),
 			        dAcessos[ativo] = TRUE(),
-			        dAcessos[nome] = USERPRINCIPALNAME()
+			        dAcessos[email] = USERPRINCIPALNAME()
 			    )
 			
 			RETURN
