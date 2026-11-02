@@ -1,6 +1,27 @@
 table fErros
 	lineageTag: cd7ae818-442a-4ca4-ba12-b8a11580ac58
 
+	measure 'Erro Selecionado - Coluna' =
+			
+			SELECTEDVALUE(fErros[Coluna], BLANK())
+		lineageTag: 41380ae1-0c49-4cdf-b76e-c8535424c3c2
+
+	measure 'Erro Selecionado - Linha' =
+			
+			SELECTEDVALUE(fErros[Linha], BLANK())
+		formatString: 0
+		lineageTag: 40a2bfed-35f5-4ea3-9301-fbb96f8f75ff
+
+	measure 'Erro Selecionado - ID' =
+			
+			SELECTEDVALUE(fErros[Identificador], BLANK())
+		lineageTag: 43df2562-6fc0-44c8-b25e-2ec7d5d2f021
+
+	measure 'Erro Selecionado - Motivo' =
+			
+			SELECTEDVALUE(fErros[Motivo], BLANK())
+		lineageTag: b1821d2b-0fed-4807-a4e4-ca1914dcc752
+
 	column Origem
 		dataType: string
 		lineageTag: 86839465-db8b-4415-ae24-ff227e4a2469

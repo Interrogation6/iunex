@@ -47,7 +47,7 @@ queryGroup Stage\Metas
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBI_QueryOrder = ["cambio_usd","carteira_historica","clientes","devolucoes","feriados","produtos","seguranca_acessos","stg_metas","stg_Carteira_Historica","stg_Clientes","auxSegmento","Path","auxRegiao","fxValidarCNPJ","fxExtrairID","stg_devolucoes","stg_produtos","fxRejeitarNulo","stg_seguranca_acessos","stg_vendas","stg_vendedores","vendas_2024","vendas_2025","vendas_2026","vendedores","stg_vendas_2024","stg_vendas_2025","stg_vendas_2026","fErros","fVendas","fDevolucoes","metas_2024","metas_2025","metas_2026","stg_metas_2024","stg_metas_2025","stg_metas_2026","fMetas","dAcessos","dCalendario","dCartHist","dClientes","dProdutos","dRegiao","dSegmento","dVendedores","metas_workbook","auxCambioDiario","fxQuarentena","fxValidarChaveUnica"]
+annotation PBI_QueryOrder = ["cambio_usd","carteira_historica","clientes","devolucoes","feriados","produtos","seguranca_acessos","stg_metas","stg_Carteira_Historica","stg_Clientes","auxSegmento","Path","auxRegiao","fxValidarCNPJ","fxExtrairID","stg_devolucoes","stg_produtos","fxRejeitarNulo","stg_seguranca_acessos","stg_vendas","stg_vendedores","vendas_2024","vendas_2025","vendas_2026","vendedores","stg_vendas_2024","stg_vendas_2025","stg_vendas_2026","fErros","fVendas","fDevolucoes","metas_2024","metas_2025","metas_2026","stg_metas_2024","stg_metas_2025","stg_metas_2026","fMetas","dAcessos","dCalendario","dCartHist","dClientes","dProdutos","dRegiao","dSegmento","dVendedores","metas_workbook","auxCambioDiario","fxQuarentena","fxValidarChaveUnica","auxAtt"]
 
 annotation PBI_ProTooling = ["DevMode","CalcGroup"]
 
@@ -68,6 +68,7 @@ ref table Medidas
 ref table pMetricaExecutiva
 ref table dFaixasRecencia
 ref table pAnaliseABC
+ref table auxAtt
 
 ref cultureInfo en-US
 

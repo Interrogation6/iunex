@@ -458,7 +458,7 @@ table Medidas
 			    MAX(fVendas[data_emissao]),
 			    REMOVEFILTERS()
 			)
-		formatString: General Date
+		formatString: Short Date
 		displayFolder: Datas
 		lineageTag: 3fb83b59-9eab-4195-95c7-b6fd874bf35a
 
@@ -543,21 +543,13 @@ table Medidas
 
 	measure 'Variação YoY %' =
 			
-			VAR ReceitaAtual =
-			    [Receita Líquida YTD FY]
-			
-			VAR ReceitaAnterior =
-			    [Receita Líquida YTD FY Anterior]
+			VAR ReceitaAtual = [Receita Líquida YTD FY]
+			VAR ReceitaAnterior = [Receita Líquida YTD FY Anterior]
 			
 			RETURN
-			    SWITCH(
-			        TRUE(),
-			        ISBLANK(ReceitaAnterior), BLANK(),
-			        ReceitaAnterior = 0, "Indefinido",
-			        DIVIDE(
-			            ReceitaAtual - ReceitaAnterior,
-			            ReceitaAnterior
-			        )
+			    DIVIDE(
+			        ReceitaAtual - ReceitaAnterior,
+			        ReceitaAnterior
 			    )
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Receita
@@ -894,6 +886,51 @@ table Medidas
 		formatString: 0
 		displayFolder: ABC
 		lineageTag: b6328dee-0745-429b-87b2-302c359c45c7
+
+	measure 'Data Mínima da Base' =
+			
+			CALCULATE(
+			    MIN(fVendas[data_emissao]),
+			    REMOVEFILTERS()
+			)
+		formatString: Short Date
+		displayFolder: Datas
+		lineageTag: 8f221f8a-b0bd-4a66-9314-8ce6422450e2
+
+	measure 'Data da Última Atualização' =
+			
+			MAX(auxAtt[DataAtualizacao])
+		formatString: General Date
+		displayFolder: Datas
+		lineageTag: 3ea26c4d-a7b6-4a61-98a4-36e6f8a066b8
+
+	measure 'Meta KPI YoY' =
+			
+			CALCULATE(
+			    [Variação YoY %],
+			    DATEADD(dCalendario[Data], -1, MONTH)
+			)
+		displayFolder: Receita
+		lineageTag: 80fa0bde-50e4-49f5-9070-0b7de19c51a6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Indicador KPI YoY' =
+			
+			VAR Atual = [Variação YoY %]
+			VAR Anterior = [Meta KPI YoY]
+			
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        NOT ISNUMBER(Atual) || NOT ISNUMBER(Anterior), BLANK(),
+			        Atual > Anterior, 1,
+			        Atual < Anterior, 2,
+			        3
+			    )
+		formatString: 0
+		displayFolder: _Aux
+		lineageTag: a2d30384-b3d1-4a2d-b7b4-92625b2be3db
 
 	column _
 		isHidden

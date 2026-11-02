@@ -1,0 +1,34 @@
+table auxAtt
+	isHidden
+	lineageTag: a6d2c433-2c5d-4f3f-b8e9-85f13086b553
+
+	column DataAtualizacao
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: ff85282d-ee1f-4202-866d-165d99d7e67e
+		summarizeBy: none
+		sourceColumn: DataAtualizacao
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition auxAtt = m
+		mode: import
+		queryGroup: 'Tabelas Auxiliares'
+		source =
+				let
+				    Fonte = #table(
+				        type table [DataAtualizacao = datetime],
+				        {{DateTimeZone.RemoveZone(DateTimeZone.SwitchZone(DateTimeZone.FixedUtcNow(), -3))}}
+				    )
+				in
+				    Fonte
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
