@@ -74,9 +74,11 @@ table Medidas
 			    CALCULATE(
 			        SUM(fMetas[valor_meta]),
 			
+			        // Meta não possui grão por canal; o detalhe por canal é bloqueado no retorno.
 			        REMOVEFILTERS(fVendas[canal]),
 			
 			        KEEPFILTERS(
+			            // Ignora a linha anual e considera apenas os meses.
 			            fMetas[mes] IN {
 			                "Jan", "Fev", "Mar", "Abr",
 			                "Mai", "Jun", "Jul", "Ago",
@@ -153,6 +155,7 @@ table Medidas
 			
 			CALCULATE(
 			    [Receita Líquida],
+			    // Aplica o acumulado do ano fiscal definido no grupo de cálculo.
 			    cgInteligenciaFiscal[PeriodoFiscal] = "YTD Fiscal"
 			)
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
@@ -197,6 +200,7 @@ table Medidas
 			CALCULATE(
 			    DISTINCTCOUNT(fVendas[id_cliente]),
 			
+			    // Substitui o filtro de período pela janela móvel de 90 dias.
 			    REMOVEFILTERS(dCalendario),
 			
 			    DATESBETWEEN(
@@ -226,6 +230,7 @@ table Medidas
 			RETURN
 			COUNTROWS(
 			    FILTER(
+			        // Avalia a condição de reativação individualmente por cliente.
 			        VALUES(dClientes[id_cliente]),
 			        VAR ReceitaMes =
 			            CALCULATE(
@@ -240,6 +245,7 @@ table Medidas
 			        VAR UltimaCompra =
 			            CALCULATE(
 			                MAX(fVendas[data_emissao]),
+			                // Procura compras anteriores ao mês fora do período filtrado.
 			                REMOVEFILTERS(dCalendario),
 			                fVendas[data_emissao] < InicioMes
 			            )
@@ -266,6 +272,7 @@ table Medidas
 			VAR UltimaCompra =
 			    CALCULATE(
 			        MAX(fVendas[data_emissao]),
+			        // Consulta o histórico anterior sem limitar a busca ao período selecionado.
 			        REMOVEFILTERS(dCalendario),
 			        fVendas[data_emissao] <= DataReferencia
 			    )
@@ -322,6 +329,7 @@ table Medidas
 			    EOMONTH(InicioMes, 0)
 			
 			RETURN
+			    // Soma apenas a receita dos clientes classificados como reativados.
 			    SUMX(
 			        VALUES(dClientes[id_cliente]),
 			        IF(
@@ -352,6 +360,7 @@ table Medidas
 	measure 'Registros Rejeitados' =
 			
 			COUNTROWS(
+			    // Um registro pode conter vários erros; conta origem e linha uma única vez.
 			    SUMMARIZE(
 			        fErros,
 			        fErros[Origem],
@@ -364,6 +373,7 @@ table Medidas
 
 	measure 'Chaves Órfãs de Clientes' =
 			
+			// Usa o ID original das chaves mapeadas para -1 e reúne vendas e devoluções.
 			VAR Vendas =
 			    CALCULATETABLE(
 			        VALUES(fVendas[id_cliente_origem]),
@@ -394,6 +404,7 @@ table Medidas
 
 	measure 'Chaves Órfãs de Produtos' =
 			
+			// Usa o ID original das chaves mapeadas para -1 e reúne vendas e devoluções.
 			VAR Vendas =
 			    CALCULATETABLE(
 			        VALUES(fVendas[id_produto_origem]),
@@ -424,6 +435,7 @@ table Medidas
 
 	measure 'Chaves Órfãs de Vendedores' =
 			
+			// Usa o ID original das chaves mapeadas para -1 e reúne vendas e devoluções.
 			VAR Vendas =
 			    CALCULATETABLE(
 			        VALUES(fVendas[id_vendedor_origem]),
@@ -456,6 +468,7 @@ table Medidas
 			
 			CALCULATE(
 			    MAX(fVendas[data_emissao]),
+			    // Encontra a data global, independentemente dos filtros do relatório.
 			    REMOVEFILTERS()
 			)
 		formatString: Short Date
@@ -469,6 +482,7 @@ table Medidas
 			VAR InicioMes =
 			    DATE(YEAR(DataBase), MONTH(DataBase), 1)
 			
+			// Só exibe o aviso quando o mês incompleto está no contexto.
 			VAR MinContexto = MIN(dCalendario[data])
 			VAR MaxContexto = MAX(dCalendario[data])
 			
@@ -490,6 +504,7 @@ table Medidas
 			
 			CALCULATE(
 			    SUM(fMetas[valor_meta]),
+			    // Usa a linha anual aprovada, sem somar novamente as metas mensais.
 			    fMetas[mes] = "Meta Ano",
 			    fMetas[regiao] <> "Total Geral"
 			)
@@ -503,6 +518,7 @@ table Medidas
 			
 			CALCULATE(
 			    SUM(fMetas[valor_meta]),
+			    // Consulta exclusivamente o total geral registrado na planilha.
 			    fMetas[regiao] = "Total Geral"
 			)
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
@@ -519,6 +535,7 @@ table Medidas
 			    SUMX(
 			        FILTER(
 			            ALLSELECTED(dClientes[razao_social]),
+			            // Acumula clientes com receita igual ou superior à receita atual.
 			            [Receita Líquida] >= ReceitaAtual
 			        ),
 			        [Receita Líquida]
@@ -573,6 +590,7 @@ table Medidas
 			        1
 			    )
 			
+			// Confere se o mês da última venda está entre as datas visíveis.
 			VAR MesEstaVisivel =
 			    COUNTROWS(
 			        FILTER(
@@ -648,6 +666,7 @@ table Medidas
 			VAR UltimaCompraAnterior =
 			    CALCULATE(
 			        MAX(fVendas[data_emissao]),
+			        // Busca a última compra anterior ao início do mês analisado.
 			        REMOVEFILTERS(dCalendario),
 			        fVendas[data_emissao] < InicioMes
 			    )
@@ -677,6 +696,7 @@ table Medidas
 			VAR MaxDias =
 			    SELECTEDVALUE(dFaixasRecencia[MaxDias])
 			
+			// Calcula a faixa por cliente, sem armazená-la no fato de vendas.
 			VAR Quantidade =
 			    COUNTROWS(
 			        FILTER(
@@ -734,6 +754,7 @@ table Medidas
 			        pAnaliseABC[pAnaliseABC]
 			    )
 			RETURN 
+			    // Conta clientes ou produtos conforme o parâmetro da análise ABC.
 			    SWITCH(
 			        Tipo,
 			        "Cliente",
@@ -768,6 +789,7 @@ table Medidas
 			        pAnaliseABC[pAnaliseABC]
 			    )
 			RETURN 
+			    // Conta clientes ou produtos conforme o parâmetro da análise ABC.
 			    SWITCH(
 			        Tipo,
 			        "Cliente",
@@ -799,6 +821,7 @@ table Medidas
 			        pAnaliseABC[pAnaliseABC Fields]
 			    )
 			
+			// Determina se a curva ABC deve percorrer clientes ou produtos.
 			VAR Tipo =
 			    IF(
 			        COUNTROWS(Selecao) = 1,
@@ -918,6 +941,7 @@ table Medidas
 			        pAnaliseABC[pAnaliseABC]
 			    )
 			RETURN 
+			    // Conta clientes ou produtos conforme o parâmetro da análise ABC.
 			    SWITCH(
 			        Tipo,
 			        "Cliente",

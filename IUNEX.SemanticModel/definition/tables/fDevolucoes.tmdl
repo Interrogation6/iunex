@@ -219,7 +219,9 @@ table fDevolucoes
 		source =
 				let
 				    Source = stg_devolucoes,
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+				    #"Removed Errors" =
+				        // Retira do fato os erros sinalizados no staging e rastreados em fErros.
+				        Table.RemoveRowsWithErrors(Source),
 				    #"Removed Columns" = Table.RemoveColumns(#"Removed Errors",{"id_pedido"})
 				in
 				    #"Removed Columns"

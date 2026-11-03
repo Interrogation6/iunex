@@ -104,7 +104,9 @@ table dProdutos
 				
 				    GetColunas = Table.ColumnNames(RemoveErrors),
 				
-				    CreateRegistroDesconhecido = Record.FromList(
+				    CreateRegistroDesconhecido =
+				        // Cria o membro -1 para vincular vendas com chave órfã.
+				        Record.FromList(
 				        List.Transform(
 				            GetColunas,
 				            (Coluna) =>

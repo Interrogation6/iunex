@@ -76,7 +76,9 @@ table dAcessos
 				let
 				    Source = stg_seguranca_acessos,
 				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
-				    AdjustAtivo = Table.TransformColumns(#"Removed Errors",
+				    AdjustAtivo =
+				        // Converte o indicador SIM para valor lógico usado pela RLS.
+				        Table.TransformColumns(#"Removed Errors",
 				{
 				                "ativo",
 				                each List.Contains(

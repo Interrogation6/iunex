@@ -303,7 +303,9 @@ table fVendas
 				        Currency.Type
 				    ),
 				
-				    FilterFaturado = Table.SelectRows(
+				    FilterFaturado =
+				        // Exclui cancelamentos do fato de receita.
+				        Table.SelectRows(
 				        AddedReceitaLiquida,
 				        each [status_pedido] = "Faturado"
 				    ),

@@ -209,7 +209,9 @@ expression stg_Carteira_Historica =
 		        {"id_cliente", each fxExtrairID(_), Int64.Type},
 		        {"id_vendedor", each fxExtrairID(_), Int64.Type}
 		    }),
-		    ValidateVigencia = Table.AddColumn(
+		    ValidateVigencia =
+		        // Sinaliza vigências invertidas para a quarentena.
+		        Table.AddColumn(
 		        AdjustIDs,
 		        "vigencia_fim_validada",
 		        each
@@ -295,7 +297,9 @@ expression stg_devolucoes = ```
 		    ),
 		
 		    
-		SelectVendas = Table.SelectColumns(
+		SelectVendas =
+		    // Usa dados da venda original para valorar a devolução.
+		    Table.SelectColumns(
 		    fVendas,
 		    {
 		        "id_pedido",
@@ -309,7 +313,9 @@ expression stg_devolucoes = ```
 		    }
 		),
 		
-		MergeVendas = Table.NestedJoin(
+		MergeVendas =
+		    // Relaciona cada devolução ao pedido e item de origem.
+		    Table.NestedJoin(
 		    ValidateIDs,
 		    {"id_pedido_origem", "item"},
 		    SelectVendas,
@@ -332,7 +338,9 @@ expression stg_devolucoes = ```
 		    }
 		),
 		
-		    ValidatePedido = Table.TransformColumns(
+		    ValidatePedido =
+		        // Marca vendas de origem ausentes para a quarentena.
+		        Table.TransformColumns(
 		        ExpandVendas,
 		        {
 		            {
@@ -350,7 +358,9 @@ expression stg_devolucoes = ```
 		        }
 		    ),
 		
-		    AddedValorLiquido = Table.AddColumn(
+		    AddedValorLiquido =
+		        // Mantém preço e desconto da venda original, na quantidade devolvida.
+		        Table.AddColumn(
 		        ValidatePedido,
 		        "valor_liquido",
 		        each
@@ -375,7 +385,9 @@ expression stg_produtos =
 		    AdjustIDs = Table.TransformColumns(Source, {
 		        {"id_produto", each fxExtrairID(_, 4), Int64.Type}
 		    }),
-		    ValidateIDs = fxValidarChaveUnica(
+		    ValidateIDs =
+		        // Identifica chaves repetidas antes de carregar a dimensão.
+		        fxValidarChaveUnica(
 		        AdjustIDs,
 		        {"id_produto"}
 		    ),
@@ -437,7 +449,9 @@ expression stg_vendedores =
 		    {"id_vendedor", each fxExtrairID(_, 1), Int64.Type},
 		    {"id_gestor", each if _ = "" then null else fxExtrairID(_, 1), Int64.Type}
 		}),
-		    ValidateIDs = fxValidarChaveUnica(
+		    ValidateIDs =
+		        // Identifica chaves repetidas antes de carregar a dimensão.
+		        fxValidarChaveUnica(
 		        AdjustIDs,
 		        {"id_vendedor"}
 		    )
@@ -482,7 +496,9 @@ expression vendas_2026 =
 		let
 		    Source = Csv.Document(File.Contents(Path & "vendas_2026.csv"),[Delimiter="|", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
-		    AdjustValor = Table.TransformColumns(#"Promoted Headers", {{"valor_unitario", each if _ = null then null else Number.FromText(Text.Replace(Text.Trim(_), ".", ",")), type number}}),
+		    AdjustValor =
+		        // Normaliza o separador decimal antes da tipagem.
+		        Table.TransformColumns(#"Promoted Headers", {{"valor_unitario", each if _ = null then null else Number.FromText(Text.Replace(Text.Trim(_), ".", ",")), type number}}),
 		    #"Changed Type" = Table.TransformColumnTypes(AdjustValor,{{"id_pedido", type text}, {"item", Int64.Type}, {"data_emissao", type text}, {"id_cliente", type text}, {"id_produto", type text}, {"id_vendedor", type text}, {"quantidade", Int64.Type}, {"valor_unitario", Currency.Type}, {"desconto_pct", type number}, {"moeda", type text}, {"canal", type text}, {"status_pedido", type text}, {"id_filial", type text}, {"frete_rateado", Currency.Type}}, "en-us"),
 		    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"data_emissao", type date}})
 		in
@@ -501,12 +517,16 @@ expression stg_Clientes = ```
 		        {"id_cliente", each fxExtrairID(_), Int64.Type},
 		        {"id_matriz", each if _ = "" then null else fxExtrairID(_), Int64.Type}
 		    }),
-		    ValidateIDs = fxValidarChaveUnica(
+		    ValidateIDs =
+		        // Identifica IDs duplicados sem descartá-los silenciosamente.
+		        fxValidarChaveUnica(
 		        AdjustIDs,
 		        {"id_cliente"}
 		    ),
 		    DuplicateRazao = Table.DuplicateColumn(ValidateIDs, "razao_social", "grupo"),
-		    ExtractGrupo = Table.SplitColumn(DuplicateRazao, "grupo", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv, false), {"grupo"}),
+		    ExtractGrupo =
+		        // Obtém um agrupamento textual a partir da razão social.
+		        Table.SplitColumn(DuplicateRazao, "grupo", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv, false), {"grupo"}),
 		    CleanTexts = Table.TransformColumns(ExtractGrupo,{
 		        {"segmento", each Text.Trim(Text.Proper(_)), type text},
 		        {"grupo", Text.Proper, type text},
@@ -520,9 +540,13 @@ expression stg_Clientes = ```
 		        {{"segmento", type text}}
 		    ),
 		    RemoveOldColumns = Table.RemoveColumns(ApplyAliasSegmento, {"Alias", "regiao"}),
-		    JoinRegiao = Table.NestedJoin(RemoveOldColumns, {"uf"}, auxRegiao, {"UF"}, "auxRegiao", JoinKind.LeftOuter),
+		    JoinRegiao =
+		        // Define a região do cliente pela UF, não pelo vendedor.
+		        Table.NestedJoin(RemoveOldColumns, {"uf"}, auxRegiao, {"UF"}, "auxRegiao", JoinKind.LeftOuter),
 		    ExpandRegiao = Table.ExpandTableColumn(JoinRegiao, "auxRegiao", {"Regiao"}, {"regiao"}),
-		    AdjustDatas = Table.TransformColumns(ExpandRegiao, {
+		    AdjustDatas =
+		        // Aceita datas convencionais e números seriais do Excel.
+		        Table.TransformColumns(ExpandRegiao, {
 		        {"data_cadastro", each try Date.From(_) otherwise try Date.AddDays(#date(1899, 12, 30), Number.From(_)) otherwise 
 		    error [
 		            Reason = "Data Inválida",
@@ -533,7 +557,9 @@ expression stg_Clientes = ```
 		    ValidateSituacao = Table.TransformColumns(AdjustDatas, {
 		        {"situacao", each if _ = "Ativo" or _ = "Inativo" then _ else error [Reason="Erro de Validação", Message="Situação inválida. O valor deve ser 'Ativo' ou 'Inativo'.", Detail="Valor atual: " & Text.From(_)], type text}
 		    }),
-		    ValidateCNPJ = Table.TransformColumns(ValidateSituacao, {
+		    ValidateCNPJ =
+		        // Erros de formato ou dígito verificador seguem para a quarentena.
+		        Table.TransformColumns(ValidateSituacao, {
 		        {"cnpj", each fxValidarCNPJ(_), type text}
 		    }),
 		    ReorderColumns = Table.ReorderColumns(ValidateCNPJ, {"id_cliente", "id_matriz", "razao_social", "cnpj", "segmento", "regiao", "uf", "cidade", "data_cadastro", "situacao", "grupo"})
@@ -570,7 +596,9 @@ expression stg_vendas_2024 =
 		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
 		    {"id_produto", each fxExtrairID(_, 4), Int64.Type}
 		}),
-		    ValidateVendedor = Table.AddColumn(
+		    ValidateVendedor =
+		        // E-commerce pode não ter vendedor; nos demais canais, valida o ID.
+		        Table.AddColumn(
 		    AdjustIDs,
 		    "id_vendedor_validado",
 		    each
@@ -596,10 +624,16 @@ expression stg_vendas_2024 =
 		    {"quantidade", each fxRejeitarNulo(_), Int64.Type},
 		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
 		}),
-		    AddedStatusPedido = Table.AddColumn(ValidateNulls, "status_pedido", each if [quantidade] >= 0 then "Faturado" else "Cancelado", type text),
-		    AdjustQuantidade = Table.TransformColumns(AddedStatusPedido, {{"quantidade", each Number.Abs(_), type number}}),
+		    AddedStatusPedido =
+		        // No ERP legado, quantidade negativa identifica cancelamento.
+		        Table.AddColumn(ValidateNulls, "status_pedido", each if [quantidade] >= 0 then "Faturado" else "Cancelado", type text),
+		    AdjustQuantidade =
+		        // Normaliza quantidades para positivo após identificar cancelamentos.
+		        Table.TransformColumns(AddedStatusPedido, {{"quantidade", each Number.Abs(_), type number}}),
 		    AddedFreteRateado = Table.AddColumn(AdjustQuantidade, "frete_rateado", each null, Currency.Type),
-		    #"Changed Type" = Table.TransformColumns(
+		    #"Changed Type" =
+		        // Converte desconto legado de inteiro percentual para fração.
+		        Table.TransformColumns(
 		    AddedFreteRateado,
 		    {
 		        {"desconto_pct", each _ / 100, Percentage.Type}
@@ -623,7 +657,9 @@ expression stg_vendas_2025 =
 		    {"id_cliente", each fxExtrairID(_, 1), Int64.Type},
 		    {"id_produto", each fxExtrairID(_, 4), Int64.Type}
 		}),
-		    ValidateVendedor = Table.AddColumn(
+		    ValidateVendedor =
+		        // E-commerce pode não ter vendedor; nos demais canais, valida o ID.
+		        Table.AddColumn(
 		    AdjustIDs,
 		    "id_vendedor_validado",
 		    each
@@ -650,7 +686,9 @@ expression stg_vendas_2025 =
 		    {"valor_unitario", each fxRejeitarNulo(_), Currency.Type}
 		}),
 		    AddedFreteRateado = Table.AddColumn(ValidateNulls, "frete_rateado", each null, Currency.Type),
-		    DistinctIdItem = Table.Distinct(AddedFreteRateado, {"id_pedido", "item"}),
+		    DistinctIdItem =
+		        // Mantém um registro por pedido e item diante de reprocessamentos.
+		        Table.Distinct(AddedFreteRateado, {"id_pedido", "item"}),
 		    #"Changed Type" = Table.TransformColumnTypes(DistinctIdItem,{{"desconto_pct", Percentage.Type}}),
 		    AddedOrigem = Table.AddColumn(#"Changed Type", "origem", each "Vendas_2025")
 		in
@@ -676,7 +714,9 @@ expression stg_vendas_2026 =
 		        }
 		    ),
 		
-		    ValidateVendedor = Table.AddColumn(
+		    ValidateVendedor =
+		        // E-commerce pode não ter vendedor; nos demais canais, valida o ID.
+		        Table.AddColumn(
 		        AdjustIDs,
 		        "id_vendedor_validado",
 		        each
@@ -710,7 +750,9 @@ expression stg_vendas_2026 =
 		        }
 		    ),
 		
-		    #"Changed Type" = Table.TransformColumns(
+		    #"Changed Type" =
+		        // Normaliza o desconto percentual para fração.
+		        Table.TransformColumns(
 		        ValidateNulls,
 		        {
 		            {"desconto_pct", each _ / 100, Percentage.Type}
@@ -738,7 +780,9 @@ expression stg_vendas =
 		        stg_vendas_2025,
 		        stg_vendas_2024
 		    }),
-		    MergeCambio = Table.NestedJoin(
+		    MergeCambio =
+		        // Busca a PTAX diária já preenchida com a cotação anterior disponível.
+		        Table.NestedJoin(
 		        Source,
 		        {"data_emissao"},
 		        auxCambioDiario,
@@ -754,7 +798,9 @@ expression stg_vendas =
 		        {"taxa_ptax_venda"}
 		    ),
 		
-		    AddedValorBRL = Table.AddColumn(
+		    AddedValorBRL =
+		        // Converte USD para BRL e sinaliza moeda ou cotação inválida.
+		        Table.AddColumn(
 		    ExpandCambio,
 		    "valor_unitario_brl",
 		    each
@@ -861,7 +907,9 @@ expression metas_2026 =
 expression stg_metas =
 		let
 		    Source = Table.Combine({stg_metas_2024, stg_metas_2025, stg_metas_2026}),
-		    ValidateNull = Table.TransformColumns(Source, {
+		    ValidateNull =
+		        // Sinaliza metas mensais ausentes, sem presumir valor zero.
+		        Table.TransformColumns(Source, {
 		    {"Jan", each fxRejeitarNulo(_), Currency.Type},
 		    {"Fev", each fxRejeitarNulo(_), Currency.Type},
 		    {"Mar", each fxRejeitarNulo(_), Currency.Type},
@@ -875,7 +923,9 @@ expression stg_metas =
 		    {"Nov", each fxRejeitarNulo(_), Currency.Type},
 		    {"Dez", each fxRejeitarNulo(_), Currency.Type}
 		}),
-		    UnpivotMes = Table.UnpivotOtherColumns(ValidateNull, {"Regiao", "Segmento", "Ano"}, "Mes", "Valor_Meta"),
+		    UnpivotMes =
+		        // Converte meses de colunas para linhas, preservando o grão mensal.
+		        Table.UnpivotOtherColumns(ValidateNull, {"Regiao", "Segmento", "Ano"}, "Mes", "Valor_Meta"),
 		    #"Capitalized Each Word" = Table.TransformColumns(UnpivotMes,{{"Regiao", Text.Proper, type text}, {"Segmento", Text.Proper, type text}})
 		in
 		    #"Capitalized Each Word"
@@ -947,7 +997,9 @@ expression auxCambioDiario =
 		        {"data_cotacao", "taxa_ptax_venda"}
 		    ),
 		
-		    CombineDatasVendas = Table.Combine({
+		    CombineDatasVendas =
+		        // Obtém o intervalo de datas necessário às vendas das três safras.
+		        Table.Combine({
 		        Table.SelectColumns(stg_vendas_2024, {"data_emissao"}),
 		        Table.SelectColumns(stg_vendas_2025, {"data_emissao"}),
 		        Table.SelectColumns(stg_vendas_2026, {"data_emissao"})
@@ -969,7 +1021,9 @@ expression auxCambioDiario =
 		        })
 		    ),
 		
-		    GenerateCalendario = Table.FromList(
+		    GenerateCalendario =
+		        // Inclui fins de semana e feriados para permitir busca da PTAX anterior.
+		        Table.FromList(
 		        List.Dates(
 		            GetDataInicio,
 		            Duration.Days(GetDataFim - GetDataInicio) + 1,
@@ -1005,7 +1059,9 @@ expression auxCambioDiario =
 		        {{"data_emissao", Order.Ascending}}
 		    ),
 		
-		    FillCotacoes = Table.FillDown(
+		    FillCotacoes =
+		        // Propaga a última cotação válida para as datas seguintes.
+		        Table.FillDown(
 		        SortDatas,
 		        {"taxa_ptax_venda"}
 		    )
@@ -1041,7 +1097,9 @@ expression fxQuarentena =
 		            Int64.Type
 		        ),
 		
-		        FilterErros = Table.SelectRowsWithErrors(
+		        FilterErros =
+		            // Mantém apenas linhas com erro em alguma coluna.
+		            Table.SelectRowsWithErrors(
 		            AddIndice
 		        ),
 		
@@ -1050,7 +1108,9 @@ expression fxQuarentena =
 		            {"__Linha"}
 		        ),
 		
-		        AddIdentificador = Table.AddColumn(
+		        AddIdentificador =
+		            // Preserva as chaves da linha para permitir sua identificação.
+		            Table.AddColumn(
 		            FilterErros,
 		            "__Identificador",
 		            (Linha as record) =>
@@ -1082,7 +1142,9 @@ expression fxQuarentena =
 		            type text
 		        ),
 		
-		        AddOrigem = Table.AddColumn(
+		        AddOrigem =
+		            // Mantém a safra original quando ela está disponível.
+		            Table.AddColumn(
 		            AddIdentificador,
 		            "__OrigemQuarentena",
 		            (Linha as record) =>
@@ -1114,7 +1176,9 @@ expression fxQuarentena =
 		            type text
 		        ),
 		
-		        AddOcorrencias = Table.AddColumn(
+		        AddOcorrencias =
+		            // Registra coluna e motivo de cada erro encontrado na linha.
+		            Table.AddColumn(
 		            AddOrigem,
 		            "__Ocorrencias",
 		            (Linha as record) =>
@@ -1209,7 +1273,9 @@ expression fxValidarChaveUnica =
 		            ColunaErro
 		        )[Type],
 		
-		        AddIndice = Table.AddIndexColumn(
+		        AddIndice =
+		            // Preserva a posição das linhas para distinguir duplicatas.
+		            Table.AddIndexColumn(
 		            Tabela,
 		            "__IndiceUnico",
 		            0,
@@ -1239,7 +1305,9 @@ expression fxValidarChaveUnica =
 		                )
 		        ),
 		
-		        GroupChaves = Table.Group(
+		        GroupChaves =
+		            // Identifica a primeira ocorrência de cada chave.
+		            Table.Group(
 		            FilterChavesValidas,
 		            ColunasChave,
 		            {
@@ -1300,7 +1368,9 @@ expression fxValidarChaveUnica =
 		            {"__Duplicado"}
 		        ),
 		
-		        ValidateChave = Table.AddColumn(
+		        ValidateChave =
+		            // Marca repetições como erro, sem eliminar linhas do staging.
+		            Table.AddColumn(
 		            ExpandDuplicados,
 		            "__ChaveValidada",
 		            (Linha) =>

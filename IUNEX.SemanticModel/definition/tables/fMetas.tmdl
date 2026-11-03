@@ -85,7 +85,9 @@ table fMetas
 				        Source,
 				        Text.Lower
 				    ),
-				    AddedData = Table.AddColumn(
+				    AddedData =
+				        // Metas mensais usam o primeiro dia; total anual usa 31/12.
+				        Table.AddColumn(
 				        RenamedColumns,
 				        "data",
 				        each

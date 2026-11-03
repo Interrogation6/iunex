@@ -47,7 +47,9 @@ table dCartHist
 		source =
 				let
 				    Source = stg_Carteira_Historica,
-				    #"Removed Errors" = Table.RemoveRowsWithErrors(Source)
+				    #"Removed Errors" =
+				        // Remove vigências inválidas do histórico carregado.
+				        Table.RemoveRowsWithErrors(Source)
 				in
 				    #"Removed Errors"
 

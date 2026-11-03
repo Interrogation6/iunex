@@ -6,6 +6,7 @@ table dCalendario
 			
 			VAR FYMaxSelecionado =
 			    MAXX(
+			        // Usa o último ano fiscal da seleção, não o último do calendário inteiro.
 			        ALLSELECTED(dCalendario),
 			        dCalendario[anofiscal]
 			    )
@@ -336,7 +337,9 @@ table dCalendario
 				        type text
 				    ),
 				
-				    AddAnoFiscal = Table.AddColumn(
+				    AddAnoFiscal =
+				        // O ano fiscal começa em abril e termina em março.
+				        Table.AddColumn(
 				        AddTrimestre, "anofiscal",
 				        each if [mesnumero] >= 4
 				             then [ano] + 1
@@ -350,7 +353,9 @@ table dCalendario
 				        type text
 				    ),
 				
-				    AddMesFiscal = Table.AddColumn(
+				    AddMesFiscal =
+				        // Abril corresponde ao primeiro mês fiscal.
+				        Table.AddColumn(
 				        AddAnoFiscalNome, "mesfiscal",
 				        each Number.Mod([mesnumero] + 8, 12) + 1,
 				        Int64.Type
@@ -393,7 +398,9 @@ table dCalendario
 				        each [data] <> null
 				    ),
 				
-				    AgruparFeriados = Table.Group(
+				    AgruparFeriados =
+				        // Consolida feriados repetidos na mesma data antes da junção.
+				        Table.Group(
 				        FeriadosValidos,
 				        {"data"},
 				        {
@@ -471,7 +478,9 @@ table dCalendario
 				        }
 				    ),
 				
-				    AddIsDiaUtil = Table.AddColumn(
+				    AddIsDiaUtil =
+				        // Considera fins de semana e feriados nacionais.
+				        Table.AddColumn(
 				        CorrigirFlagNacional, "isdiautil",
 				        each not [isfimsemana]
 				             and not [isferiadonacional],

@@ -68,7 +68,9 @@ table fErros
 		queryGroup: Modelo
 		source =
 				let
-				    Fontes = {
+				    Fontes =
+				        // Reúne quarentenas de vendas, dimensões, devoluções e metas.
+				        {
 				        fxQuarentena(
 				            stg_vendas,
 				            "Vendas",
